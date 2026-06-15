@@ -1,0 +1,454 @@
+
+<style>
+  h2.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0 }
+  * { box-sizing: border-box; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+  .tab { padding:6px 14px; font-size:12px; font-weight:500; border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-md); cursor:pointer; background:transparent; color:var(--color-text-secondary); transition:all .15s; }
+  .tab:hover { background:var(--color-background-secondary); color:var(--color-text-primary); }
+  .tab.active { background:var(--color-background-secondary); color:var(--color-text-primary); border-color:var(--color-border-primary); font-weight:500; }
+  .section { display:none; }
+  .section.visible { display:block; }
+  .card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px; margin-bottom:10px; }
+  .card-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 6px; }
+  .card-body { font-size:12px; color:var(--color-text-secondary); line-height:1.6; }
+  .badge { display:inline-block; font-size:11px; font-weight:500; padding:2px 8px; border-radius:var(--border-radius-md); margin-right:4px; margin-bottom:4px; }
+  .badge-blue { background:var(--color-background-info); color:var(--color-text-info); }
+  .badge-amber { background:#FAEEDA; color:#633806; }
+  .badge-green { background:#EAF3DE; color:#27500A; }
+  .badge-red { background:#FCEBEB; color:#791F1F; }
+  .badge-purple { background:#EEEDFE; color:#3C3489; }
+  .badge-gray { background:var(--color-background-secondary); color:var(--color-text-secondary); }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .divider { border:none; border-top:0.5px solid var(--color-border-tertiary); margin:12px 0; }
+  .pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+  .section-label { font-size:11px; font-weight:500; color:var(--color-text-tertiary); text-transform:uppercase; letter-spacing:.05em; margin:14px 0 6px; }
+  .risk-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; }
+  .risk-icon { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; font-weight:500; }
+  .risk-icon.alto { background:#FCEBEB; color:#791F1F; }
+  .risk-icon.med { background:#FAEEDA; color:#633806; }
+  .risk-icon.low { background:#EAF3DE; color:#27500A; }
+  .flow-step { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; }
+  .step-num { width:24px; height:24px; border-radius:50%; background:var(--color-background-secondary); border:0.5px solid var(--color-border-secondary); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:500; flex-shrink:0; color:var(--color-text-secondary); }
+  .step-content { flex:1; }
+  .step-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin:0 0 2px; }
+  .step-desc { font-size:12px; color:var(--color-text-secondary); line-height:1.5; margin:0; }
+  .ask-btn { font-size:11px; color:var(--color-text-info); border:0.5px solid var(--color-border-info); border-radius:var(--border-radius-md); padding:2px 8px; cursor:pointer; background:transparent; margin-top:4px; display:inline-block; }
+  .ask-btn:hover { background:var(--color-background-info); }
+  table.resp { width:100%; border-collapse:collapse; font-size:12px; }
+  table.resp th { font-weight:500; font-size:11px; color:var(--color-text-tertiary); text-align:left; padding:4px 6px; border-bottom:0.5px solid var(--color-border-tertiary); }
+  table.resp td { padding:6px 6px; border-bottom:0.5px solid var(--color-border-tertiary); color:var(--color-text-secondary); vertical-align:top; }
+  table.resp td:first-child { color:var(--color-text-primary); font-weight:500; }
+  @media(max-width:500px){ .grid2,.grid3{grid-template-columns:1fr;} }
+</style>
+
+<h2 class="sr-only">Painel de governança: área de releases SAP ECC + S/4HANA — mapeamento de processos, ferramentas, rituais e entregas da reunião de 09/06/2026</h2>
+
+<div style="padding:4px 0 12px">
+  <div style="font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Governança de Releases SAP — Mapa Estratégico</div>
+  <div style="font-size:12px;color:var(--color-text-secondary)">Reunião 09/06/2026 · ECC + S/4HANA · Release Agosto 2026</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('processos',this)">Processos</button>
+  <button class="tab" onclick="show('ambientes',this)">Ambientes</button>
+  <button class="tab" onclick="show('testes',this)">Estratégia de testes</button>
+  <button class="tab" onclick="show('ferramentas',this)">Ferramentas</button>
+  <button class="tab" onclick="show('rituais',this)">Rituais</button>
+  <button class="tab" onclick="show('entregas',this)">Entregas</button>
+  <button class="tab" onclick="show('riscos',this)">Riscos</button>
+  <button class="tab" onclick="show('proximos',this)">Próximos passos</button>
+</div>
+
+<!-- PROCESSOS -->
+<div id="sec-processos" class="section visible">
+  <div class="section-label">Ciclo de vida de uma release maior</div>
+
+  <div class="flow-step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <p class="step-title">Abertura de demanda</p>
+      <p class="step-desc">Registro no ServiceNow (CERF) a partir de 1º/jul. Obrigatório informar: deltas a alterar, processos impactados, NBCs envolvidas, Work Processes (WPs) equivalentes. Identificação de líderes: P2M, Tags, R2R, P2P, Masterdata.</p>
+      <button class="ask-btn" onclick="sendPrompt('Como estruturar o formulário obrigatório de abertura de demanda no ServiceNow para releases SAP?')">Como estruturar o formulário? ↗</button>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <p class="step-title">Análise de impacto e mapeamento de deltas</p>
+      <p class="step-desc">Uso do Signavio e LinhaX para visualizar cadeia de valor e relações entre processos, deltas, extensões, jobs e integrações. Cada WP representa um delta no S/4. Documentação dos deltas alterados é entregável obrigatório de cada release.</p>
+      <button class="ask-btn" onclick="sendPrompt('Como usar Signavio e LinhaX para mapear deltas e impactos em releases SAP S/4 + ECC?')">Como usar Signavio/LinhaX? ↗</button>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p class="step-title">Desenvolvimento concorrente (janelas de trabalho)</p>
+      <p class="step-desc">Processo com Auro para coordenar janelas sobre deltas específicos — evita conflito/lock entre projetos paralelos (Indústria, Cosméticos, futuro Spana). Alinhamento com Alan, Auro e André.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <p class="step-title">Testes de liberação (TDR)</p>
+      <p class="step-desc">Baseline de testes por camada: ECC, Convivência ECC/S4 (33 cenários fixos), S/4 + satélites (seleção orientada por deltas alterados). Evidências manuais obrigatórias. IA (Joule) para TSDD/FSDD futuramente.</p>
+      <button class="ask-btn" onclick="sendPrompt('Qual a estratégia de seleção de cenários de teste para releases com ECC e S/4 em convivência?')">Estratégia de seleção? ↗</button>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <p class="step-title">Checklist de conformidade documental</p>
+      <p class="step-desc">Checklist obrigatório com documentação atualizada no Google Drive + registros no Signavio/LinhaX. Release bloqueada se documentação dos deltas não estiver atualizada. AMS (Accenture) demanda conformidade.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <p class="step-title">Go live / implantação e suporte pós go-live</p>
+      <p class="step-desc">Chamados via ServiceNow → filas T2R dos líderes. Diário de Bordo SPGL. Gestão da Release apoia tratativa entre equipes de Projetos e Sustentação.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="card">
+    <div class="card-title">Cadência de releases SAP</div>
+    <div class="card-body">Releases quase mensais · 4 releases maiores por ano: jan / mar / jun / set · Manutenção programada intercalada (ex.: set/26 duas semanas após release ago/26)</div>
+    <div class="pill-row">
+      <span class="badge badge-blue">Jan</span>
+      <span class="badge badge-blue">Mar</span>
+      <span class="badge badge-amber">Jun (atual)</span>
+      <span class="badge badge-blue">Set</span>
+    </div>
+  </div>
+</div>
+
+<!-- AMBIENTES -->
+<div id="sec-ambientes" class="section">
+  <div class="section-label">ECC — trilhas de ambiente não-produtivo</div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Trilha Z1</div>
+      <div class="card-body">DZ1 · QZ1 · RZ1<br>Usada para projeto T4 (refresh início de agosto para preparar próximos projetos de jan/27).</div>
+      <div class="pill-row"><span class="badge badge-blue">T4ALL</span><span class="badge badge-gray">Refresh ago/26</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Trilha Z2</div>
+      <div class="card-body">DZ2 · QZ2 · RZ2<br>Projetos de agosto: Reforma Tributária Onda 2, CBPJ, CNPJ Alfanumérico. Confirmar refresh RZ2 fim de junho.</div>
+      <div class="pill-row"><span class="badge badge-amber">Reforma Tributária</span><span class="badge badge-amber">CBPJ</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">S/4HANA — ambientes cloud SAP</div>
+  <div class="card">
+    <div class="card-title">NC2 · NC30 — ambientes de projeto S/4</div>
+    <div class="card-body">Ambientes cloud SAP (não podem ser desligados, mas integrações e jobs ficam indisponíveis em janelas de manutenção).<br>Compartilhados com Globant/Cosméticos — risco de conflito e lock de objetos.<br>Ambientes mais limitados que ECC: requer organização rigorosa de janelas de trabalho.</div>
+    <div class="pill-row"><span class="badge badge-red">Lock de objetos</span><span class="badge badge-amber">Compartilhado Globant</span><span class="badge badge-blue">28 satélites integrados</span></div>
+    <button class="ask-btn" onclick="sendPrompt('Como evitar conflitos de lock de objetos nos ambientes S/4HANA compartilhados com Cosméticos/Globant?')">Como mitigar conflitos? ↗</button>
+  </div>
+
+  <div class="section-label">Responsabilidades</div>
+  <table class="resp">
+    <thead><tr><th>Responsável</th><th>Frente</th><th>Apoio</th></tr></thead>
+    <tbody>
+      <tr><td>Alê (Alexandre Costal)</td><td>Releases SAP (ECC + S/4)</td><td>Giovanni, Speaker 3</td></tr>
+      <tr><td>Giovanni</td><td>Manutenções programadas</td><td>Alê, Speaker 3</td></tr>
+      <tr><td>Alan (engenharia)</td><td>Desenvolvimento S/4HANA</td><td>Auro, André</td></tr>
+      <tr><td>Felipe / Fabi (time)</td><td>Gestão ambientes não-produtivos ECC</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TESTES -->
+<div id="sec-testes" class="section">
+  <div class="section-label">Estrutura de cenários (547 total — base T4ALL go live)</div>
+  <div class="grid3">
+    <div class="card">
+      <div class="card-title" style="color:#185FA5">Convivência ECC/S4</div>
+      <div class="card-body">33 cenários · Sempre testados em todas as releases maiores · Validam comunicação e integração entre os dois sistemas.</div>
+      <div class="pill-row"><span class="badge badge-blue">Fixo</span><span class="badge badge-blue">CS4</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#0F6E56">S/4 + Satélites</div>
+      <div class="card-body">~300 cenários · Seleção orientada pelos deltas alterados na release · Foco na cadeia impactada (O9, PLM, OTM, etc).</div>
+      <div class="pill-row"><span class="badge badge-green">Por delta</span><span class="badge badge-green">~300 total</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#634AB7">ECC baseline</div>
+      <div class="card-body">Cenários legados ECC · Tudo que era indústria ECC sai da baseline · Recomposição com cenários de indústria S/4.</div>
+      <div class="pill-row"><span class="badge badge-purple">Em revisão</span><span class="badge badge-purple">Bruno/Dai/Alê</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Estratégia de seleção</div>
+  <div class="card">
+    <div class="card-title">Abordagem orientada por delta</div>
+    <div class="card-body">
+      1. Identificar quais deltas serão alterados na release<br>
+      2. Usar Signavio/LinhaX para mapear cadeia de valor afetada<br>
+      3. Selecionar cenários que cobrem essa cadeia (não testar os 300 sempre)<br>
+      4. Manter os 33 de convivência como cota fixa<br>
+      5. Primeira release S/4: escopo maior → refinar progressivamente
+    </div>
+    <button class="ask-btn" onclick="sendPrompt('Como criar uma matriz de prioridade para selecionar os ~300 cenários de S/4 + satélites por release?')">Criar matriz de prioridade ↗</button>
+  </div>
+
+  <div class="section-label">Nova baseline a construir (Aug/26)</div>
+  <div class="card">
+    <div class="card-title">Reunião de baseline — DAE + Moioli</div>
+    <div class="card-body">Objetivo: definir nova baseline de testes considerando indústria S/4 e convivência. Responsáveis: Bruno Moioli, Dai, Alê e donos de satélites (O9, PLM, OTM). Aplicar metodologia já na janela de agosto.</div>
+    <div class="pill-row"><span class="badge badge-amber">Reforma Tributária Onda 2</span><span class="badge badge-amber">CBPJ</span><span class="badge badge-amber">CNPJ alfanumérico</span></div>
+  </div>
+
+  <div class="section-label">IA para testes</div>
+  <div class="card">
+    <div class="card-title">Joule (SAP) para TSDD/FSDD</div>
+    <div class="card-body">Michael, Brás e Sena Júlia trabalhando no desenvolvimento. Visão agregada de processos/deltas e sugestão de impactos e cenários. Evidências de testes continuam manuais. Calm (Cosméticos) para mapear deltas a processos e prontidão de testes integrados — avaliar expansão.</div>
+    <div class="pill-row"><span class="badge badge-purple">Joule / Globant / Numen</span><span class="badge badge-gray">Evidências manuais</span></div>
+  </div>
+</div>
+
+<!-- FERRAMENTAS -->
+<div id="sec-ferramentas" class="section">
+  <div class="section-label">Ferramentas por função</div>
+  <table class="resp">
+    <thead><tr><th>Ferramenta</th><th>Sistema</th><th>Uso principal</th></tr></thead>
+    <tbody>
+      <tr><td>Solman (SOMEN)</td><td>ECC</td><td>Gestão de transporte, documentação de processos legada</td></tr>
+      <tr><td>Google Drive</td><td>S/4HANA</td><td>Documentação de processos e deltas S/4 (substitui Solman)</td></tr>
+      <tr><td>Signavio</td><td>S/4 + ECC</td><td>Visualização de cadeia de valor, mapeamento de impactos, extensões, países</td></tr>
+      <tr><td>LinhaX</td><td>S/4 + ECC</td><td>Visibilidade de interfaces e extensões, análise de deltas</td></tr>
+      <tr><td>ServiceNow (CERF)</td><td>Ambos</td><td>Abertura de demandas, chamados, projetos. Operação a partir de 1º/jul</td></tr>
+      <tr><td>Calm</td><td>S/4 (Cosméticos)</td><td>Mapeamento de deltas a processos, prontidão de testes integrados</td></tr>
+      <tr><td>Cloud ALM</td><td>S/4</td><td>ALM (Application Lifecycle Management) S/4</td></tr>
+      <tr><td>Joule (SAP AI)</td><td>S/4</td><td>Consulta de deltas, TSDD/FSDD, sugestão de cenários de teste</td></tr>
+      <tr><td>Charm / ALM</td><td>ECC + S/4</td><td>Gestão de mudanças, vínculo WP ↔ delta</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-label">Acesso e capacitação</div>
+  <div class="card">
+    <div class="card-title">Portal Hub (Lean AX) — central de conhecimento</div>
+    <div class="card-body">Links para Signavio, Cloud ALM, materiais de treinamento (Charm, BTP, etc.) e gravações. Acesso ao LM/ALM via Speaker 2. Correção de problema de direcionamento no Google Drive. Equipe deve revisar materiais disponíveis.</div>
+    <button class="ask-btn" onclick="sendPrompt('Como organizar o onboarding da equipe de releases SAP para uso de Signavio, LinhaX e ServiceNow?')">Plano de onboarding ↗</button>
+  </div>
+</div>
+
+<!-- RITUAIS -->
+<div id="sec-rituais" class="section">
+  <div class="section-label">Rituais recorrentes identificados</div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-calendar" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Reunião semanal de governança</div>
+    <div class="card-body">Governança de ambientes S/4HANA + releases SAP + temas de reform tributária. Participantes: Alê, Giovanni, Alan, Speaker 3, Speaker 4 (Gil). Próxima agenda: 17/06/2026.</div>
+    <div class="pill-row"><span class="badge badge-blue">Semanal</span><span class="badge badge-gray">Todos os Lunes?</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-users" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Reunião de baseline (pré-release maior)</div>
+    <div class="card-body">Definição e validação da baseline de testes S/4 + convivência. Participantes: DAE, Bruno Moioli, Alê. Donos de satélites por demanda. Frequência: antes de cada release maior.</div>
+    <div class="pill-row"><span class="badge badge-amber">Por release</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-code" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Alinhamento de desenvolvimento concorrente</div>
+    <div class="card-body">Definição de janelas de trabalho por delta específico. Participantes: Alan, Auro, André. Processo desenhado pelo Auro. Evita conflito/lock entre Indústria, Cosméticos e Spana.</div>
+    <div class="pill-row"><span class="badge badge-green">Ad hoc / por release</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-file-check" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Checklist de conformidade documental</div>
+    <div class="card-body">Verificação de documentação de deltas no Google Drive e Signavio/LinhaX antes da janela de implantação. Bloqueador de release. AMS (Accenture) verifica conformidade.</div>
+    <div class="pill-row"><span class="badge badge-red">Gate obrigatório</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i>Revisão de portal e processos (10/06)</div>
+    <div class="card-body">Reunião entre Speaker 1 (Alê) e Speaker 2 para detalhar processos S/4, itens de release, portal Hub e acessos LM/ALM. Correção do direcionamento Google Drive.</div>
+    <div class="pill-row"><span class="badge badge-purple">Pontual — 10/06/26</span></div>
+  </div>
+</div>
+
+<!-- ENTREGAS -->
+<div id="sec-entregas" class="section">
+  <div class="section-label">Entregas obrigatórias por release</div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Documentação de deltas</div>
+      <div class="card-body">Documentação atualizada de cada delta modificado na release. Repositório: Google Drive (S/4) / Solman (ECC). Reflexo obrigatório no Signavio e LinhaX.</div>
+      <div class="pill-row"><span class="badge badge-red">Bloqueador</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Evidências de testes</div>
+      <div class="card-body">Evidências manuais por cenário executado. Envio ao e-mail releasestd@natura.net. Gestão via planilha de testes + diretórios organizados por área.</div>
+      <div class="pill-row"><span class="badge badge-amber">Obrigatório</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Registro de demanda (ServiceNow)</div>
+      <div class="card-body">Demanda com: deltas a alterar, processos impactados, NBCs, WPs, responsável NBC. Válido a partir de 1º/jul com CERF em operação.</div>
+      <div class="pill-row"><span class="badge badge-blue">A partir jul/26</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Baseline de testes atualizada</div>
+      <div class="card-body">Nova baseline S/4 + ECC (retirando cenários indústria legados e adicionando cenários de indústria S/4). Construção colaborativa com Bruno Moioli, Dai, donos de satélites.</div>
+      <div class="pill-row"><span class="badge badge-green">Para ago/26</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Projetos em escopo — Release Agosto 2026</div>
+  <div class="card">
+    <div class="card-body">
+      <span class="badge badge-amber">Reforma Tributária Onda 2</span>
+      <span class="badge badge-amber">Portal PJ (CBPJ)</span>
+      <span class="badge badge-amber">CNPJ Alfanumérico</span>
+    </div>
+    <div class="card-body" style="margin-top:6px">Janela: <strong>15-16 de agosto (sáb/dom)</strong> · Manutenção programada em setembro (±2 semanas depois)</div>
+  </div>
+
+  <div class="section-label">Impactos da Reforma Tributária a mapear</div>
+  <div class="card">
+    <div class="card-body">Contas a Pagar · Área Fiscal · Indústria · Convivência ECC/S4/SCC · Dados e integrações (Databricks/analytics) · Ajustes imediatos na indústria · Parte dos itens em Cosméticos 2027</div>
+    <button class="ask-btn" onclick="sendPrompt('Como estruturar o mapeamento de impactos da Reforma Tributária Onda 2 por módulo SAP?')">Estruturar mapeamento ↗</button>
+  </div>
+</div>
+
+<!-- RISCOS -->
+<div id="sec-riscos" class="section">
+  <div class="section-label">Riscos identificados na reunião</div>
+
+  <div class="risk-row">
+    <div class="risk-icon alto">!</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Lock de objetos — ambientes compartilhados S/4</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">NC2/NC30 compartilhados com Globant (Cosméticos). Desenvolvimento concorrente sem janelas acordadas causa lock e conflito de objetos. Procedimento temporário enquanto Cosméticos existir — pode durar anos (Spana como próximo).</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="risk-row">
+    <div class="risk-icon alto">!</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Baseline de testes S/4 indefinida</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">547 cenários do go live não são adequados para releases recorrentes. Sem nova baseline, risco de testar desnecessariamente ou deixar gaps críticos. Ponto crítico para primeira release maior com S/4.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="risk-row">
+    <div class="risk-icon alto">!</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Identificação de NBCs pelos times</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Times com dificuldade esperada em identificar processos/NBCs impactados. Risco de demandas abertas sem vínculo com deltas, dificultando análise de impacto. ServiceNow ainda em ajuste para exigir esse campo.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="risk-row">
+    <div class="risk-icon med">~</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Documentação de deltas incompleta</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Transição Solman → Google Drive em andamento. Sem checklist implantado, releases podem passar sem documentação atualizada. AMS demanda esse padrão.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="risk-row">
+    <div class="risk-icon med">~</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Impacto da Reforma Tributária em Databricks/analytics</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Escopo "dados e integrações" genérico no atual plano. Impacto real em Databricks e analytics não avaliado. Pode gerar surpresas na janela de agosto.</div>
+    </div>
+  </div>
+  <hr class="divider">
+
+  <div class="risk-row">
+    <div class="risk-icon low">✓</div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary)">Refresh RZ2 fim de junho</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">Confirmação pendente da data de refresh do ambiente RZ2. Pode impactar disponibilidade para desenvolvimento do CBPJ/Reforma Tributária.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRÓXIMOS PASSOS -->
+<div id="sec-proximos" class="section">
+  <div class="section-label">Ações imediatas — Junho 2026</div>
+
+  <div class="flow-step">
+    <div class="step-num" style="background:#FAEEDA;color:#633806;border-color:#FAC775">1</div>
+    <div class="step-content">
+      <p class="step-title">Confirmar refresh RZ2 — fim de junho</p>
+      <p class="step-desc">Validar data com time Felipe/Fabi para garantir disponibilidade do ambiente Z2 para Reforma Tributária e CBPJ.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num" style="background:#FAEEDA;color:#633806;border-color:#FAC775">2</div>
+    <div class="step-content">
+      <p class="step-title">Reunião de detalhes de processos — 10/06 (hoje)</p>
+      <p class="step-desc">Alê + Speaker 2: detalhar processos S/4, itens release agosto, revisão portal Hub, corrigir direcionamento Google Drive, liberar acessos LM/ALM.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p class="step-title">Mapear impactos da Reforma Tributária por módulo</p>
+      <p class="step-desc">Fiscal, Contas a Pagar, Indústria, Convivência, Databricks/analytics. Identificar deltas com apoio dos times.</p>
+      <button class="ask-btn" onclick="sendPrompt('Monte um template de análise de impacto por módulo SAP para a Reforma Tributária Onda 2.')">Gerar template ↗</button>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <p class="step-title">Estruturar baseline de testes agosto (reunião DAE + Moioli)</p>
+      <p class="step-desc">Selecionar cenários essenciais dentre ~300 S/4 + satélites. Validar 33 convivência. Aplicar metodologia orientada por delta.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <p class="step-title">Alinhar Alan, Auro e André — desenvolvimento concorrente</p>
+      <p class="step-desc">Organizar janelas de trabalho para releases com Cosméticos coexistindo. Processo com Auro já desenhado como base.</p>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <p class="step-title">Formalizar abertura de demanda com processos/deltas/NBCs</p>
+      <p class="step-desc">Formulário, validação e responsáveis. Treinamento em Signavio/LinhaX para os times. Alinhamento com Accenture AMS.</p>
+      <button class="ask-btn" onclick="sendPrompt('Crie um checklist de abertura de demanda SAP com campos obrigatórios de deltas, processos, NBCs e WPs.')">Criar checklist ↗</button>
+    </div>
+  </div>
+
+  <div class="flow-step">
+    <div class="step-num">7</div>
+    <div class="step-content">
+      <p class="step-title">Criar checklist de conformidade documental (bloqueador release)</p>
+      <p class="step-desc">Google Drive + Signavio/LinhaX. Definir convenções de nomenclatura e versionamento entre repositórios.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Próxima reunião semanal</div>
+  <div class="card">
+    <div class="card-body" style="font-size:13px"><strong>17/06/2026</strong> — Reunião de Release SAP e Gestão de Ambientes não-produtivos<br>Responsáveis: Fabíola Toledo · Alexandre Siqueira (releases) · Viviane Moreto · Rodolfo Carmona (testes/regressão)</div>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('visible');
+  btn.classList.add('active');
+}
+</script>

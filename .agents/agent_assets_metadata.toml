@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "WDpCRNG3sidHY-dTfRT-9"
+uri = "file://artifacts/sri/public/hero-releases.png"
+type = "image"
+title = "sap release management hero"
