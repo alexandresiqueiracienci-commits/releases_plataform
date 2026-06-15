@@ -3,13 +3,27 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SRI - Release Go Live Control API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Current user and access control
+  - name: users
+    description: User administration and approvals
+  - name: scenarios
+    description: Release test scenarios
+  - name: lookups
+    description: Domain lookup values used by selects
+  - name: escala
+    description: On-call schedule
+  - name: contatos
+    description: Contact directory
+  - name: dashboard
+    description: Consolidated dashboards
 paths:
   /healthz:
     get:
@@ -24,6 +38,506 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Current authenticated user
+      description: Returns the current user record, provisioning it on first login.
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List all users (admin only)
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+  /users/{id}:
+    patch:
+      operationId: updateUser
+      tags: [users]
+      summary: Update a user's status or profile (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /scenarios:
+    get:
+      operationId: listScenarios
+      tags: [scenarios]
+      summary: List release test scenarios
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prioridade
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: site
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sistema
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: statusCenario
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of scenarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Scenario"
+    post:
+      operationId: createScenario
+      tags: [scenarios]
+      summary: Create a scenario (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScenarioInput"
+      responses:
+        "201":
+          description: Created scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scenario"
+  /scenarios/{id}:
+    get:
+      operationId: getScenario
+      tags: [scenarios]
+      summary: Get a scenario by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scenario"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateScenario
+      tags: [scenarios]
+      summary: Update a scenario (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScenarioUpdate"
+      responses:
+        "200":
+          description: Updated scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scenario"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteScenario
+      tags: [scenarios]
+      summary: Delete a scenario (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /lookups:
+    get:
+      operationId: listLookups
+      tags: [lookups]
+      summary: List domain lookup values
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of lookup values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lookup"
+    post:
+      operationId: createLookup
+      tags: [lookups]
+      summary: Create a lookup value (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LookupInput"
+      responses:
+        "201":
+          description: Created lookup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lookup"
+  /lookups/{id}:
+    patch:
+      operationId: updateLookup
+      tags: [lookups]
+      summary: Update a lookup value (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LookupUpdate"
+      responses:
+        "200":
+          description: Updated lookup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lookup"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteLookup
+      tags: [lookups]
+      summary: Delete a lookup value (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /escala:
+    get:
+      operationId: listEscala
+      tags: [escala]
+      summary: List on-call schedule entries
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of schedule entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Escala"
+    post:
+      operationId: createEscala
+      tags: [escala]
+      summary: Create a schedule entry (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EscalaInput"
+      responses:
+        "201":
+          description: Created entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Escala"
+  /escala/{id}:
+    patch:
+      operationId: updateEscala
+      tags: [escala]
+      summary: Update a schedule entry (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EscalaUpdate"
+      responses:
+        "200":
+          description: Updated entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Escala"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteEscala
+      tags: [escala]
+      summary: Delete a schedule entry (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /contatos:
+    get:
+      operationId: listContatos
+      tags: [contatos]
+      summary: List contacts
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contato"
+    post:
+      operationId: createContato
+      tags: [contatos]
+      summary: Create a contact (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContatoInput"
+      responses:
+        "201":
+          description: Created contact
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contato"
+  /contatos/{id}:
+    patch:
+      operationId: updateContato
+      tags: [contatos]
+      summary: Update a contact (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContatoUpdate"
+      responses:
+        "200":
+          description: Updated contact
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contato"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteContato
+      tags: [contatos]
+      summary: Delete a contact (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Consolidated dashboard counts
+      parameters:
+        - name: prioridade
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /dashboard/matrix:
+    get:
+      operationId: getDashboardMatrix
+      tags: [dashboard]
+      summary: Site x Status matrix with totals and percentages
+      parameters:
+        - name: prioridade
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Matrix
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardMatrix"
+
 components:
   schemas:
     HealthStatus:
@@ -33,4 +547,456 @@ components:
           type: string
       required:
         - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
 
+    User:
+      type: object
+      required: [id, email, profile, status]
+      properties:
+        id:
+          type: integer
+        clerkUserId:
+          type: ["string", "null"]
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+        profile:
+          type: string
+          description: ADMINISTRADOR or USUARIO
+        status:
+          type: string
+          description: PENDENTE, APROVADO or REJEITADO
+        createdAt:
+          type: ["string", "null"]
+    UserUpdate:
+      type: object
+      properties:
+        profile:
+          type: string
+        status:
+          type: string
+
+    Scenario:
+      type: object
+      required: [id, idTeste]
+      properties:
+        id:
+          type: integer
+        idTeste:
+          type: string
+        chaveamento:
+          type: ["string", "null"]
+        sequencia:
+          type: ["string", "null"]
+        blocoExecucao:
+          type: ["string", "null"]
+        fisicoSistemico:
+          type: ["string", "null"]
+        prioridade:
+          type: ["string", "null"]
+        cenario:
+          type: ["string", "null"]
+        dependenciaCenarioExterno:
+          type: ["string", "null"]
+        quemExecuta:
+          type: ["string", "null"]
+        baselineCustomizado:
+          type: ["string", "null"]
+        facilitador:
+          type: ["string", "null"]
+        keyUser:
+          type: ["string", "null"]
+        superUser:
+          type: ["string", "null"]
+        endUser:
+          type: ["string", "null"]
+        macroProcesso:
+          type: ["string", "null"]
+        sequenciaPassoAPasso:
+          type: ["string", "null"]
+        evidenciasObrigatorias:
+          type: ["string", "null"]
+        quemDefineMassa:
+          type: ["string", "null"]
+        massaDados:
+          type: ["string", "null"]
+        celula:
+          type: ["string", "null"]
+        agrupamento:
+          type: ["string", "null"]
+        tipoCenario:
+          type: ["string", "null"]
+        liberacao:
+          type: ["string", "null"]
+        observacoes:
+          type: ["string", "null"]
+        sistema:
+          type: ["string", "null"]
+        site:
+          type: ["string", "null"]
+        statusCenario:
+          type: ["string", "null"]
+        idDefeitoJira:
+          type: ["string", "null"]
+        idCenarioJira:
+          type: ["string", "null"]
+        statusCheckPoint:
+          type: ["string", "null"]
+        diretorio:
+          type: ["string", "null"]
+        createdAt:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+    ScenarioInput:
+      type: object
+      required: [idTeste]
+      properties:
+        idTeste:
+          type: string
+          minLength: 1
+        chaveamento:
+          type: string
+        sequencia:
+          type: string
+        blocoExecucao:
+          type: string
+        fisicoSistemico:
+          type: string
+        prioridade:
+          type: string
+        cenario:
+          type: string
+        dependenciaCenarioExterno:
+          type: string
+        quemExecuta:
+          type: string
+        baselineCustomizado:
+          type: string
+        facilitador:
+          type: string
+        keyUser:
+          type: string
+        superUser:
+          type: string
+        endUser:
+          type: string
+        macroProcesso:
+          type: string
+        sequenciaPassoAPasso:
+          type: string
+        evidenciasObrigatorias:
+          type: string
+        quemDefineMassa:
+          type: string
+        massaDados:
+          type: string
+        celula:
+          type: string
+        agrupamento:
+          type: string
+        tipoCenario:
+          type: string
+        liberacao:
+          type: string
+        observacoes:
+          type: string
+        sistema:
+          type: string
+        site:
+          type: string
+        statusCenario:
+          type: string
+        idDefeitoJira:
+          type: string
+        idCenarioJira:
+          type: string
+        statusCheckPoint:
+          type: string
+        diretorio:
+          type: string
+    ScenarioUpdate:
+      type: object
+      properties:
+        idTeste:
+          type: string
+        chaveamento:
+          type: string
+        sequencia:
+          type: string
+        blocoExecucao:
+          type: string
+        fisicoSistemico:
+          type: string
+        prioridade:
+          type: string
+        cenario:
+          type: string
+        dependenciaCenarioExterno:
+          type: string
+        quemExecuta:
+          type: string
+        baselineCustomizado:
+          type: string
+        facilitador:
+          type: string
+        keyUser:
+          type: string
+        superUser:
+          type: string
+        endUser:
+          type: string
+        macroProcesso:
+          type: string
+        sequenciaPassoAPasso:
+          type: string
+        evidenciasObrigatorias:
+          type: string
+        quemDefineMassa:
+          type: string
+        massaDados:
+          type: string
+        celula:
+          type: string
+        agrupamento:
+          type: string
+        tipoCenario:
+          type: string
+        liberacao:
+          type: string
+        observacoes:
+          type: string
+        sistema:
+          type: string
+        site:
+          type: string
+        statusCenario:
+          type: string
+        idDefeitoJira:
+          type: string
+        idCenarioJira:
+          type: string
+        statusCheckPoint:
+          type: string
+        diretorio:
+          type: string
+
+    Lookup:
+      type: object
+      required: [id, category, value]
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        value:
+          type: string
+        ordem:
+          type: ["integer", "null"]
+        createdAt:
+          type: ["string", "null"]
+    LookupInput:
+      type: object
+      required: [category, value]
+      properties:
+        category:
+          type: string
+          minLength: 1
+        value:
+          type: string
+          minLength: 1
+        ordem:
+          type: integer
+    LookupUpdate:
+      type: object
+      properties:
+        category:
+          type: string
+        value:
+          type: string
+        ordem:
+          type: integer
+
+    Escala:
+      type: object
+      required: [id, pessoa]
+      properties:
+        id:
+          type: integer
+        pessoa:
+          type: string
+        empresa:
+          type: ["string", "null"]
+        papel:
+          type: ["string", "null"]
+        dia:
+          type: ["string", "null"]
+        horaInicio:
+          type: ["string", "null"]
+        horaFim:
+          type: ["string", "null"]
+        createdAt:
+          type: ["string", "null"]
+    EscalaInput:
+      type: object
+      required: [pessoa]
+      properties:
+        pessoa:
+          type: string
+          minLength: 1
+        empresa:
+          type: string
+        papel:
+          type: string
+        dia:
+          type: string
+        horaInicio:
+          type: string
+        horaFim:
+          type: string
+    EscalaUpdate:
+      type: object
+      properties:
+        pessoa:
+          type: string
+        empresa:
+          type: string
+        papel:
+          type: string
+        dia:
+          type: string
+        horaInicio:
+          type: string
+        horaFim:
+          type: string
+
+    Contato:
+      type: object
+      required: [id, empresa]
+      properties:
+        id:
+          type: integer
+        empresa:
+          type: string
+        contato1:
+          type: ["string", "null"]
+        contato2:
+          type: ["string", "null"]
+        localidade:
+          type: ["string", "null"]
+        papel:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        escalonamento:
+          type: ["string", "null"]
+        createdAt:
+          type: ["string", "null"]
+    ContatoInput:
+      type: object
+      required: [empresa]
+      properties:
+        empresa:
+          type: string
+          minLength: 1
+        contato1:
+          type: string
+        contato2:
+          type: string
+        localidade:
+          type: string
+        papel:
+          type: string
+        email:
+          type: string
+        escalonamento:
+          type: string
+    ContatoUpdate:
+      type: object
+      properties:
+        empresa:
+          type: string
+        contato1:
+          type: string
+        contato2:
+          type: string
+        localidade:
+          type: string
+        papel:
+          type: string
+        email:
+          type: string
+        escalonamento:
+          type: string
+
+    CountItem:
+      type: object
+      required: [label, count]
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+    DashboardSummary:
+      type: object
+      required: [total, byStatus, bySite, bySistema, byPrioridade]
+      properties:
+        total:
+          type: integer
+        byStatus:
+          type: array
+          items:
+            $ref: "#/components/schemas/CountItem"
+        bySite:
+          type: array
+          items:
+            $ref: "#/components/schemas/CountItem"
+        bySistema:
+          type: array
+          items:
+            $ref: "#/components/schemas/CountItem"
+        byPrioridade:
+          type: array
+          items:
+            $ref: "#/components/schemas/CountItem"
+    MatrixRow:
+      type: object
+      required: [site, cells, total]
+      properties:
+        site:
+          type: string
+        cells:
+          type: array
+          items:
+            type: integer
+        total:
+          type: integer
+    DashboardMatrix:
+      type: object
+      required: [statuses, rows, columnTotals, grandTotal, statusPercentages]
+      properties:
+        statuses:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/MatrixRow"
+        columnTotals:
+          type: array
+          items:
+            type: integer
+        grandTotal:
+          type: integer
+        statusPercentages:
+          type: array
+          items:
+            type: number

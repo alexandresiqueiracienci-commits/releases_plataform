@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <defs>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80" />
+      <stop offset="100%" stop-color="#166534" />
+    </linearGradient>
+  </defs>
+  <path d="M 20,30 C 20,10 40,10 40,10 C 40,10 40,30 20,50 C 0,50 0,30 20,30 Z" fill="url(#leafGrad)" />
+  <path d="M 45,35 C 45,20 60,20 60,20 C 60,20 60,35 45,50 C 30,50 30,35 45,35 Z" fill="#22c55e" opacity="0.8" />
+  <text x="75" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="22" fill="#166534" letter-spacing="-0.5">Natura</text>
+  <text x="158" y="38" font-family="'Plus Jakarta Sans', sans-serif" font-weight="400" font-size="22" fill="#475569" letter-spacing="-0.5">SRI</text>
+</svg>

@@ -1,0 +1,1 @@
+- [API Zod date serialization](api-zod-date-serialization.md) — JSON round-trip Drizzle rows before parsing with generated Zod response schemas (Date vs ISO string).
