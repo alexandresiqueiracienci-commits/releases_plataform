@@ -879,10 +879,12 @@ components:
 
     Contato:
       type: object
-      required: [id, empresa]
+      required: [id, nome, empresa]
       properties:
         id:
           type: integer
+        nome:
+          type: string
         empresa:
           type: string
         contato1:
@@ -901,8 +903,11 @@ components:
           type: ["string", "null"]
     ContatoInput:
       type: object
-      required: [empresa]
+      required: [nome, empresa]
       properties:
+        nome:
+          type: string
+          minLength: 1
         empresa:
           type: string
           minLength: 1
@@ -921,6 +926,8 @@ components:
     ContatoUpdate:
       type: object
       properties:
+        nome:
+          type: string
         empresa:
           type: string
         contato1:

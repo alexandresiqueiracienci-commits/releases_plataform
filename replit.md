@@ -62,8 +62,15 @@ domínio, admin), Docs Úteis (Escala e Contatos) e Usuários (aprovação, admi
 
 ## Gotchas
 
-- A carga inicial (Cadastros + ~546 cenários) vem de uma planilha `.xlsx` da área;
-  até importar, o app funciona com listas vazias.
+- A carga inicial vem de planilhas `.xlsx` em `attached_assets/` e é importada por
+  `pnpm --filter @workspace/scripts run seed` (`scripts/src/seed.ts`). O seed é
+  idempotente (roda dentro de uma transação que apaga e recarrega as tabelas):
+  - Cenários (~546) da aba "Tabela Final Teste de Liberação" (mapeada por índice de coluna).
+  - Lookups (listas de domínio) derivados dos valores distintos das colunas de cenário
+    para 9 categorias; status_erro, cds_hub e centros ficam vazios para o admin preencher.
+  - Contatos (~300) da aba "Lista de Contatos".
+  - Escala (roster pessoa/empresa/papel) da aba "Escala Implantação" — a planilha é uma
+    grade pessoa × turno; só o roster é importado (sem dia/hora).
 - Sempre rode `pnpm --filter @workspace/api-spec run codegen` após mudar o OpenAPI.
 
 ## Pointers

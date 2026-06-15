@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const contatosTable = pgTable("contatos", {
   id: serial("id").primaryKey(),
+  nome: text("nome").notNull(),
   empresa: text("empresa").notNull(),
   contato1: text("contato1"),
   contato2: text("contato2"),

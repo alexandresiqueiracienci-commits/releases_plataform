@@ -8,6 +8,8 @@
 
 export interface ContatoInput {
   /** @minLength 1 */
+  nome: string;
+  /** @minLength 1 */
   empresa: string;
   contato1?: string;
   contato2?: string;

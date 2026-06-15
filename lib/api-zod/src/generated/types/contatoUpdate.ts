@@ -7,6 +7,7 @@
  */
 
 export interface ContatoUpdate {
+  nome?: string;
   empresa?: string;
   contato1?: string;
   contato2?: string;

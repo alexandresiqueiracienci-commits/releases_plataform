@@ -439,6 +439,7 @@ export const ListContatosQueryParams = zod.object({
 
 export const ListContatosResponseItem = zod.object({
   "id": zod.number(),
+  "nome": zod.string(),
   "empresa": zod.string(),
   "contato1": zod.string().nullish(),
   "contato2": zod.string().nullish(),
@@ -457,7 +458,9 @@ export const ListContatosResponse = zod.array(ListContatosResponseItem)
 
 
 
+
 export const CreateContatoBody = zod.object({
+  "nome": zod.string().min(1),
   "empresa": zod.string().min(1),
   "contato1": zod.string().optional(),
   "contato2": zod.string().optional(),
@@ -476,6 +479,7 @@ export const UpdateContatoParams = zod.object({
 })
 
 export const UpdateContatoBody = zod.object({
+  "nome": zod.string().optional(),
   "empresa": zod.string().optional(),
   "contato1": zod.string().optional(),
   "contato2": zod.string().optional(),
@@ -487,6 +491,7 @@ export const UpdateContatoBody = zod.object({
 
 export const UpdateContatoResponse = zod.object({
   "id": zod.number(),
+  "nome": zod.string(),
   "empresa": zod.string(),
   "contato1": zod.string().nullish(),
   "contato2": zod.string().nullish(),

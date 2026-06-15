@@ -8,6 +8,7 @@
 
 export interface Contato {
   id: number;
+  nome: string;
   empresa: string;
   /** @nullable */
   contato1?: string | null;

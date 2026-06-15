@@ -22,14 +22,14 @@ export default function ContatosPage() {
   const deleteContato = useDeleteContato();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({ empresa: "", contato1: "", contato2: "", localidade: "", papel: "", email: "", escalonamento: "" });
+  const [formData, setFormData] = useState({ nome: "", empresa: "", contato1: "", contato2: "", localidade: "", papel: "", email: "", escalonamento: "" });
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await createContato.mutateAsync({ data: formData });
       setIsOpen(false);
-      setFormData({ empresa: "", contato1: "", contato2: "", localidade: "", papel: "", email: "", escalonamento: "" });
+      setFormData({ nome: "", empresa: "", contato1: "", contato2: "", localidade: "", papel: "", email: "", escalonamento: "" });
       qc.invalidateQueries({ queryKey: getListContatosQueryKey() });
       toast({ title: "Sucesso", description: "Contato adicionado." });
     } catch (err) {
@@ -68,6 +68,7 @@ export default function ContatosPage() {
                 <DialogTitle>Adicionar Contato</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreate} className="space-y-4">
+                <Input placeholder="Nome" required value={formData.nome} onChange={e => setFormData({...formData, nome: e.target.value})} />
                 <Input placeholder="Empresa" required value={formData.empresa} onChange={e => setFormData({...formData, empresa: e.target.value})} />
                 <div className="grid grid-cols-2 gap-2">
                   <Input placeholder="Contato 1" value={formData.contato1} onChange={e => setFormData({...formData, contato1: e.target.value})} />
@@ -107,6 +108,7 @@ export default function ContatosPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead>Nome</TableHead>
                     <TableHead>Empresa</TableHead>
                     <TableHead>Papel</TableHead>
                     <TableHead>Telefones</TableHead>
@@ -118,7 +120,8 @@ export default function ContatosPage() {
                 <TableBody>
                   {contatos.map((item) => (
                     <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.empresa}</TableCell>
+                      <TableCell className="font-medium">{item.nome}</TableCell>
+                      <TableCell>{item.empresa}</TableCell>
                       <TableCell>{item.papel}</TableCell>
                       <TableCell>
                         <div className="flex flex-col text-sm">

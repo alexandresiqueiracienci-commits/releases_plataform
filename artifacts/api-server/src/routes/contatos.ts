@@ -30,6 +30,7 @@ router.get("/contatos", requireApproved, async (req, res): Promise<void> => {
     .where(
       like
         ? or(
+            ilike(contatosTable.nome, like),
             ilike(contatosTable.empresa, like),
             ilike(contatosTable.contato1, like),
             ilike(contatosTable.contato2, like),

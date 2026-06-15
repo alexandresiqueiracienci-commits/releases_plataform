@@ -233,6 +233,7 @@ export interface EscalaUpdate {
 
 export interface Contato {
   id: number;
+  nome: string;
   empresa: string;
   /** @nullable */
   contato1?: string | null;
@@ -252,6 +253,8 @@ export interface Contato {
 
 export interface ContatoInput {
   /** @minLength 1 */
+  nome: string;
+  /** @minLength 1 */
   empresa: string;
   contato1?: string;
   contato2?: string;
@@ -262,6 +265,7 @@ export interface ContatoInput {
 }
 
 export interface ContatoUpdate {
+  nome?: string;
   empresa?: string;
   contato1?: string;
   contato2?: string;
