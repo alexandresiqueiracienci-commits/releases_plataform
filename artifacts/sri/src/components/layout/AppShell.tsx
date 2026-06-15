@@ -6,6 +6,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -22,6 +25,7 @@ import {
   CalendarClock, 
   Contact, 
   Users, 
+  FileText,
   LogOut 
 } from "lucide-react";
 
@@ -85,6 +89,13 @@ export function AppShell({ children }: AppShellProps) {
     navItems.push({ icon: Users, label: "Usuários", href: "/usuarios" });
   }
 
+  const docItems = [
+    { icon: FileText, label: "Governança Releases", href: "/governanca" },
+  ];
+
+  const isItemActive = (href: string) =>
+    location === href || (href !== "/" && location.startsWith(href));
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background">
@@ -99,7 +110,7 @@ export function AppShell({ children }: AppShellProps) {
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton 
-                    isActive={location === item.href || (item.href !== "/" && location.startsWith(item.href))}
+                    isActive={isItemActive(item.href)}
                     onClick={() => setLocation(item.href)}
                     tooltip={item.label}
                   >
@@ -109,6 +120,25 @@ export function AppShell({ children }: AppShellProps) {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+            <SidebarGroup>
+              <SidebarGroupLabel>Documentações</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {docItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        isActive={isItemActive(item.href)}
+                        onClick={() => setLocation(item.href)}
+                        tooltip={item.label}
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.label}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
           </SidebarContent>
           <SidebarFooter className="p-4 border-t border-sidebar-border/50">
             <div className="flex flex-col gap-4">

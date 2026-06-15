@@ -2,7 +2,7 @@ import { useUser } from "@clerk/react";
 import { Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, LayoutDashboard, ListTodo, Users, Contact } from "lucide-react";
+import { FileText, LayoutDashboard, ListTodo, Users, Contact, ChevronRight } from "lucide-react";
 
 export default function HomePage() {
   const { isSignedIn } = useUser();
@@ -98,6 +98,44 @@ export default function HomePage() {
           />
         </CardContent>
       </Card>
+
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <ListTodo className="h-5 w-5 text-primary" />
+            Ciclo de vida de uma release maior
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">Fluxo macro do processo de governança de releases SAP</p>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col lg:flex-row lg:items-stretch gap-2">
+            {RELEASE_LIFECYCLE.map((step, i) => (
+              <div key={step.num} className="flex flex-col lg:flex-row lg:items-stretch flex-1 min-w-0">
+                <div className="flex flex-1 items-start gap-3 rounded-lg border bg-muted/30 p-3">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                    {step.num}
+                  </div>
+                  <span className="text-sm font-medium leading-snug text-foreground">{step.title}</span>
+                </div>
+                {i < RELEASE_LIFECYCLE.length - 1 && (
+                  <div className="flex items-center justify-center py-1 lg:px-1 lg:py-0">
+                    <ChevronRight className="h-5 w-5 rotate-90 text-muted-foreground/50 lg:rotate-0" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
+
+const RELEASE_LIFECYCLE = [
+  { num: 1, title: "Abertura de demanda" },
+  { num: 2, title: "Análise de impacto e deltas" },
+  { num: 3, title: "Desenvolvimento concorrente" },
+  { num: 4, title: "Testes de liberação (TDR)" },
+  { num: 5, title: "Conformidade documental" },
+  { num: 6, title: "Go live e suporte" },
+];
