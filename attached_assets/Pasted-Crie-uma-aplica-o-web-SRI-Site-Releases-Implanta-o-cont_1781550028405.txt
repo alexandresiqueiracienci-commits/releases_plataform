@@ -1,0 +1,52 @@
+Crie uma aplicação web "SRI – Site Releases Implantação" (controle de releases SAP ECC/S4 da Natura).
+
+STACK: React + Vite (frontend), Node/Express (backend), Tailwind. 
+Salvar todo o código no GitHub da conta alexandresiqueira.cienci@natura.net (criar repositório "sri-release-go-live-control").
+
+AUTENTICAÇÃO:
+- Login via Google OAuth. Usuários com e-mail terminando em "@natura.net" entram direto.
+- Terceiros (outros domínios): ao logar pela 1ª vez, criar cadastro com status "PENDENTE" 
+  e enviar e-mail de aprovação ao administrador alexandresiqueira.cienci@natura.net. 
+  Só acessam após aprovação. Administrador inicial: alexandresiqueira.cienci@natura.net.
+- Perfis: ADMINISTRADOR (acesso total) e USUARIO (consulta/dashboards).
+
+PERSISTÊNCIA:
+- Todos os cadastros armazenados como arquivos JSON numa estrutura de diretórios no Google Drive 
+  (raiz: "MeuDrive/SRI/"), via Google Drive API. Subpastas: /cenarios, /lookups, /escala, /contatos, /usuarios.
+- Deixar a camada de dados isolada num módulo (storage.js) para futura troca por banco.
+
+LANDING PAGE (pública/pós-login) "Release Go Live Control":
+- Exibir o cronograma macro da implantação (incorporar PDF "Jun_26 Plano Macro Cutover").
+- Menu "Docs Úteis" com Escala e Contatos.
+
+MENU CADASTROS (somente perfil ADMINISTRADOR):
+1) Cadastro de Cenários de Teste de Liberação — formulário com TODOS os campos da aba 
+   "Tabela Final Teste de Liberação": ID TESTE, Chaveamento, Sequência, Bloco Execução, 
+   Físico ou Sistêmico, Prioridade, Cenário, Dependência Cenário Externo, Quem Executa, 
+   BASELINE/CUSTOMIZADO, Facilitador, KEY USER, SUPER USER, END USER, Macro Processo, 
+   Sequência passo-a-passo, Evidências Obrigatórias, Quem define a massa, Massa de Dados, 
+   Célula, Agrupamento, Tipo Cenário, Liberação, Observações, Sistema, Site, 
+   Status do Cenário, ID Defeito (JIRA), ID Cenário (JIRA), Status Check Point, DIRETORIO.
+   - Campos que vêm de tabelas de domínio (aba "DB") devem ser SELECTS que apenas LISTAM valores 
+     de telas cadastrais próprias (item 2). Não digitar livre.
+2) Telas cadastrais de domínio (CRUD próprio cada uma), alimentando os selects acima:
+   - Status do Cenário: Não Iniciado, Teste em Andamento, Finalizado, Erro, Cancelado
+   - Status Erro: Não Iniciado, Em Andamento, Finalizado, Reteste
+   - Bloco Execução, CDs/Hub, Centros, Entregas (BASELINE/CUSTOMIZADO)
+   - Site, Macro Processo, Facilitador, Quem Executa (Localidades)
+
+MENU DASHBOARDS (separado de Cadastros):
+- Central de acompanhamento baseada nos campos da "Tabela Final".
+- Dashboards consolidados espelhando a aba "Resumo": matriz Site × Status do Cenário, 
+  filtrável por Prioridade (P0, P1...), com totais por linha/coluna e % por status. 
+  Gráficos de barras/pizza por Status, por Site e por Sistema (SAP ECC / SAP S4).
+
+MENU DOCS ÚTEIS — ESCALA E CONTATOS:
+- Cadastro de Escala (pessoa, empresa, papel, dia, hora início, hora fim) + tela de consulta.
+- Cadastro de Contato (Empresa, Contato 1, Contato 2, Localidade, Papel, E-mail, Escalonamento) 
+  + tela de consulta com busca/filtro.
+
+ENTREGA:
+- App publicável, com URL para incorporar via iframe em uma página do Google Sites (sites.google.com).
+- README com passos de deploy e configuração do OAuth (Client ID restrito ao domínio natura.net).
+- Seed inicial: importar os 546 cenários e os domínios a partir de um arquivo .xlsx que farei upload.
