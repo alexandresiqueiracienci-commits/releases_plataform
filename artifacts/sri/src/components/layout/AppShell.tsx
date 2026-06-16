@@ -121,7 +121,7 @@ export function AppShell({ children }: AppShellProps) {
               ))}
             </SidebarMenu>
             <SidebarGroup>
-              <SidebarGroupLabel>Documentações</SidebarGroupLabel>
+              <SidebarGroupLabel>Gestão Releases SAP (S4+ECC) &amp; Manutenções Programadas</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {docItems.map((item) => (

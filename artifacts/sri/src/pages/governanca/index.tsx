@@ -145,7 +145,7 @@ export default function GovernancaPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-primary">Governança de Releases SAP</h1>
         <p className="text-muted-foreground mt-1">
-          Mapa Estratégico · Reunião 09/06/2026 · ECC + S/4HANA · Release Agosto 2026
+          Mapa Estratégico - SAP S4 + SAP ECC
         </p>
       </div>
 
