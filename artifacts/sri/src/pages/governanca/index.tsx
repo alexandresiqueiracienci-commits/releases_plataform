@@ -97,6 +97,30 @@ function FlowStep({
   );
 }
 
+function FlowCard({
+  code,
+  atividade,
+  responsavel,
+}: {
+  code?: string;
+  atividade: string;
+  responsavel: "LD" | "GR";
+}) {
+  return (
+    <div className="rounded-lg border bg-card p-3 flex flex-col gap-1.5 w-full">
+      <div className="flex items-center justify-between gap-2">
+        {code ? (
+          <span className="text-[10px] font-mono text-muted-foreground">{code}</span>
+        ) : (
+          <span />
+        )}
+        <Tag tone={responsavel === "GR" ? "green" : "blue"}>{responsavel}</Tag>
+      </div>
+      <p className="text-[13px] text-foreground leading-snug m-0">{atividade}</p>
+    </div>
+  );
+}
+
 function RiskRow({
   level,
   title,
@@ -151,6 +175,31 @@ const RELEASE_ACTIVITIES: { num: number; fase: string; atividade: string; tone: 
   { num: 20, fase: "SPGL / Hypercare", atividade: "Acompanhar a implantação da demanda e reportar o status", tone: "gray" },
   { num: 21, fase: "Hypercare", atividade: "Reportar incidentes críticos para serem registrados no diário de bordo", tone: "gray" },
   { num: 22, fase: "Encerramento", atividade: "Complementar as informações de lições aprendidas na release", tone: "gray" },
+];
+
+const RELEASE_FLOW_START: {
+  fase: string;
+  tone: Tone;
+  items: { code?: string; atividade: string; responsavel: "LD" | "GR" }[];
+}[] = [
+  {
+    fase: "Inscrição da demanda",
+    tone: "blue",
+    items: [
+      { code: "000", atividade: "Inscrever demanda", responsavel: "GR" },
+      { code: "010", atividade: "Aprovar custos da release", responsavel: "LD" },
+    ],
+  },
+  {
+    fase: "Planejamento",
+    tone: "purple",
+    items: [
+      { code: "000", atividade: "Planejar release", responsavel: "LD" },
+      { code: "000", atividade: "Detalhar escopo: processos, deltas e impactos", responsavel: "LD" },
+      { code: "000", atividade: "Definir cenários de testes: integração, regressão, UAT e validação", responsavel: "LD" },
+      { code: "000", atividade: "Atualizar documentação nos repositórios", responsavel: "LD" },
+    ],
+  },
 ];
 
 const tabs = [
@@ -218,6 +267,35 @@ export default function GovernancaPage() {
             Chamados via ServiceNow → filas T2R dos líderes. Diário de Bordo SPGL. Gestão da Release apoia
             tratativa entre equipes de Projetos e Sustentação.
           </FlowStep>
+
+          <Separator className="my-3" />
+          <SectionLabel>Fluxo formal — início do processo (SNOW)</SectionLabel>
+          <p className="text-xs text-muted-foreground mb-3">
+            Representação do BPMN "Processo de Gestão de Releases" — recorte inicial do fluxo.
+            O ciclo completo está na tabela abaixo. Responsáveis:{" "}
+            <strong>LD</strong> = Líder da Demanda · <strong>GR</strong> = Gestão da Release.
+          </p>
+          <div className="rounded-lg border border-dashed bg-muted/30 p-3 mb-3 flex items-center justify-between gap-3">
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Gatilho do processo</div>
+              <p className="text-[13px] font-medium text-foreground m-0">
+                Projeto aprovado no SNOW (ServiceNow) com elemento PEP
+              </p>
+            </div>
+            <Tag tone="blue">LD</Tag>
+          </div>
+          {RELEASE_FLOW_START.map((g) => (
+            <div key={g.fase} className="mb-3">
+              <div className="mb-1.5">
+                <Tag tone={g.tone}>{g.fase}</Tag>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {g.items.map((it, idx) => (
+                  <FlowCard key={`${g.fase}-${idx}`} {...it} />
+                ))}
+              </div>
+            </div>
+          ))}
 
           <Separator className="my-3" />
           <SectionLabel>Detalhamento operacional — atividades por fase</SectionLabel>
