@@ -128,6 +128,31 @@ function RiskRow({
   );
 }
 
+const RELEASE_ACTIVITIES: { num: number; fase: string; atividade: string; tone: Tone }[] = [
+  { num: 1, fase: "Inscrição da demanda", atividade: "Inscrever demanda", tone: "blue" },
+  { num: 2, fase: "Inscrição da demanda", atividade: "Aprovar custos", tone: "blue" },
+  { num: 3, fase: "Planejamento", atividade: "Planejar release", tone: "purple" },
+  { num: 4, fase: "Planejamento", atividade: "Detalhar escopo: processos, deltas e impactos", tone: "purple" },
+  { num: 5, fase: "Planejamento", atividade: "Definir cenários de testes: integração, regressão, UAT e validação", tone: "purple" },
+  { num: 6, fase: "Testes (Pré-QA)", atividade: "Liberar solicitações de transporte em DEV", tone: "amber" },
+  { num: 7, fase: "Testes (Entrada QA)", atividade: "Importar OTs no ambiente de QA", tone: "amber" },
+  { num: 8, fase: "Testes", atividade: "Realizar teste integrado", tone: "amber" },
+  { num: 9, fase: "Testes", atividade: "Realizar teste UAT (usuários)", tone: "amber" },
+  { num: 10, fase: "Testes", atividade: "Realizar teste de regressão (automatizado ou manual)", tone: "amber" },
+  { num: 11, fase: "Planejamento Cutover", atividade: "Construir e alinhar o Plano de Cutover (com base nos testes)", tone: "green" },
+  { num: 12, fase: "Planejamento Cutover", atividade: "Validar cenários de testes de liberação", tone: "green" },
+  { num: 13, fase: "Go / No Go", atividade: "Aprovar plano de Cutover e realizar reunião de Go / No Go", tone: "red" },
+  { num: 14, fase: "Cutover (Preparação)", atividade: "Enviar comunicação de release (aviso aos usuários)", tone: "green" },
+  { num: 15, fase: "Cutover (Preparação)", atividade: "Preparar infraestrutura física e sistêmica (backup, travar jobs/usuários)", tone: "green" },
+  { num: 16, fase: "Cutover (Execução)", atividade: "Importar solicitações de transporte para PROD", tone: "green" },
+  { num: 17, fase: "Cutover (Execução)", atividade: "Executar atividades manuais e abrir/acompanhar SMs pais e filhas", tone: "green" },
+  { num: 18, fase: "Cutover (Validação)", atividade: "Realizar testes de liberação / validar cenários em PROD (sanity check)", tone: "green" },
+  { num: 19, fase: "Cutover (Encerramento)", atividade: "Atualização final da documentação nas ferramentas (LeanIX, G-Drive, Signavio, Jira)", tone: "green" },
+  { num: 20, fase: "SPGL / Hypercare", atividade: "Acompanhar a implantação da demanda e reportar o status", tone: "gray" },
+  { num: 21, fase: "Hypercare", atividade: "Reportar incidentes críticos para serem registrados no diário de bordo", tone: "gray" },
+  { num: 22, fase: "Encerramento", atividade: "Complementar as informações de lições aprendidas na release", tone: "gray" },
+];
+
 const tabs = [
   { value: "processos", label: "Processos" },
   { value: "ambientes", label: "Ambientes" },
@@ -193,6 +218,40 @@ export default function GovernancaPage() {
             Chamados via ServiceNow → filas T2R dos líderes. Diário de Bordo SPGL. Gestão da Release apoia
             tratativa entre equipes de Projetos e Sustentação.
           </FlowStep>
+
+          <Separator className="my-3" />
+          <SectionLabel>Detalhamento operacional — atividades por fase</SectionLabel>
+          <Card className="shadow-none">
+            <CardContent className="p-4">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-10">#</TableHead>
+                    <TableHead className="w-56">Fase</TableHead>
+                    <TableHead>Atividade sugerida</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {RELEASE_ACTIVITIES.map((a, i) => {
+                    const firstOfPhase = i === 0 || RELEASE_ACTIVITIES[i - 1].fase !== a.fase;
+                    return (
+                      <TableRow key={a.num}>
+                        <TableCell className="text-muted-foreground tabular-nums">{a.num}</TableCell>
+                        <TableCell className="align-top">
+                          {firstOfPhase ? (
+                            <Tag tone={a.tone}>{a.fase}</Tag>
+                          ) : (
+                            <span className="text-xs text-muted-foreground/60 pl-1">↳</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-foreground">{a.atividade}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
           <Separator className="my-3" />
           <InfoCard
