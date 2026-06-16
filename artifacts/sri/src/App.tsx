@@ -3,7 +3,7 @@ import { publishableKeyFromHost } from "@clerk/react/internal";
 import { shadcn } from "@clerk/themes";
 import { Switch, Route, useLocation, Router as WouterRouter, Redirect } from "wouter";
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -20,7 +20,7 @@ import CadastrosIndexPage from "@/pages/cadastros/index";
 import CadastrosCrudPage from "@/pages/cadastros/crud";
 import EscalaPage from "@/pages/escala/index";
 import ContatosPage from "@/pages/contatos/index";
-import GovernancaPage from "@/pages/governanca/index";
+const GovernancaPage = lazy(() => import("@/pages/governanca/index"));
 import UsuariosPage from "@/pages/usuarios/index";
 import NotFound from "@/pages/not-found";
 
@@ -155,7 +155,9 @@ function AuthenticatedApp() {
           <ProtectedRoute component={ContatosPage} />
         </Route>
         <Route path="/governanca">
-          <ProtectedRoute component={GovernancaPage} />
+          <Suspense fallback={null}>
+            <ProtectedRoute component={GovernancaPage} />
+          </Suspense>
         </Route>
         <Route path="/usuarios">
           <ProtectedRoute component={UsuariosPage} adminOnly />
