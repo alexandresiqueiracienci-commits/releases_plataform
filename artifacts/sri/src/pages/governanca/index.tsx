@@ -97,30 +97,6 @@ function FlowStep({
   );
 }
 
-function FlowCard({
-  code,
-  atividade,
-  responsavel,
-}: {
-  code?: string;
-  atividade: string;
-  responsavel: "LD" | "GR";
-}) {
-  return (
-    <div className="rounded-lg border bg-card p-3 flex flex-col gap-1.5 w-full">
-      <div className="flex items-center justify-between gap-2">
-        {code ? (
-          <span className="text-[10px] font-mono text-muted-foreground">{code}</span>
-        ) : (
-          <span />
-        )}
-        <Tag tone={responsavel === "GR" ? "green" : "blue"}>{responsavel}</Tag>
-      </div>
-      <p className="text-[13px] text-foreground leading-snug m-0">{atividade}</p>
-    </div>
-  );
-}
-
 function RiskRow({
   level,
   title,
@@ -152,54 +128,59 @@ function RiskRow({
   );
 }
 
-const RELEASE_ACTIVITIES: { num: number; fase: string; atividade: string; tone: Tone }[] = [
-  { num: 1, fase: "Inscrição da demanda", atividade: "Inscrever demanda", tone: "blue" },
-  { num: 2, fase: "Inscrição da demanda", atividade: "Aprovar custos", tone: "blue" },
-  { num: 3, fase: "Planejamento", atividade: "Planejar release", tone: "purple" },
-  { num: 4, fase: "Planejamento", atividade: "Detalhar escopo: processos, deltas e impactos", tone: "purple" },
-  { num: 5, fase: "Planejamento", atividade: "Definir cenários de testes: integração, regressão, UAT e validação", tone: "purple" },
-  { num: 6, fase: "Testes (Pré-QA)", atividade: "Liberar solicitações de transporte em DEV", tone: "amber" },
-  { num: 7, fase: "Testes (Entrada QA)", atividade: "Importar OTs no ambiente de QA", tone: "amber" },
-  { num: 8, fase: "Testes", atividade: "Realizar teste integrado", tone: "amber" },
-  { num: 9, fase: "Testes", atividade: "Realizar teste UAT (usuários)", tone: "amber" },
-  { num: 10, fase: "Testes", atividade: "Realizar teste de regressão (automatizado ou manual)", tone: "amber" },
-  { num: 11, fase: "Planejamento Cutover", atividade: "Construir e alinhar o Plano de Cutover (com base nos testes)", tone: "green" },
-  { num: 12, fase: "Planejamento Cutover", atividade: "Validar cenários de testes de liberação", tone: "green" },
-  { num: 13, fase: "Go / No Go", atividade: "Aprovar plano de Cutover e realizar reunião de Go / No Go", tone: "red" },
-  { num: 14, fase: "Cutover (Preparação)", atividade: "Enviar comunicação de release (aviso aos usuários)", tone: "green" },
-  { num: 15, fase: "Cutover (Preparação)", atividade: "Preparar infraestrutura física e sistêmica (backup, travar jobs/usuários)", tone: "green" },
-  { num: 16, fase: "Cutover (Execução)", atividade: "Importar solicitações de transporte para PROD", tone: "green" },
-  { num: 17, fase: "Cutover (Execução)", atividade: "Executar atividades manuais e abrir/acompanhar SMs pais e filhas", tone: "green" },
-  { num: 18, fase: "Cutover (Validação)", atividade: "Realizar testes de liberação / validar cenários em PROD (sanity check)", tone: "green" },
-  { num: 19, fase: "Cutover (Encerramento)", atividade: "Atualização final da documentação nas ferramentas (LeanIX, G-Drive, Signavio, Jira)", tone: "green" },
-  { num: 20, fase: "SPGL / Hypercare", atividade: "Acompanhar a implantação da demanda e reportar o status", tone: "gray" },
-  { num: 21, fase: "Hypercare", atividade: "Reportar incidentes críticos para serem registrados no diário de bordo", tone: "gray" },
-  { num: 22, fase: "Encerramento", atividade: "Complementar as informações de lições aprendidas na release", tone: "gray" },
-];
+const PHASE_TONE: Record<string, Tone> = {
+  "Inscrição da demanda": "blue",
+  Planejamento: "purple",
+  "Testes (Pré-QA)": "amber",
+  "Testes (Entrada QA)": "amber",
+  Testes: "amber",
+  "Planejamento Cutover": "green",
+  "Cutover (Preparação)": "green",
+  "Cutover (Execução)": "green",
+  "Cutover (Validação)": "green",
+  "Go / No Go Técnico": "red",
+  "Go / No Go (Testes de Liberação)": "red",
+  "Go / No Go Final Release": "red",
+  "SPGL / Hypercare": "gray",
+  Hypercare: "gray",
+  Encerramento: "gray",
+};
 
-const RELEASE_FLOW_START: {
+type ProcessStep = {
   fase: string;
-  tone: Tone;
-  items: { code?: string; atividade: string; responsavel: "LD" | "GR" }[];
-}[] = [
-  {
-    fase: "Inscrição da demanda",
-    tone: "blue",
-    items: [
-      { code: "000", atividade: "Inscrever demanda", responsavel: "GR" },
-      { code: "010", atividade: "Aprovar custos da release", responsavel: "LD" },
-    ],
-  },
-  {
-    fase: "Planejamento",
-    tone: "purple",
-    items: [
-      { code: "000", atividade: "Planejar release", responsavel: "LD" },
-      { code: "000", atividade: "Detalhar escopo: processos, deltas e impactos", responsavel: "LD" },
-      { code: "000", atividade: "Definir cenários de testes: integração, regressão, UAT e validação", responsavel: "LD" },
-      { code: "000", atividade: "Atualizar documentação nos repositórios", responsavel: "LD" },
-    ],
-  },
+  atividade: string;
+  ferramenta?: string;
+  responsavel: string;
+  obs?: string;
+};
+
+const PROCESS_STEPS: ProcessStep[] = [
+  { fase: "Inscrição da demanda", atividade: "Inscrever demanda", ferramenta: "Formulário Sharepoint", responsavel: "Líder Demanda" },
+  { fase: "Inscrição da demanda", atividade: "Aprovar custos", ferramenta: "Formulário Sharepoint + SNOW", responsavel: "Líder Demanda" },
+  { fase: "Planejamento", atividade: "Planejar release — alinhar o cronograma do projeto ao cronograma macro de releases", ferramenta: "Cronograma SNOW + Cronograma Release", responsavel: "Líder Demanda + GR" },
+  { fase: "Planejamento", atividade: "Detalhar escopo: processos, deltas e impactos", ferramenta: "Signavio + LeanIX", responsavel: "Líder Demanda" },
+  { fase: "Planejamento", atividade: "Definir cenários de testes: integração, regressão, UAT e validação", ferramenta: "JIRA + SNOW", responsavel: "Equipe Projeto + Qualidade" },
+  { fase: "Testes (Pré-QA)", atividade: "Liberar solicitações de transporte em DEV", ferramenta: "Solman", responsavel: "BASIS" },
+  { fase: "Testes (Entrada QA)", atividade: "Importar OTs no ambiente de QA", ferramenta: "Verificar", responsavel: "BASIS" },
+  { fase: "Testes", atividade: "Realizar teste integrado", ferramenta: "JIRA + SNOW", responsavel: "Equipe Projeto" },
+  { fase: "Testes", atividade: "Realizar teste UAT (usuários)", ferramenta: "JIRA + SNOW", responsavel: "Equipe Projeto" },
+  { fase: "Testes", atividade: "Realizar teste de regressão (automatizado ou manual)", ferramenta: "JIRA + SNOW", responsavel: "Qualidade / Carmona" },
+  { fase: "Testes", atividade: "Atualização final da documentação nas ferramentas", ferramenta: "LeanIX, G-Drive, Signavio, Jira", responsavel: "Líder Demanda" },
+  { fase: "Planejamento Cutover", atividade: "Construir e alinhar o Plano de Cutover (com base nos testes)", ferramenta: "SNOW", responsavel: "Líder Demanda + GR + GPs Fornecedores + Equipes Executoras" },
+  { fase: "Planejamento Cutover", atividade: "Validar cenários de testes de liberação", ferramenta: "JIRA + SNOW", responsavel: "Líder Demanda" },
+  { fase: "Planejamento Cutover", atividade: "Aprovar plano de Cutover", ferramenta: "SNOW", responsavel: "GMUD + Líderes" },
+  { fase: "Cutover (Preparação)", atividade: "Enviar comunicação de release (aviso aos usuários)", ferramenta: "E-mail, Espaços Google, Intranet, SAP + ppt", responsavel: "1 comunicado 2 sem. antes + sexta anterior (Welcome Kit)", obs: "Avaliar comunicação" },
+  { fase: "Cutover (Preparação)", atividade: "Preparar infraestrutura física", ferramenta: "—", responsavel: "BASIS", obs: "Definir responsável" },
+  { fase: "Cutover (Execução)", atividade: "Importar solicitações de transporte para PROD", ferramenta: "Pacote de QA", responsavel: "BASIS", obs: "Alinhar com Auro" },
+  { fase: "Cutover (Execução)", atividade: "Executar atividades manuais e abrir/acompanhar SMs pais e filhas", ferramenta: "Solman", responsavel: "Pais (GR) + Filhas (Líder da Demanda)" },
+  { fase: "Cutover (Execução)", atividade: "Coletar evidências das atividades do cutover", ferramenta: "Solman", responsavel: "—" },
+  { fase: "Go / No Go Técnico", atividade: "De acordo da equipe técnica para a retomada do SAP", ferramenta: "Call + Ata", responsavel: "Times Técnicos" },
+  { fase: "Go / No Go (Testes de Liberação)", atividade: "Validar ambiente para iniciar os testes", ferramenta: "Call + Ata", responsavel: "Facilitadores" },
+  { fase: "Cutover (Validação)", atividade: "Realizar testes de liberação / validar cenários em PROD (Sanity Check)", ferramenta: "SAP", responsavel: "Facilitadores" },
+  { fase: "Go / No Go Final Release", atividade: "Realizar reunião de Go / No Go", ferramenta: "Call individual por demanda", responsavel: "GR + Líder + Envolvidos Projeto", obs: "1 sem. antes" },
+  { fase: "SPGL / Hypercare", atividade: "Acompanhar a implantação da demanda e reportar o status", ferramenta: "SNOW, E-mail, Espaços Google", responsavel: "GR — 2 semanas Jumbo HC (dailys Times Hypercare + AMS)" },
+  { fase: "Hypercare", atividade: "Reportar incidentes críticos para serem registrados no diário de bordo", ferramenta: "SNOW, E-mail, Espaços Google", responsavel: "GR — 2 semanas Jumbo HC (dailys Times Hypercare + AMS)" },
+  { fase: "Encerramento", atividade: "Complementar as informações de lições aprendidas na release", ferramenta: "Sharepoint de Gestão de Releases", responsavel: "GR + Líder + Envolvidos Projeto" },
 ];
 
 const tabs = [
@@ -238,91 +219,62 @@ export default function GovernancaPage() {
 
         {/* PROCESSOS */}
         <TabsContent value="processos" className="mt-4">
-          <SectionLabel>Ciclo de vida de uma release maior</SectionLabel>
-          <FlowStep num={1} title="Abertura de demanda">
-            Registro no ServiceNow (CERF) a partir de 1º/jul. Obrigatório informar: deltas a alterar,
-            processos impactados, NBCs envolvidas, Work Processes (WPs) equivalentes. Identificação de
-            líderes: P2M, Tags, R2R, P2P, Masterdata.
-          </FlowStep>
-          <FlowStep num={2} title="Análise de impacto e mapeamento de deltas">
-            Uso do Signavio e LinhaX para visualizar cadeia de valor e relações entre processos, deltas,
-            extensões, jobs e integrações. Cada WP representa um delta no S/4. Documentação dos deltas
-            alterados é entregável obrigatório de cada release.
-          </FlowStep>
-          <FlowStep num={3} title="Desenvolvimento concorrente (janelas de trabalho)">
-            Processo com Auro para coordenar janelas sobre deltas específicos — evita conflito/lock entre
-            projetos paralelos (Indústria, Cosméticos, futuro Spana). Alinhamento com Alan, Auro e André.
-          </FlowStep>
-          <FlowStep num={4} title="Testes de liberação (TDR)">
-            Baseline de testes por camada: ECC, Convivência ECC/S4 (33 cenários fixos), S/4 + satélites
-            (seleção orientada por deltas alterados). Evidências manuais obrigatórias. IA (Joule) para
-            TSDD/FSDD futuramente.
-          </FlowStep>
-          <FlowStep num={5} title="Checklist de conformidade documental">
-            Checklist obrigatório com documentação atualizada no Google Drive + registros no Signavio/LinhaX.
-            Release bloqueada se documentação dos deltas não estiver atualizada. AMS (Accenture) demanda
-            conformidade.
-          </FlowStep>
-          <FlowStep num={6} title="Go live / implantação e suporte pós go-live">
-            Chamados via ServiceNow → filas T2R dos líderes. Diário de Bordo SPGL. Gestão da Release apoia
-            tratativa entre equipes de Projetos e Sustentação.
-          </FlowStep>
-
-          <Separator className="my-3" />
-          <SectionLabel>Fluxo formal — início do processo (SNOW)</SectionLabel>
+          <SectionLabel>Processo de gestão de releases</SectionLabel>
           <p className="text-xs text-muted-foreground mb-3">
-            Representação do BPMN "Processo de Gestão de Releases" — recorte inicial do fluxo.
-            O ciclo completo está na tabela abaixo. Responsáveis:{" "}
-            <strong>LD</strong> = Líder da Demanda · <strong>GR</strong> = Gestão da Release.
+            Processo robusto e contínuo, validado na reunião de 16/06. Um macro-cronograma anual com
+            milestones e janelas obrigatórias é publicado em agosto para o ano seguinte; cada projeto
+            concilia o seu cronograma ao macro-cronograma (antecipações são aceitas, mas atrasos após a
+            janela impedem a entrega). Os cronogramas dos projetos são oficializados no ServiceNow.
           </p>
-          <div className="rounded-lg border border-dashed bg-muted/30 p-3 mb-3 flex items-center justify-between gap-3">
+
+          <div className="rounded-lg border border-dashed bg-muted/30 p-3 mb-4 flex items-center justify-between gap-3">
             <div>
-              <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Gatilho do processo</div>
+              <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Entrada do processo</div>
               <p className="text-[13px] font-medium text-foreground m-0">
-                Projeto aprovado no SNOW (ServiceNow) com elemento PEP
+                Projeto aprovado no ServiceNow (SNOW) com elemento PEP
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5 mb-0">
+                Etapas iniciais: inscrição da demanda e aprovação de custos.
               </p>
             </div>
-            <Tag tone="blue">LD</Tag>
+            <Tag tone="blue">Líder Demanda</Tag>
           </div>
-          {RELEASE_FLOW_START.map((g) => (
-            <div key={g.fase} className="mb-3">
-              <div className="mb-1.5">
-                <Tag tone={g.tone}>{g.fase}</Tag>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {g.items.map((it, idx) => (
-                  <FlowCard key={`${g.fase}-${idx}`} {...it} />
-                ))}
-              </div>
-            </div>
-          ))}
 
-          <Separator className="my-3" />
-          <SectionLabel>Detalhamento operacional — atividades por fase</SectionLabel>
+          <SectionLabel>Atividades por fase</SectionLabel>
           <Card className="shadow-none">
             <CardContent className="p-4">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-10">#</TableHead>
-                    <TableHead className="w-56">Fase</TableHead>
-                    <TableHead>Atividade sugerida</TableHead>
+                    <TableHead className="w-44">Fase</TableHead>
+                    <TableHead className="min-w-[240px]">Atividade</TableHead>
+                    <TableHead className="w-40">Ferramenta</TableHead>
+                    <TableHead className="w-52">Responsável / Time</TableHead>
+                    <TableHead className="w-36">Obs.</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {RELEASE_ACTIVITIES.map((a, i) => {
-                    const firstOfPhase = i === 0 || RELEASE_ACTIVITIES[i - 1].fase !== a.fase;
+                  {PROCESS_STEPS.map((s, i) => {
+                    const firstOfPhase = i === 0 || PROCESS_STEPS[i - 1].fase !== s.fase;
                     return (
-                      <TableRow key={a.num}>
-                        <TableCell className="text-muted-foreground tabular-nums">{a.num}</TableCell>
+                      <TableRow key={i}>
                         <TableCell className="align-top">
                           {firstOfPhase ? (
-                            <Tag tone={a.tone}>{a.fase}</Tag>
+                            <Tag tone={PHASE_TONE[s.fase] ?? "gray"}>{s.fase}</Tag>
                           ) : (
                             <span className="text-xs text-muted-foreground/60 pl-1">↳</span>
                           )}
                         </TableCell>
-                        <TableCell className="text-foreground">{a.atividade}</TableCell>
+                        <TableCell className="text-foreground align-top">{s.atividade}</TableCell>
+                        <TableCell className="text-muted-foreground align-top">{s.ferramenta ?? "—"}</TableCell>
+                        <TableCell className="text-muted-foreground align-top">{s.responsavel}</TableCell>
+                        <TableCell className="align-top">
+                          {s.obs ? (
+                            <Tag tone="amber">{s.obs}</Tag>
+                          ) : (
+                            <span className="text-muted-foreground/50">—</span>
+                          )}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -331,7 +283,53 @@ export default function GovernancaPage() {
             </CardContent>
           </Card>
 
-          <Separator className="my-3" />
+          <Separator className="my-4" />
+          <SectionLabel>Pontos-chave do processo (reunião 16/06)</SectionLabel>
+          <div className="grid gap-2.5 md:grid-cols-2">
+            <InfoCard title="Três reuniões de Go / No Go no cutover">
+              <strong>1. Técnico (~06:00):</strong> equipes técnicas e fornecedores confirmam requests,
+              validações e configurações para a retomada do SAP. <strong>2. Início dos testes de
+              liberação:</strong> após o SAP no ar e os acessos liberados. <strong>3. Final da
+              release:</strong> após a conclusão dos testes. Há ainda um Go / No Go ~1 semana antes
+              (GEMUD) para decidir as demandas a implantar. Risco classificado em verde / amarelo / vermelho.
+            </InfoCard>
+            <InfoCard title="Testes e baseline de regressão">
+              Registro e acompanhamento de todos os testes (unitário, integrado, regressão, UAT e
+              liberação) no Jira, com SLA de atualização de status. Regressão mandatória na janela do
+              macro-cronograma, com baseline fixo (~51 mil) executado pela Qualidade (equipe Carmona).
+              UAT conduzido pelas áreas de negócio (ex.: fiscal).
+            </InfoCard>
+            <InfoCard title="Aprovação de custos">
+              Foco nas horas de desenvolvimento no SAP. Validar as horas aprovadas com dados oficiais
+              (ServiceNow / OS) para evitar subestimação no aceite do formulário.
+            </InfoCard>
+            <InfoCard title="Gestão de mudanças (GMUD)">
+              Change Jumbo (guarda-chuva da release) sob a GMUD; changes filhas por demanda sob os
+              líderes, encerradas com evidências antes do fechamento da Jumbo. Alinhar o processo de
+              changes para o S/4 e unificar procedimentos entre ECC, S/4 e Duo.
+            </InfoCard>
+            <InfoCard title="Transporte e ambientes">
+              Fluxo DEV → QA → PROD com BASIS / CCM (contato: Auro). Empacotar e encapsular o pacote
+              após os testes em QA, sem alterações manuais; aprovar e executar em produção na mesma
+              sequência testada.
+            </InfoCard>
+            <InfoCard title="Comunicação da release">
+              Comunicado geral com todas as demandas duas semanas antes + Welcome Kit na sexta ao
+              meio-dia anterior. Canais: e-mail, Espaços Google (geral e específico), intranet e
+              mensagem no SAP (quarta anterior). Migração do "Zap" para canais internos do Google.
+            </InfoCard>
+            <InfoCard title="Hypercare (pós-go-live)">
+              Suporte de 2 semanas para releases maiores, com daily às 17:00 entre líderes e operação
+              (OMS) e diário de bordo de incidentes. Incidentes não bloqueantes seguem no ServiceNow.
+            </InfoCard>
+            <InfoCard title="Evidências">
+              Coleta em tempo real durante o cutover (prints / logs), organizadas em diretórios
+              separados (testes e execução) e anexadas às changes no ServiceNow — evitando coleta
+              redundante pós-fato.
+            </InfoCard>
+          </div>
+
+          <Separator className="my-4" />
           <InfoCard
             title="Cadência de releases SAP"
             pills={

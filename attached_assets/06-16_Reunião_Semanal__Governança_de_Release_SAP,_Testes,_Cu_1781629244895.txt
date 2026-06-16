@@ -1,0 +1,370 @@
+Fala, doutor, bom dia. Ô, Alexandre, bom dia, tudo bem? Tudo, e você? Tudo bem, graças a Deus, cara.
+Acabei atrasando, falei e atrasei. Cara, não imagina, tá no horário, ó, começou até quatro minutos antes. É, então...
+Tudo certo aí, cara? Tudo certo. Então, vamos lá. Ô, Alexandre, eu vou falar pra você, cara, a verdade, eu acabei não tendo muito tempo pra... Pra olhar o processo, porque eu tô Fazendo a migração do cronograma Lá do projeto de cosméticos, Pro Calme, e eu fiquei dois dias e meio, Preso nessa atividade.
+Eu acabei fazendo, Umas artes aqui, Aí se eu quiser até te mostro, Aqui, eu fiz uma plataforminha que, Tenta englobar, O que a gente teria nos processos, Né, e, Depois até pra efeito de, Implantação, de golaje, tá? Tá. Deixa eu ver se... Fala aí, fala aí.
+Eu Queria passar com você as atividades Só pra ver se o meu entendimento tá certo. Cara, você tem bastante experiência. Eu peguei todo o material lá que você me passou, E aí com base no material, Eu criei ali um... Eu fui montando um processo, tá? Eu não desenhei o processo, mas eu descrevi o processo. E aí eu queria ver com você, O que a gente precisa ajustar, se tem alguma Coisa errada aqui pela sua, Observação, tá? Tá bom. Compartilho com você aqui. E aí a gente vai passando os itens.
+Não é muito diferente do que você já tem lá, tá? Você já... Na verdade, eu peguei com base naquilo que eu tenho de experiência, Mas aquilo que eu peguei lá do processo. Só que o processo de vocês está bem robusto. Então, cara, pouca coisa a acrescentar, tá? Então eu peguei aqui a primeira atividade, inscrição da demanda, né? Então, escrever a demanda. Aprovar custos.
+Eu Não fui detalhista aqui, Porque depois, quando a gente criar o Saipoc, Aí a gente põe lá o que é, quais são as entregas. Aí a gente faz um detalhamento maior.
+E aí a gente passa a cobrar. E aí entra aqui na fase de planejamento, Planejar a release. Aqui, detalhar o escopo, processo de altos impactos. Então, aqui já tem a primeira mudança, né? Porque até então, naquela planilha de detalhes... Hum! Vou compartilhar com você aqui, tinha essa parte aqui dos detalhes, Então vocês trazem aqui os sistemas que são impactados, o que entra e qual é o impacto em cada um dos sistemas,
+E aí eu acrescentei aqui para o T4. E uma dúvida que eu fiquei aqui, aquela planilha de detalhes e impactos, vocês usam uma planilha por demanda? Ou vocês usam uma planilha para várias demandas?
+É Uma planilha e aí você vê que nas colunas tem as demandas.
+Ah, entendi. Então aqui, isso aqui são as demandas, né? Isso. Tá. É que eu fiquei na dúvida aqui se era uma. Então, por exemplo, agora nessa revista que a gente tem de agosto. Isso. A gente vai ter duas demandas.
+É. Eu acho que eu não passei a link de agosto para você, mas já tem lá. É, reforma tributária e o CBPJ.
+Legal. Então, aí aqui, o que que eu coloquei, né? A gente vai colocar aqui a demanda, Aí a gente vai colocar aqui qual que é a velha stream. A velha stream, ela é O2C, P2P, P2M,
+Não sei se você tá familiarizado com essas nomenclaturas. Sim, sim, sim. Tá?
+E aí, iniciativa. Porque a gente tem, a gente, aqui no... No que fora, a gente está olhando pelas iniciativas. Então, assim, se eu tenho um projeto, Que nem a indústria agora, Ele entrou e ele afetou o Equador, Então eu tenho que fazer regressão para o Equador. Então, a gente trabalha pelas iniciativas, né? São os projetos que foram implementados. Então, um projeto aqui de... Eu vou, por exemplo, agora, essa release de agosto. Aí tem reforma tributária.
+Cara, ela vai impactar basicamente o Brasil. Aí eu não sei se ela impacta Equador. Aí o time tem que fazer essa avaliação. Pô, não, realmente, tem um delta lá, Que eu vou impactar Equador, preciso retestar Esse cara. E aí A gente traz aqui quais são os processos, Impactados, as NBSIs, né? Certo. NBSI é Natura Business Company Item, tá? O famoso processo. Então, quando você vê e fala, NBSI É o processo. O que é afetado, Diretamente, quais são os processos, Aí a gente...
+O líder vai ter que trazer quais são os processos que ele vai mexer diretamente E quais são os processos que são afetados indiretamente. Você pode ter um processo que tem a saída para outro processo Que não está diretamente envolvido,
+Mas você tem uma saída.
+E de repente precisa.
+Fazer uma avaliação se você precisa testar esse cara ou não. Certo. Aí os deltas.
+A Gente tem aqui as integrações, tensões, automações e os reports. Então, tem que trazer aqui, o que vai alterar de delta? Ah, eu vou mexer no delta tal.
+Então, Eu sei que a gente vai ter que focar nesse cara, E aí eu tenho que olhar para ver se esse cara tem impacto, Porque às vezes um delta pode ser utilizado em mais de uma MBSI, Mais de um processo. O delta em si, o que é? Só para entender, é um objeto? Não, ele é...
+É Um componente de TI, é uma integração, é uma extensão.
+Pode ser várias coisas, o delta.
+Isso. Isso. Normalmente... Você vai ter essas quatro,
+Integração, extensão, Automação e report. É o famoso RISCFUL. Ah, tá.
+Então, aí a gente tem, Os Deltas IDs, e aí, O líder, quando ele fizer o preenchimento, O detalhamento, ele tem que trazer essa, Visão aqui pra gente.
+Pra gente saber Exatamente o que está sendo impactado. Até pra saber se, de repente, Esse Delta ou esse processo, Ele é utilizado em algum, Outro processo, E se ele... Traz algum impacto. Se tem algum problema, a gente precisa refletir no cenário de teste, né? Precisa testar. Entendi.
+Então, aqui, eu trago.
+Uma visão básica do que é o detalhamento ali que ele deveria fazer, tá? Não, excelente. E aí ele já tem um ferramental que ele vai estar usando para identificar isso, né? Ou o signado.
+Tem o Signável, tem o LinearX, Então ele consegue nessas duas ferramentas aqui Trazer qual que é o escopo, Qual que é o.
+Delta que está sendo impactado. Ele tem essa visão.
+Tá? Certo.
+Depois eu vou colocar Aqui a minha ferramenta, só pra gente... A gente já poderia estar, Passando aqui, Ale. Sim.
+Você já passou os links também pra mim aí, eu acho, né? Eu salvei.
+Das ferramentas? Do Signagio, do... Isso. Lina X, que é mais um... Tem o Calm também, né? Do Calm eu passei e inclusive já pedi acesso pra vocês também, tá? Tá.
+Só pra não perder aqui... A inscrição da demanda Vocês fazem onde, Alê?
+Então, eu tenho um formulário, Aquele formulário que eu te passei. O cara escreve e passa, Aqueles dados lá, tem vários Dados que ele coloca, inclusive o PEP, qual que é os processos, Que ele vai afetar, Qual que é a release que ele quer, Inscrever, ele vai colocando, Várias coisas lá. Aí a gente precisa, Pegar aquelas informações, E ver se... Complementa com as demais que forem necessárias. Ah, não, ele já tem que ter, como você falou, Já tem que ter passado pelo ServiceNow,
+Já tem que estar lá o projeto cadastrado. Então, a gente via com o pessoal de escritório de projetos. No processo, em que momento que ele tem que estar, O que ele tem que ter feito e em que ferramenta. Eu até comecei a desenhar o processo aqui.
+Ah, legal. Pra entrar aqui na... Eu parei de compartilhar, peraí.
+Caiu a tela aí.
+É, você fez aí a, Entrada, né?
+Aí ele... Aqui é a entrada, Então tem que ter o projeto aprovado no serviço de sinal, Com o PEB. Aí é o líder de demanda. Aí depois disso ele entra aqui Para a inscrição da demanda E aprovação dos custos.
+Entendi.
+Então para a gente poder, Colocar ele aqui no processo De gestão de release, ele tem que ter essa, Entrada aqui.
+Sim.
+Eu estou terminando de fazer aqui, Eu fiz as caixinhas lá primeiro no Excel E aí eu estou passando para cá.
+Legal, não tem problema. Eu acho que o importante aí é Começar a mapear, como você está fazendo aí. Passo a passo, cada um Dos processos, identificar, Onde que é, A entrada e a saída, como você é craque. E a gente vai montando, Um bem bolado. Olha aí, a gente constrói junto, cara. Eu queria nem constrói nada sozinho,
+O negócio é muito, Grande, cara. É complexo.
+A aprovação de custos ali, como é que é feita?
+Vocês têm algum formulário específico? Ele submete o business case? Como que é?
+Como é que é? Desculpa. Aprovação dos custos da release. Do custo, a gente, geralmente, quando o cara escreve, Ele já dá um aceite ali, no formulário. Aceita os custos da release. Então, ele marca, a minha demanda é GG, aí é que tá. A gente acredita no que o cara fala. Se ele falar M... Eu não vou olhar lá quantas horas ele lê, entendeu? Se ele falar, dar uma roubada, falar, o meu é M, não é G, ele paga menos, né? Eu acho que o ideal seria pegar um documento oficial dizendo,
+Olha, eu tenho tantas WPs que, tipo, quando a Accenture vai e fecha, Porque também era permutada a fiscal, Eu sei quantas WPs tem lá porque está na OS, está no contrato. Então, o cara fala que tem 50 WPs, aí não dá para o cara mentir, São X horas, está lá no... Então, ele deveria passar essas horas aí que ele aprovou no orçamento. Porque se ele aprovou 1.000, 2.000, 6.000, Depois não pode falar que é 500 horas, entendeu?
+Mas essa informação a gente consegue pegar, Porque como agora ela vem via serviço sinal, A gente vai ter informação do projeto lá dentro. Lá dentro, porque é oficial. Vai falar, cara... Que você fez, que você vai prestar conta disso. E aí você vai pagar... Não adianta.
+Fala assim, nós vamos fazer um check, cara. Nós vamos olhar a demanda lá dentro do projeto. Se você colocou lá alguma coisa maior, Nós vamos arrumar aqui, Você vai ter que pagar o custo correto.
+Exatamente. E aí fica claro que é as horas de desenvolvimento no SAP. Porque às vezes o cara tem vários outros sistemas, Que ele vai mexer, Mas o que importa para nós é o impacto, Não é SAP.
+Ah, é a quantidade de horas do SAP.
+Porque o cara falava, vou mexer no cap, Vou mexer nisso, vou mexer naquilo. Cara, não interessa. Para nós, o que interessa É aqui dentro, quando você vai mexer. E aí a gente vê, porque futuramente Até pode mudar essa métrica de custos, Dependendo do, Como vai ficar a equipe. A gente vai ver, Aqui com o Edward aqui.
+Mas, a princípio, A gente precisa saber essas informações todas aí.
+Tá.
+Entendi.
+Aí entra no planejamento da release, né? Aí aqui, os pontos de dúvida que eu tenho.
+A gente, a gente, o plano da release, ele tá dentro do plano do projeto, certo? O cara tem um projeto lá e ele tem lá uma etapa lá que é a etapa de cutover, Que ele tem que ter a, ele tem a etapa de testes, a etapa de cutover, Ele tem todas essas etapas dentro do cronograma dele, Correto?
+Isso, na realidade é assim, a gente tem um macro cronograma do release, que é tipo um frame, ele tem que mais ou menos ser aderente a esse cronograma com todos os milestones ali, com todas as entregas, então tipo, ah, eu vou desenvolver até aqui, tá bom, se eu for um pouco mais ou um pouco menos, tudo bem, mas ele tem que entrar nos tes integrados, tes de regressão. Ele tem que estar dentro para casar, né?
+Ah, vou fazer isso no salto de cotovelo. Ele tem que estar pronto, junto com todas as demais demandas da release. Não dá para ele falar, não, eu vou estar pronto depois. Se for antes, tudo bem, ele já está antecipado, né? Mas se for depois, ele não vai conseguir entregar, né? Então ele tem que...
+Sabe o que dá a impressão? Que assim, quando a gente fala planejar a release, parece que eu estou... A gente está absorvendo o planejamento do cara, né? Na verdade, a gente está fazendo uma conciliação dos planejamentos, né?
+Isso.
+O Cara está aderindo ao nosso plano de release. Então, assim, a gente tem um plano, já está pré-definido, E Esse Cara tem que entrar dentro desse plano.
+Sim. Tanto que esses macro-cronogramas, o calendário, tudo isso, Já é disponibilizado, a ideia é disponibilizar em agosto Para o calendário do ano que vem. Então, quando o cara olha o calendário... E olha o cronograma, etc. Ele já tem toda a noção do que ele tem que planejar. Ele não pode chegar e falar assim, Ah, não, o meu eu fiz depois, mas eu não fiz... Então, você não está aderente ao processo de realização. Você fez uma coisa tudo fora. Como é que você planejou isso?
+A não ser que ele tenha... Ah, eu vou precisar de mais uma semana, porque... Mas aí ele tenta se adaptar ali.
+Existe atraso, né? A gente gerencia isso, né? Atraso, problema de ciclo de teste, não, tem que fazer outro, o cara chega lá e tá com erro ainda no final, mas a gente gerencia isso, né? Qual que é o risco que tá se correndo.
+É, A gente muito mais acompanha o cara do que a gente executa, né?
+Vai fazendo as validações do cronograma. Mas o cara tem que ajustar o cronograma dele Ao cronograma da release.
+Aí, O Ale, Como que é feito esse ajuste? Vocês têm uma ferramenta única? Porque eu vi uns PPTs. Aí ele usa o próprio cronograma, Dele pra fazer esse... Ele manda o cronograma dele e a gente bate Com o nosso. E isso fica, Como documento. Ele fala, meu cronograma, Pode ser até um project, Detalhado. Pode ser qualquer, né, um, como é que chama lá, um timeline, uma apresentação, ele manda o cronograma dele e a gente bate com o nosso. Se tiver fora, muito fora, aí a gente conversa, não vai dar pra adaptar, é, e, mas se tiver ajustado, às vezes o problema maior não é nem que o cronograma dele tá muito fora,
+É que ele começou atrasado, né, então ele já não, ele já não tem... Perdeu o time da release. O time, é.
+Porque demorou para aprovar, aquelas coisas.
+Demorou para contratar, Porque às vezes até bateu o martelo.
+E agora,
+Todos os projetos, Agora, em teoria, eles vão passar Pelo service final. Ele tem um cronograma no serviço de sinal, então ele tem que fazer esse cronograma pra gente.
+Do serviço de sinal e a gente usa esse cronograma como referência. Então, melhor agora, porque a gente começa a ter tudo oficial. Ah, vai ser no serviço de sinal, tem que estar cadastrado lá, tem que estar... Aí o cara não tem como... Ah, o meu tá assim, o outro tá assim. Não, tá tudo... É o mesmo lugar.
+Ah, foi um que é a mesma, né? É.
+A mesma ex. Aí a definição do cenário de teste,
+Aí uma dúvida, a gente acompanha teste integrado também ou não? Ou a gente entra no AT, regressão e validação? Não, a gente acompanha, mas assim, aí precisa ver até com a fábrica de teste, com o pessoal de qualidade, Porque tem coisas que assim, eles contratam fábrica junto com acompanhamento lá de governança de qualidade e testes. Ou, às vezes, a pessoa fala, não, eu vou fazer a parte, entendeu?
+Eu vou fazer a minha gestão dos testes. E aí, qual que é a exigência? Que se subam esses testes que ele está gerenciando, Mas no Gira, na ferramenta. Então, o pessoal de qualidade fala, tudo bem, Você quer fazer o ano, você quer fazer a reforma com a tua equipe, Você contratou, sei lá, outra equipe aí que vai fazer isso. Só que você me passa, né, o andamento, então assim, quanto que tá planejado, qual que é, pra eu acompanhar, pra saber, entendeu? Quais cenários de teste, me passa só o acompanhamento, né? Pra quê? Pra reportar pra releases, pra dizer, cara, eles fizeram X testes, né, X cenários, dos cenários tá tantos, entendeu? Do ciclo 1 tá com erro crítico, isso, então eles vão, eles têm um relatório que sai todo ano.
+Sim, isso eu acompanhei no De indústria, eu acompanhava Os reports. Então, é mais isso, É saber de quem que é a gestão, Dos testes, né? Mas Acompanhar, pelo menos assim, ah, você tá fazendo A gestão, mas passa o report, Ou sobe na ferramenta, Pra gente. Só que às vezes Isso é um problema, porque às vezes não sobe. Demora pra subir, Aí chega no status, fala que Tá, sabe como é que é, né? Tá 100% e não tá, né?
+Então precisava ser uma ferramenta Mesmo pra acompanhar, E ter o status, Aí o mais próximo possível. Dia a dia, semana a semana, né?
+Mas aqui a gente entra, Nesse, vamos dizer assim, Nesse âmbito aí de definir Cenários, a gente na verdade aqui Acompanha, né? Acompanha. Na regressão, não. Na regressão a gente fixa um baseline. Que é aquele 51 mil. Então, na regressão, Todo mundo é obrigado a fazer regressão. Naquele período, tem as semanas Lá no macro-cronograma. E é obrigado a pagar essa regressão. Aí você tem que entrar. Entendeu? O AT, aí você fala.
+Não, eu vou fazer aqui, aqui, aqui. Beleza. Né? Mas o regressão É obrigado. Mas a gente acompanha, O teste ou.
+O executa? Na verdade, o executa...
+Executa o pessoal de qualidade, a Vivi lá, o pessoal do Carmona, E a gente acompanha a regressão. Para dizer, cara, qual o percentual que executou, Como é que está o andamento da regressão, o que está pegando. Então, aí eles reportam. Eu tenho um slide lá no status, de quarta-feira, de amanhã, Que eles reportam. Regressão. Planejado, por exemplo, hoje está lá, 40%. E aí eles falam, o Reforma... Na regressão, deu 35%.
+O CBPJ deu tanto. Por quê? Aí eles reportam o status. Porque deu tantos críticos, Tantos não sei o que lá, e as ações, Que eles estão tomando. Ah, não, a gente vai pegar e fazer Vai fazer hora extra E corrigir esses bugs e, Aplicar o ciclo 2, Entendeu? Então, na, Regressão, a gente, Executa e cobra deles, Não fica só gerenciando, Né?
+Mas olha, minha dúvida é que maior é o seguinte, A gente tem aqui, tudo bem, integração, regressão, Até validação, mas aqui.
+Quem faz Essa definição é o próprio time Lá dentro do plano, Do projeto. O projeto, eles, a gente, Como não tem conhecimento, eles definem, Os cenários deles de testes integrados, O regressão, como é Do, Caminho crítico, da operação, Para ver se não quebrou, aí tem o baseline. Que vai alterando A medida que as demandas vão entrando, né?
+Então, Na verdade, a gente faz um acompanhamento, Aqui, né? Só tem um período ali Pro cara, ó, até que você tem que definir o teste, Integrado, daqui pra cá você tem que executar O teste integrado, Regressão, o AT, E validação. Entendi. É. Tá. Então isso daqui fica dentro da própria frente, Aí eles usam lá, devem usar o service.
+Não. É, eles usam... Para fazer todos os cenários e acompanhar o Gira. O Gira que é a ferramenta que inclusive nós estamos usando também, Para os cenários de testes de liberação, o Go Live. Então a ideia era ficar tudo no Gira, tudo. E aí o cara começa a integrar, unitário, todos os testes.
+Integrado, regressão, UAT. E implementação, o teste de liberação, tudo nos gira. Aí o cara depois consegue gerar um relatório. Fala, cara, de todos os testes que eu imputei aqui no começo, Quantos testes que realmente pegaram aí em cada fase, em cada ciclo. Qual a qualidade de cada... Eu fiz mil tes de não sei quantos tes desses que... Porque assim, aí você começa a ver, começou a chegar ruim para implantar.
+E aí na implantação deu bugs, que afetaram, né, críticos, ah, o serviço zero lá, né. Então, a ideia era ter essa visão inteira por demanda e por toda a release e por todo, O ano, para dizer assim, cara, deu um corte no ano, quanto que eu implantei? X mil horas, sei lá, né, 60 mil horas de projeto, 100 mil horas de projeto. Dessas 100 mil horas, quantas que eu fiz de teste? Tanto de integrado, tanto de regressão. Quanto que deu de problema?
+Aonde que deu problema? Aí deu problema em tal coisa. O que afetou isso no processo da operação? Aí eu... Entendeu? Tudo num lugar só, né? Tudo no meu ferramental. Então fica mais fácil. O repórter vai ter que colocar lá no serviço de sinal, né? Ele vai ter que colocar lá o andamento. Dá pra ver quanto que ele evoluiu. Sim, sim. No cronograma, no serviço de sinal. Tá, entendi. Ele tem que... Com... Completar lá no servicenal a gestão. Isso. Aí é liberar as solicitações de transporte em DEV?
+Então, aí isso daí é feito via um processo que eles têm com o BASIS, né? Eles têm um... Geralmente, eu acho que vai por e-mail. Eles vão... Mas eles têm o CCM, né? Que seria a sincronização dos ambientes.
+Mas a gente vê isso daí com o pessoal de Bezos, lá com o Auro.
+Vou reportar para vocês também o que é a soma. Aqui é a parte de configuração, né?
+Como que é feito o transporte de config,
+De dev, para QA?
+Você está falando das Requests ou também de... De configuração, porque a Configuração você não faz, né?
+Você Transporta, você tira ela de dev, E aí você copia e cola, Na QA.
+Também eu sou Meio... não tenho a noção, Específica de como eles fazem Com isso, mas eu entendo que o, Pacote que está em dev E que vai ser transportado para a QA Ele tem que ser fechado, Dado o aceite e aí, Ele... O pessoal de BASIS vai e transforma, mas coloca para verificar que a gente vai ver se a população... A gente coloca o AURO. O AURO aí no meio. Beleza. O teste de UAT é geralmente feito com a área fiscal, o pessoal disponibiliza recurso para.
+Fazer esses testes de fiscal, no caso dos projetos fiscais, os demais também eles escolhem, Ou pagam. Regressão é a equipe de qualidade do Carmona. Obrigado.
+Pode colocar o time aqui, mais fácil.
+É, Pode colocar o time. Pode colocar a qualidade aí.
+Quality Engineering Team, sei lá. Eu vejo aqui que é a sigla que eles colocaram. Coloca aí Carmona, né? Rodolfo Carmona.
+Boa.
+O teste, você falou que regressão, quem realiza é o...
+É A qualidade, é isso aí.
+O AT, você falou que tem um time...
+É, quando é, geralmente, quando afeta a área fiscal, É a equipe da Viviane Evangelista, tá? Viviane Evangelista. E aí... Vou deixar a equipe projeto, porque a equipe É integrada. Se tiver impacto fiscal, A gente põe o impacto fiscal. Integrado também, né? Isso, projeto.
+Aí, Aqui é bases. Em cima também, né? É configurar Solicitações de transporte, Definir cenários.
+Aí, a equipe projeto mais O do regressão. O baseline é da qualidade. Você pode colocar equipe, projeto, Mais baseline, Qualidade.
+É que eles entram em tudo, né?
+Porque, assim, pelo menos aqui Na indústria, a Mari e a Aline Estavam super focadas, Na definição dos cenários E elas participaram, Da construção, Do cenário de teste.
+Líder de demanda.
+Aqui, beleza.
+Aqui é líder de demanda mais agente, né? Estou falando agente, estou me colocando aqui, hein, Ale?
+Nós.
+Você que é o pai da criança, cara. Não, cara, todo mundo. Como você falou, é feito a quatro mãos. Seis, sete, oito mãos.
+Aqui é o líder da demanda.
+E aqui o líder demanda também, né? É.
+Beleza. Aí, pano de cotovelo. Aí a gente tem feito, a gente fazendo um project, agora a gente tá fazendo tudo em sheeting. Eu acho que vai para o Servicenal agora também, né? Podia colocar lá, mas... Porque se ele está dentro do cronograma do projeto, Ele vai ter que trazer em Servicenal isso para a gente, né? Então, mas será que dá para fazer lá? Porque a gente faz tipo um projeto, né? A gente usa uma ferramenta de projeto, Podia ser, sei lá, clique...
+Não, Mas ele tem, o Olê. Não sei se você conhece a ferramenta do Servicenal.
+Não, não conheço. Se tiver como a gente fazer o Coutover detalhado lá... Deixa eu te mostrar aqui.
+Dá pra fazer sim. É que o Cutover, ele deveria... A gente junta os cronogramas ali de todos os projetos, Ou a gente tem um único cronograma?
+A gente tem um baseline, então começa com o template do baseline, né? Que é do Cutover. Dentro dele, a gente tem os espaços onde a gente já sabe mais ou menos, Onde que o pessoal vai mexer. Tipo, ah, aqui eu vou fazer transporte de request. Aqui eu vou abrir client, vou fazer soul main. Então a gente sabe mais ou menos onde que ele vai aplicar as atividades do cut-over. O cara não vai conseguir aplicar, primeiro precisa parar o SAP, depois... Então ele já sabe que janela do horário que o cara tem que aplicar.
+Então a gente põe ali, ó, aqui você vai colocar todas as atividades X. Aí o cara coloca. A BTP, aí ele coloca quais atividades, vai fazendo o detalhamento. Então a ideia é que a gente dê pra ele esses espaços, né, essas janelas. Pode ser que o cara tenha uma atividade totalmente, ah, eu vou fazer migração, aí tudo bem, isso aí tem que ser que nem a Ana, tem que ser o TDF, tem que ser antes, parar tudo antes da implantação do transporte request, aí beleza, então ela fez um shift na janela, então é uma exceção, né, mas o baseline a gente põe lá, aí se o cara quiser mexer no baseline, alterar a janela, aí eu preciso de mais tempo de validação dos testes.
+Não vai acabar às seis da tarde, vai acabar às oito da noite. Aí a gente fala, então tá bom, vai alterar, estender a janela. Então precisa comunicar, aprovar com todo mundo, entendeu? Não pode chegar lá e falar, não, eu quero mais dez. Não. Então a gente faz assim, cria um base, põe lá no Service Sinal E os caras trabalham em cima daquilo.
+Entendi. Será que tá abrindo aqui, Aline?
+Vou continuar aqui. Isso aqui é a ferramenta do serviço de sinal, então ele traz aqui o projeto, né? Certo. Está na etapa de planejamento.
+Plano de status.
+Aí entra aqui o console de planejamento.
+Ele tá meio lento, cara. Não sei se...
+Os testes já estavam meio lentos. Agora, acho que muita gente Tá usando e já começou a dar uma, Travada. Não sei se é minha internet também.
+Aí ele traz aqui uma visão, Do cronograma. Vamos trabalhar uma visão de gigante, Uma visão de grade,
+Uma visão.
+Conjunta, né? Então, você traz aqui o programa, Aí você vai criando as atividades.
+Não, excelente. Então, a ferramenta é bem legal, cara. É bem usual. Você conectar uma atividade na outra aqui, É só você puxar aqui, ó. Você não vai ficar entrando lá, A predecessora, a sucessora. Dá para fazer também, mas... Ele tem a.
+Facilidade aqui de você fazer dessa forma. A gente cria aí, ó, cria as, Informações que precisa, talvez assim, Dá pra fazer, criar os grupos que são os grupos, Executores.
+Na Change, né, No próprio Gira, então é do próprio Gira, Né, desculpa, é do próprio Servicenal. Quando você, Cria uma Change, tem os grupos Executores, né, então a gente põe ali Nas atividades,
+E aí já tá tudo, Bonitinho, por quê? Porque aí a gente prega Esse plano de Coutover, E já coloca como oficial na gestão de mudança.
+Hora de finalizar, né?
+É bom, Jorge? Se for o caso, aí que eu falo, a gente pode até melhorar, E falar para a gestão de mudança. Não, já está na própria service, não. Então, não precisa gerar um Excel, sei lá, um Excel de colada.
+Eu acho que é o ponto, assim, a gente tem que... Aí vai ter que alinhar com o time do projeto. Tá bom, a gente precisa do plano do Cutover detalhado Para fazer o acompanhamento. Você tem que subir isso no serviço sinal Para a gente poder acompanhar por lá. Não se eu começar a gerar ferramentas paralelas, né, cara? Aí não faz sentido.
+É, mas eu falo assim, Depois que cada um gerar o seu individual lá, né, Que a gente chama de cada demanda, A gente faz um consolidado. E esse consolidado final, É o que a gente passa para a gestão de mudança. A gestão de mudança... Ela olha assim, tá, então o plano, o tover geral é esse aqui. Aí ela olha, porque para cada atividade tem várias, eu posso ter change por fornecedor, né? Então eu tenho uma da Accenture, uma da ZEC, uma da Advisor. Aí ela olha que linha do plano, ah, essa linha X é da Advisor.
+Aí ela vai lá, tem o número da change da Advisor e ela sabe que aquela linha ela vai ter que executar, Para aquele grupo lá que está na... Então eles acompanham isso, o GMUJ acompanha o geral e ela vai dentro de cada change, de cada fornecedor, essa é a dinâmica hoje, o que eu estou falando, a gente pode pegar, se a gente tem a nossa final consolidada lá no próprio service now, é só dizer, a nossa é essa daqui e essa é a final, está bloqueada, ninguém mexe mais, daí eles vão olhar essa e vão bater com as filhas, com as changes.
+De cada fornecedor, que é o CAB da Gemundi.
+Como que funciona essa relação aí com o time de change?
+A Gente tem os prazos para aplicar uma change planejada, E a gente tem, então, como guarda-chuva, a gente tem uma Jumbo, que é uma change que é da release. Que engloba, daí no descritivo dela, você vê todas as filhas, e também existe um acordo, Combinado com gestão de mudança, que na janela da release a gente pode aplicar uma Informativa. Então, a informativa é uma change em que você pode aprovar, tem um template com todo.
+O descritivo lá, o que precisa, um transporte específico de request, então eu detectei Um problema. Então, eu coloco aqui, eu coloco aqui o problema. Fizeram a correção e ali geraram as evidências da correção. Eles vão e pedem, solicitam dentro dessa informativa um transporte de request. A gestão da release é a prova. Aí o pessoal de bases executa. Mas fica documentado nesses templates que gestão de mudança acordou com a release, entendeu?
+Entendi. Então, agora...
+A gente encerrou quase todas as filhas, tá faltando a Dark Sentry e tá faltando a Jumbo. Aí tem que colocar as evidências lá, tudo, de cada change, de cada execução, os prints da tela, tudo. As evidências, eu coloquei todas evidências dos testes, todas evidências do cutover, E aí quando termina tudo isso, aí eu coloco tudo encerrado, cada uma das atividades, E depois eu passo pra GMood, fechar a change geral, né.
+Aqui, dentro desse processo, A gente deveria ter toda essa parte, De change, né?
+Então, Aí a gente Precisa sentar com a governança, De gestão de mudança, E entender, ó, O Gil Barbão, como ficou, Agora a ProS4? A gente Mantém essa lógica, Aí, como é que vão ser as changes Agora? Porque ela começou a escrever, Esse processo, né? Ela... A gente meio que copiou um tanto que tinha da ECC e ela ia adaptar algumas coisas para o S4. Daí ela não fez reunião mais. Eu falei, ô Ju, como é que ficou? Nem acompanhei como é que ficaram as.
+Changes com o S4, mas acho que foram aprovando a medida que necessário, não sei como é que tá o.
+Processo. Entendi. Bom, eu acho que aí, Ali, o que você acha da gente terminar esse processo? E a Jumbo senta com ela e aí troca uma figurinha pra ver como que a gente encaixa de molde aqui.
+Como É que a gente faz a parte de gestão e aí já pensando numa forma unificada, né? Porque eu acho que é isso que a gente teria que pensar. Amanhã vai ter uma change Jumbo só, pra Duo, pra tudo, pra ECC e pra S4, entendeu? Porque a gente vai estar impactando as duas coisas. Então, né, ela vai querer saber, cara, o que que tá amarrando... Porque senão fica de um lado e fica do outro, e a gente não tem uma integração, uma relação Entre um e outro.
+Como é que funciona a relação entre a gestão de release e Gmood? Vocês trabalham em parceria, quem é o responsável pela release? É, em parceria, tanto que tem, por exemplo, tem a gestão de mudança, ela reporta algumas, Coisas para a gestão de release e vice-versa.
+A gestão de mudança diz, cara, eu tenho aqui X changes, ela lista as changes que podem impactar na release. A release passa com os líderes das demandas e fala, isso vai impactar na nossa release? Aí eles não aprovam ou não. Isso é um papel da gestão de mudança. A gestão da release gera as changes da release. Passa para a gestão de mudança e fala, analisa. E ver se ela vai aprovar dentro daqueles prazos. E a gente tem um cronograma com gestão de mudança.
+E tem um combinado com relação informativa. Então existem papéis dos dois lados. Um faz uma parte que é monitorar o todo E mostrar aquilo que impacta na release. A release mostra o que está impactando, Na implantação para a gestão de mudança. E esses combinados é que tem que ver no processo novo, né? Como é que a gente mantém esse processo e unifica, né?
+E o.
+Cronograma de mudanças, eles batem também com o cronograma do projeto? Eles também têm essa interação? É um fórum só?
+Como funciona isso? Você está falando do CAB, você tem os CABs, né? Que são da gestão de mudança. Por exemplo, a gente tem que defender, no caso da release, as nossas changes. Então, a gente entrou no CAB na sexta-feira, na semana anterior, Às duas da tarde, tem na quarta e na sexta. Então, entrou eu, gestão de mudança, entrou o Braz, Entrou a Kátia, fazendo a parte de convivência, entrou, entendeu?
+E aí, cada um defende as suas changes e fala o que está acontecendo. Tem que defender, então. O Gemúdio vai cobrar, isso é o ritual deles, né? Então a gente tem que defender, falar o que vai impactar, qual que é a janela de indisponibilidade, Quais os comunicados que foram feitos, entendeu? Então eles têm o ritual deles, né? E a gente participa assim como eles participam do nosso. Então, por exemplo, a Ju Barbão entra toda quarta-feira junto com a gente, Pra ver o status das demandas. Entendeu?
+Então, um participa do lado do outro. Eu estou do lado, quando tem o cabo Da Gemurdi, eles têm um espaço, Aqui no Google Na congestão de mudança, Que fica relatando. Que nem agora, eu colo lá Como é que estão minhas changes. O que está verdinho, o que está em amarelo. E vou cobrando, e eles Também cobram. O grupo de gestão de mudança, Que está todo mundo lá dos líderes. Entendi. Olha, você poderia me incluir nessa reunião, De quarta-feira? Incluo, incluo na reunião de quarta-feira E no espaço aqui de gestão de mudança.
+Também. Tá, só pra poder.
+Acompanhar E entender melhor como funciona.
+Sim, sim.
+Vou Já incluir aqui na...
+Já foi aqui, eu vou incluindo o espaço aqui do gemúdio.
+Pronto, a gente inclui aqui no espaço.
+Maravilha, né? Brigadão.
+O que mais que temos aí? Vamos lá, aí a gente entra aqui no planejamento do cutover.
+Isso, então aí é, por enquanto é Excel, né? É planilha, mas a gente pode colocar no ServiceNow aí depois. ServiceNow. Tá, e aí é gestão de release, mais líderes das demandas. É líder da demanda, é isso aí. Exatamente.
+Aí vai.
+Lidar com o teste de liberação.
+No alinhamento, Além do líder, Da gestão da release, também participam Os líderes, Dos fornecedores. Então, o GP Por parte do fornecedor, Ele tem que entrar. Porque aí eu entendo que, Tecnicamente é o GP que entende Mais que o líder do projeto. Certo? Agora a gente fala assim, não, cara, você vai fazer a parada ali do BTP, você precisa do IDOX no BTP? Aí é o Alan da Accenture que vai falar. Fala, não, preciso. A gente precisa dessa atividade, mas tal coisa, né?
+Entendi. O cutover aí é o detalhamento, né?
+Tá mais certo, né? É 2.3, né?
+É, E aí também a gente coloca, como é que chama as... O ANS, Né? As lideranças das áreas executoras, que são Bases, Midware, Banco, a gente coloca esses caras. Arcosoft, entendeu? Então eu coloco um de cada, por exemplo. Eu coloco um dos fornecedores e mais as equipes internas, as executoras internas,
+Que são os grupos executores ali dentro, de quem é que executa em produção. Porque... Quem põe a mão em produção é só Natura, né?
+Então, quem é, pode ser alguém na escala, Mas, por exemplo, tem um ponto focal, né? Que é o aura de vez, mas na escala quem vai executar. Mas ele tem que estar no cutover. Para dizer, cara, você está ciente que nós vamos fazer limpeza das tabelas ex? Putz, acho, aí demora tanto tempo. Então, o pessoal da escala tem que estar sabendo. O pessoal de observability... Você sabe que tem que tirar o alerta tal hora e colocar tal hora. Não interessa. Você pega alguém da escala e vai agendar.
+Mas eu vou cobrar de alguém da equipe esse alinhamento. Entendeu? Eu vou cobrar de alguém. Fernanda, quem que vai ligar ou desligar o flashback? Eu até estava pegando evidência agora. Ela ligou o flashback e quem desligou da última vez foi o Diego, eu acho. O pessoal de DBA. Então tem que ter um ponto focal, né? Alguém tem que estar Tomando cuidado da tartaruga, Senão foge.
+Ai, caramba. Aí depois a gente entra na validação Do cenário de liberação. Isso. Essa validação é o seguinte. A gente geralmente, Pega aqueles... Agora como é chamada? A responsável natura, o BRM. Eles botaram outro nome na planilha aqui. Mas são os responsáveis de cada uma das áreas, né? CDs, Hub, o nosso amigo daqui do lado, O Banharelli, ou a Ju Nóbrega, que é de Cajamar, Fábrica.
+A gente vai pegando um responsável, um ponto focal de cada área, né? Para validar os cenários. O baseline, a gente... A gente chamou de responsável, deixa eu ver aqui ó, facilitador, tem key user, super key user, end user, eu entendo. É o end user, Né?
+É.
+Afinal, É uma coisa de validação, Né?
+É, tinha um responsável, uma natura no final.
+Usuários. Deixa eu ver os usuários, mas deixa eu ver aqui. Você tem o key user,
+Você tem o super users, e o end user.
+Deixa eu ver se eu acho que era o key user.
+Não, ainda não tá.
+O que ficou? Eu acho que é facilitador ficou. É isso aí, o facilitador ficou no final. Facilitador? É.
+Mas a gente fecha, é quem que vai ser o... Porque eu entendo assim, o baseline, ele está fixo, até certo ponto, Mas ele vai sofrendo modificações à medida que a gente vai implantando novas demandas E vai mudando processos, etc.
+Fora isso, existem os testes customizados, que a gente adiciona conforme as demandas precisam, tá? E aí o líder da demanda vai anexar esses cenários adicionais porque ele acha necessário. Então, fora o baseline, eu que estou implantando, sei lá, CBPJ, eu quero mais X testes. E aí a Joacan, por exemplo, que vai dizer que é a líder.
+Entendi. Entendeu?
+Perfeito.
+Aí, Ali, A gente tem uma sessão de Gol no gol? Tem. Você tá falando pra ir, Pra release? Tem. Na última semana, A gente faz um gol no gol, Durante o status. E aí todos os leaders têm que estar presentes, De cada demanda e dizer Olha, meu projeto tá assim, Tem alguns Né, alguns, É, Problemas com teste, por exemplo, eu estou atrasado um pouco, mas eu entendo que o meu projeto é gol.
+E aí a release vai analisar com base na qualidade, o pessoal de qualidade vai dizer, Cara, os testes estão assim, tem algum ponto de atenção, e aí se tá tudo ok, a gente coloca, é gol. Mas ela pode declinar até a última semana, o líder da demanda pode dizer, não, já aconteceu. Chega na semana antes, fala, ó. Não vai dar. A minha demanda Vai ficar para a próxima.
+Entendi.
+Não pedes a reunião gol no gol. Deixa aqui antes do... Isso. É uma semana. Na semana da GEMUD. Se você olhar no cronograma macro, Tem uma semana de GEMUD antes da implantação. Tá.
+Então Aqui tem a aprovação do plano de Coutova. Isso.
+Essa aprovação de plano de Coutova, depois tem o plano de comunicação, né? Mas essa aprovação de plano de Coutova, quando termina o plano de Coutova oficial, Existe um comunicado para todas as áreas com o plano de Coutova final, entendeu? Para dizer, cara, é oficial, acabou. Quem que aprova o plano? Gestão de mudança aprova com os líderes. A hora que termina, geralmente tem uma reunião separada, só de alinhamento de Coutova, certo? Quando termina a última reunião... A gente anexa esse plano de cut-over na Change Jumbo, a Change Jumbo tem o plano de cut-over.
+Anexado e existe um comunicado com esse plano de cut-over. Geralmente é plano de cut-over, Vai a escala, vai os testes de liberação, mas aí a gente fala de comunicação separada. Tá bom. Então, aí você fala, tem, aí tem, enviar comunicado de release, tá? Existem dois grandes comunicados, um comunicado que é feito duas semanas antes, que é com Todas as demandas e a gente chama de comunicado geral, sei lá, pode colocar duas semanas.
+Antes. Comunicado geral e o outro que é feito, a gente faz na sexta-feira antes da implantação, Que é chamado Welcome Kit.
+E uma semana antes.
+Na sexta-feira antes do final de semana. É sexta-feira até meio-dia.
+Aí é o chamado Welcome Kit. Que ele era muito mais válido porque era feito presencial. 100% das implantações. Era sempre feito presencial. Nunca remoto. Após a pandemia, 2020, em março de 2020, foi a última vez que a gente fez 100% presencial.
+Aí começou a ser remoto tudo e depois virou misto, né? Agora, mas o welcoming kit, ele é enviado na sexta-feira.
+Tá, então a gente tem dois comunicados, um duas semanas antes e um na sexta -feira anterior.
+À release. Isso. Aqui é e-mail, né? É, esses aí são por e-mail e a gente usa dois, outro canal que seria o canal de... Na realidade, hoje eu uso três grandes canais. O primeiro e-mail, o segundo, o WhatsApp, que a gente não está usando mais, né? E a gente usa os espaços do Google. Então, já desde o começo tem o espaço da Gemood, que eu te falei, Um espaço geral da release.
+Esse espaço geral da release, ele está sendo criado para cada release. A ideia, futuramente, é ter um espaço geral da release, Como existem esses canais de RPA, de dados, de IA, Tem um canal da VP ali, dizendo, cara, esse é o canal oficial de... Deveria ter um canal oficial da release. Dizendo, cara, tudo que você quer falar de releases, A gente fala nesse canal.
+Mas, a hora que sair uma release específica, A gente tem um canal específico pra aquela release. E aí só entra, O público daquela release, entendeu? Mas no geral, No canal geral, Eu usaria, além do e-mail, Esse canal geral pra comunicar A empresa inteira. Pra dizer, cara, Teremos uma release de agosto. E não ficar só mandando por e-mail. Entendeu? Acho que a gente podia dar uma olhada melhor Nesse ponto da comunicação. Tem que ver essa questão de comunicação. É um tópico à parte.
+Que isso é muito importante. Eu vou te contar. O time de gestão de mudança não faz esse trabalho?
+O time de gestão de mudança Envolve diretamente comunicação, né? Não, cara, mas assim, Aí a gente fica, tipo, a gente tem, A empresa, por exemplo, a gente tem Intranet, a gente comunicava também, Põe aí também, intranet, Não está sendo Uma, Usado muito agora, ficou meio no ar, mas a gente usava intranet, então no coisa lá da Natura, no site da Natura interna, né, quando você tinha também o comunicado, certo? Ah, outro comunicado que a gente faz é na própria aplicação, no próprio sistema, não no SAP.
+Então existe o comunicado no SAP também. Não é um canal só de comunicação, então o SAP tem a mensagem do SAP, tá?
+Também que a gente coloca, Na quarta-feira anterior A implantação no final de semana.
+Então, se você olhar dentro, Da estrutura de diretórios, nós temos Um diretório só de comunicação. Cada um das mensagens, Como é que vai, o mailing list. Mas isso tem que ser, É o que eu estou falando, revisto. Eu acho que agora tem que pensar, Maior, E, É o que a gente tem que pensar. Que seja mais eficaz, entendeu? Porque às vezes a gente faz um monte de e-mail, E no final aparece Cara que não está.
+Ciente. E mais, a gente... A gente sempre vai ter,
+Né, Alep? Você pega o T4, o mais comunicado Que teve, foi levado a reunião com o João Paulo, Foi levado a reunião com.
+O Bravin, Foi levado nos canais, De comunicação, áreas, não sei o que, E-mail. Tem gente que falou que não viu o comunicado, E gerente, assim, cara, Não vi nem o comunicado das forças, Assim, cara, como assim? Eu vi o vídeo da Fabiola, mostrando, O cara. Não. Tá vendo aqui?
+Ah, eu não vi. Renato, eu já tomei, Cara invertida, cara. Uma vez O cara da Latam me escreveu Um livro. Eu falei, nossa, Senhora. Falei, não, não é possível, Que o cara não tá ciente. Não, porque... Eu tô aqui com backlog, não sei o quê, como é que vocês vão parar? Eu falei, pelo amor de Deus, não é possível que o cara não tá sabendo, cara, sabe? Eu escrevi um livro, assim, no meu chat aqui, eu falei, nossa, eu peguei e passei pro gestor, Eu falei, ô, Breno, segura a bomba aí, cara, o cara quer me matar.
+Não, é, você faz de tudo, você fala, não é possível, cara, na hora que... E o cara é bem com duas pedras na mão, né? Eu falo, não, não sou eu que estou querendo, não, cara. É a empresa, é a empresa. Não fui eu que tomei a decisão, já faz, às vezes faz meses, né? A gente já comunicou o calendário, já foi o ano passado.
+Cara, você acha mais importante que a empresa, né? Olha, é duro, você tem que se respirar, passar pano quente, falar, olha, calma. Você não viu o comunicado, já faz tempo que eu tenho o calendário. Tem muita respiração nessa aula. E o cara quer escalar o negócio. Fala, vixe Maria, a gente está com tanto problema já, né? Faça a vida, né? Você está com um monte de problema, aparece mais uns loucos. Mais uma bomba.
+Aí Entra aqui na parte da estrutura, né, que é a estrutura física aqui, que são os acessos, restaurante, e a parte sistêmica também, né, que são os backups,
+Os acessos. Isso, aí essa parte aí, em parte, tá tudo no Coutover, né, por exemplo, toda a parte de atividades aí, backup.
+A questão de acessos tudo, isso tudo é na Coutover, né? Mas em alinhamento com Coutover, com as áreas, E aí tem mais os entregáveis, que é o que você falou, né? Aquelas planilhas de bloqueio e desbloqueio, né? Então, a partir disso... A gente pode deixar aqui só a parte de estrutura física? A gente entende que essa parte aí... Isso, o backup, jobs, tudo isso... Dentro do Coutover. Tá dentro do Coutover, pode colocar lá. Tá bom. Agora, a... A estrutura física de release aqui, por exemplo,
+Vai ter a parte física, a gente vai fazer presencialmente, como que é feito isso daqui, quem que prepara, quem que dá os acessos?
+Aí não tem uma, geralmente, quando fazia tudo presencial era a nossa, era a release, gestão de release fazia tudo, acesso ao NASP, no kit já vinha. A localização do NASP, como chegar no NASP, como a gente pegava até fazer a parte de deslocamento, Uber, tudo, cara, alocava esses custos. Vi aqui com a empresa de limpeza, para poder fazer limpeza depois, com o restaurante, que era, como é que chama?
+Sodexo.
+A gente vê aquela limpeza e limpeza. A gente contratava lanche adicional. Então, tipo, café da manhã, Lanche da tarde. Tudo isso A Relize fazia. Tudo. Então, o cara chegava... Mas e agora,
+Lê? Tá fazendo ainda ou não?
+Como A maioria tava remota Agora, não fazia mais. Entendeu? E agora, Quando tá presencial, a demanda Tá exigindo que seja presencial. Não a Relize tá obrigando, Entendeu? Então, chega A... A Ana Pereira e fala, eu quero que a Release de agosto seja presencial Porque é crítico à reforma tributária. Beleza, Ana, então quem que vai Pagar? A demanda vai pagar. Então a demanda vai... Aí a tela diz, então tá bom, Vou deslocar o meu GP que vai ajudar.
+A fazer essa parte do físico. Então alocar o restaurante, Pegar a lista de quantas pessoas vão, Ficar presencial para o restaurante, Liberar alguém na portaria, Porque tem a questão de segurança Para quem não tem crachá, né? Quem que vai entrar e não tem crachá? Um cara que nunca veio na Natura. Aí tem que mandar um e-mail, Para a segurança, arroba a Natura, sei lá o quê. Então toda essa gestão, Ela fica meio dividida agora. Precisamos, Definir agora, daqui pra frente, Quem que faz isso daí.
+Eu entendo que se tiver que ser presidencial, Entendeu? Sei lá. Aí, Tem que... Porque assim, no fundo A responsabilidade fica com, Porque se o cara não entrou na porta lá e não consegue fazer a atividade do Coutover, Então acho que tem que definir isso. Coloca aí a definir, tracinho, gestão da release.
+A importar solicitações de transporte para a PROD. Então, essa questão, você está falando aí de passar o que está em QA para a produção. Isso. Essa é uma questão bem, digamos que eu acho que tem que ir a fundo aí. Por quê? Porque eu entendo assim, teve lá uma simulação de Coutova, eles fazem a simulação. Só que para mim, que sou leigo em algumas coisas de SAP,
+Eu entendo que o pacote Que está lá definido E o pacote que eu entendo é assim, É tudo. Não é só transporte de request. É tudo que eu vou fazer em produção. Então, eu fiz um pacotão. Eu tenho lá todos, se eu tiver 100 requests, Eu posso ter X da Accenture, X da Advisor, X... Ele tá fechado. E não é uma planilha Excel que nem os caras passam. Passam uma planilha Excel com os nomes, Não, pelo amor de Deus. Cara, eu fazia isso em outras empresas, E... Fechou o pacote, eu encapsulei aquilo, tá lá na sequência certinha, eu pego aquilo,
+Dou aceite, alguma coisa promove aquilo pra produção e alguém executa aquilo em produção, Ninguém mais põe a mão, cê entendeu? Exatamente o que eu testei em qualidade, sem nenhuma vírgula, e vai pra produção. Se tem que mexer depois porque deu algum problema, aí é whatever, mas... Na hora, não, eu vou definir lá no Coutover, tem uma planilha. E aí o cara executou numa sequência X e depois executa na Y, aí dá problema? E outra coisa que está envolvida nesse pacote aí é a questão do Arcosoft,
+No caso do ECC, do S4, não sei como é que ficou lá. Mas, por exemplo, um campo de tabela que o cara esquece, De parar a triga e voltar no Arcosoft, dá pau no transporte de request. Então, cara, tem que ser um pacotão fechado. Todos os scripts. Tudo bonitinho. Esse é o pacote. O que que eu tenho que fazer? Entendeu? Eu tenho que pegar o trigger tal e corrigir. Eu tenho que fazer isso. E depois aplicar o transporte request. Então, quem faz o quê? Mas é um pacotão. E aquele fechado.
+Hoje ele tá quebrado. Então, tem uma lista pra transporte request. Que vai lá. Aí o pessoal do Bezos vai. Tem um cara que faz a Arcosoft. Então, eu acho que isso tem que estar na sequência. Bonitinho. Fechado, e a hora que aprovou, todo mundo olha e aprova, bota lá o carimbinho e fala, não, tá tudo certo. Beleza, então vai executar nessa sequência, aí quem vai executar tem que estar alinhado, bonitinho, beleza. Mas o cara só vai apertar o botão naquele que tá fechado o pacote.
+Tá? É um pacote que é rápido. A gente fala com o Auro isso daqui,
+Eu acho que era legal a gente detalhar esse ponto aqui.
+Isso, e ficar, e assumir, alguém assumir a responsabilidade. De fechar o pacote e falar, cara, ninguém põe mais a mão. E depois falar, cara, Deu aceite nisso? Deu. Bota num outro diretório lá.
+Cara, Depois que ele passou em QA, Corrigiu tudo, quem entra pra corrigir não põe mais a mão, né, cara? Ele vai encapsular. Encapsulou, Ele.
+Transporta, não tem que ficar... E aí eu entendo Assim, que aquilo que tá lá, Na sequência que tá lá, Tem que tá... Não, a gente só usa a planilha para controlar a sequência, mas, pô, peraí, então, o pacote, ele não está organizado? Como é que você sabe? Ele roda, né? Ele roda esse pacote em simulação de cotovelo, ele roda, mas eu queria entender que ele está bem, está fixo, né? Tá.
+Aí, executar atividades manuais e.
+Acompanhar as suas estações de mudança, né, pais e filhos. É, aí tem uma questãozinha, uma bola dividida aí, tá? A Jumbo, certeza, sempre que é gestão de mudança que faz. As filhas deveriam ser obrigação de líder da release, certo? Então a Jumbo é a gestão, né?
+Que é uma só, a Jumbo é uma só. E todas as filhas deveriam ser responsabilidade do líder da demanda. O líder da demanda, cara, que é natura, ele pode precisar de N pessoas para fazer as coisas, mas assim, ele tem que, que nem agora, a change da Accenture está no nome da Katia, aí o cara da Accenture fala assim, ah, as minhas atividades eu já encerrei, e o resto? Então a Katia tem que correr atrás do povo, ah, o que é BTP, o que é não sei o que, cadê os grupos que precisa aprovar, cadê as evidências que precisa anexar?
+O líder vai ter que pôr atrás e chicotear a galera, né? Uhum. Aí, liberação, isso daqui são os facilitadores, né? Isso, Os facilitadores.
+Aqui é no próprio sistema. Encerramento.
+A atualização final da documentação, Isso daqui você, Deixa aqui como um líder.
+Sim.
+O líder responsável, mas ele Foi antigo para trabalhar. Deixa eu pegar as ferramentas, Aqui.
+Isso aqui dá trabalho, né?
+Essa galera atualiza as ferramentas Depois.
+Tem que cobrar do povo, porque senão não vai, cara.
+Olha, assim, eu parto do seguinte princípio, Tem que ser meio terrorista, cara, Se você não tivesse tudo aqui atualizado, você não vai fazer a revise.
+E na hora que faz, cara, eu acho que assim, Você tem que mostrar, ou você bota lá a evidência, Ou eu não aceito que foi feita. Então, tipo assim, aí eu executei a desativação do flashback. Ô, Fernanda, vai lá e me manda a evidência para eu encerrar a atividade. Se não mandar a evidência, eu não encerro. Ah, cara, não, mas eu já executei. Cara, cadê o print? Manda o print da tela para mim. Entendeu? Manda a evidência. Se fez a atividade, a parte mais fácil é dar o print, né? Exatamente, cara.
+Pô, executei. Pá, dá o print da porcaria e cola lá. Manda o e-mail, sabe?
+Então, aí fica cobrando.
+Quinhentas coisas e o cara, mano, aí go no go, aí tem que ver que isso daí também Assim, tá os líderes das demandas, mas aí quem que são os stakeholders, quem que são Os caras que tem que tá participando, vamos supor, né, a VP que é impactada, tipo, né, Cara, tu é VP de, você não entendeu, de tax, é, você não entendeu, que nem reforma. Tex, quem que tá? Tá o João Bernardo, Tá não sei quem. Vai parar.
+Deu algum problema no fechamento. Então tem que ver quem que são Além dos líderes ali,
+Os caras que são responsáveis. Porque fica meio... Às vezes põe mais, Às vezes põe menos. Mas quem.
+Que puxa a gestão da release?
+A gestão da release. Quem é o responsável Por criar o gol no gol A gestão.
+Mais o líder e os demais envolvidos.
+E aí tem mais de um go-no-go, tá? Na release a gente tem go-no-go principalmente na parte de...
+Quando termina a implantação e faz a retomada, Então existe uma validação técnica antes de dar a retomada do SAP. Parar o SAP tudo bem, você vai lá parar. Aí implantou, implantou, cara, tá tudo certo, aí faz todas as validações técnicas, Aí tem um gol, lá às 6 horas da manhã deve ter um gol, com a área técnica, Dizendo, cara, podemos seguir com a retomada ou ainda tem algum xabu, Porque se retomar e capotar, já viu. Então, beleza, existe outro gol que é na hora de iniciar os testes,
+Porque fica todo mundo esperando, voltou, Aí quando voltou, aí você tem que ter um gol com as equipes, Geralmente vai na geral da release, mas... Pode ter um gol separado, então serão três gols. Primeira volta, terminou a implantação, um primeiro gol. Terminou a retomada do SAP, um segundo gol. E terminou todos os testes, no gol no gol final, que é o gol no gol da release. Aí tá tudo ok? Ok. Seguimos, temos operação assistida, temos não sei o quê,
+Mas estamos com algum probleminha, temos contorno, temos contingência, Mas aí é o gol no gol final.
+Então a gente tem um go -no -go antes, depois que ele fechou toda a parte de testes,
+Tudo bonitinho, você tem o primeiro go -no -go. É o go-no-go para realizar o início dos testes. O go-no-go para efeito de retomada do SAP, 6 horas da manhã, é a retomada do SAP. Primeiro go-no-go, retomada do SAP.
+Não, mas esse daqui é antes, esse daqui é o geral, esse daqui, ó... É, não, o geral é o último, o geral é o último, finalizou a release inteira. Antes do geral tem um primeiro gol no gol que é, como é que fala, uma validação, É um cheque técnico para dizer, retoma o SAP. Então é o primeiro gol.
+Mas você tinha falado que era uma semana antes, que uma semana antes a gente faz uma reunião de gol no gol.
+Ah, não, não, entendi. Não, aí você está falando do go-no-go das demandas para implantar. Existe esse go-no-go. Eu estou falando agora dos go-no-go dentro do cutover, dentro da implantação. Dentro da implantação, você tem três go-no-go. Então, implantação, go-no-go primeiro, é a parte técnica para a retomada do SAP.
+Então, na implantação, você tem um primeiro go-no-go técnico. Depois do transporte de request.
+Técnico, transporte de request. Depois, na realidade, Depois que termina toda a parte De implantação técnica ali, né? Coloca depois do transporte de request E validações técnicas. Depois do transporte de request.
+Esse daqui?
+É, ele tá dentro do cutover. Esses gol no gol. Tá tudo dentro do cutover. Você pode colocar cutover, gol no gol Técnico.
+Põe três... Depois do...
+É que você não tem horários aí, né? Mas validação... Antes do encerramento... Antes do teste de liberação. Esse daqui? É, põe antes dele. Antes do 17 aí, Põe em uma linha e coloca Coutover, gol no gol técnico. Gol no gol técnico.
+Aí na... É, não, põe, Na segunda linha B, na coluna B. Ah, na B, tá. É, Coutover, gol no gol técnico. Gol no gol técnico.
+Legal. Tá. Aí eu queria colocar a descrição do lado ali, tá? Então, o que é isso daí? É um ok das equipes técnicas, né? Um de acordo das equipes técnicas, Que podemos retomar, fazer a retomada do SAP, tá? Então, tanto das equipes técnicas Quanto da equipe dos fornecedores, Dizendo, cara... Transportou tudo, validou tudo, fez todas as configurações, tá tudo ok, tá, então vamos retomar o SAP, então tá bom, então é gol, aí a gente começa com as equipes, retomar o SAP, com o C4, retomar o SAP, faz toda a retomada, né, quando chega no final da retomada, tá tudo ok, o SAP tá no ar, que é 100%, tá, aí a gente...
+Dá gol para começar os testes de liberação. Então, seria o segundo gol, No gol. Pera aí.
+Tem um gol no gol técnico, Aí entra a realização dos testes de liberação.
+Isso. Então, antes do teste da liberação, Eu colocaria um outro gol no gol, Que é o gol no gol, Para o teste de liberação. É o gol no gol de teste de liberação.
+Teste de liberação.
+E aí que que acontece? Entra todo mundo nesse gol no gol, né? De todos, seriam todos aqueles, Facilitadores, todos, né? Ali os que usas que que a gente colocou na planilha de baseline de testes, Mas o SAP já voltou, o SAP tá no ar, tá tudo ok, nós já liberamos o acesso de todo mundo que vai Fazer os tes, podem começar os tes, entre nas suas salas. De acompanhamento. E começa os testes.
+Então é esse go no go.
+Validade do ambiente.
+Para iniciar, Testes.
+Legal. E antes dos testes de liberação. Aí faz os testes todos. E aí por último é aquele go no go Do 20 que você colocou. Que é o go no go final, Da implantação.
+Então, Se eu mudar as ferramentas aqui, deixa eu tirar isso daqui, cara. Isso daqui deveria estar antes aqui.
+É a atualização final da documentação. Essa atualização de ferramentas, ela precisa já estar pronta antes, vamos supor, para a gestão de mudanças?
+Eu acho que deveria, cara. É forçado. Depois da release, ninguém vai olhar, cara.
+É, porque tem duas coisas. As documentações que vão lá para o SOMEM, para dizer o que é todo o detalhamento da mudança, beleza. E tem a documentação que é da execução da implantação, que é todas evidências, não só os testes, mas, por exemplo, todas evidências do cutover. Que o cara pegou, ele parou o flashback, voltou o flashback, tirou os alertas, colocou que o outro...
+Entendeu? Que eu transportei As requests. Ah, transportei, Tá, com sucesso, tá, dá o print aí. Então, são as evidências Das execuções, essas, Eles vão anexando nas changes, Lá no Service Sinal.
+Tá? Acho que a gente poderia fazer assim,
+Mas Essas estão dentro do Service Sinal, É do Coutover, eles vão Anexando pra poder encerrar as, Atividades. Então,
+Eu não colocaria aqui Coutover, eu colocaria aqui ainda a fase, De...
+O cara acabou os testes, cara,
+Ele já mexeu nas ferramentas, ele atualizou. É, isso daí também, a parte da documentação tá dentro da change ali, na hora que ele faz, quer ver, ó.
+Você falou que abrir a CM Spice, executar atividades manuais e abrir e acompanhar. Mas na hora que ele abre, ele tem que estar com a documentação, na hora que você colocou o Solmendo lá direito. Ele já tem que estar com a documentação. É uma das exigências da, Gemut que a documentação Esteja lá, para que ele aprove A tua change. Se você não Coloca a documentação lá atualizada, Ele não aprova, não cabe a change. Mas já está ali. É dentro do abrir a change Que tem que estar a documentação.
+Mas você pode, se quiser, Detalhar embaixo. Não, é dentro de...
+Eu acho que assim... O que eu estava pensando aqui, a documentação de processos, Ele deveria fazer a atualização, acabou os testes, Ele tem que ir lá e já atualizar tudo, as ferramentas.
+Também, Também. E aqui,
+Ele deixaria, não para a gente colocar aqui Toda essa ferramenta, toda essa finalização da documentação, Aí sim eu colocaria essa atualização da documentação de evidências. De evidências,
+Que teria que estar dentro do service sinal da change dele. Mas uma das coisas preocupantes é que ele tem que coletar essas evidências ao longo do cutover. Porque às vezes o cara não executou na hora, ele perdeu a tela. Muitas vezes eu falo pro cara, não, tira o print. Ele fala, puta, eu já fechei a sessão. Aí se ele fechou, ele perdeu o horário ali. A tela sumiu, né? Quando ele loga de novo, ele perdeu o print da tela. Ele não consegue tirar o log ali. Então ele tem que tirar na hora. Fala, cara, terminou?
+Dá o print da tela. Porque senão ele vai e fecha.
+Mas você acha melhor, então, colocar aqui na executar atividades manuais e abrir? Põe aqui, mais coleta de evidências?
+Coletar as evidências é o longo da execução do Coutover. Que é aqui, né? É o longo da execução. É executar as atividades manuais e abrir, acompanhar. Mas, assim, ao executar, não, olha, Coutover e execução, É uma dessas duas execuções. Importar solicitações, tá bom, pode ser. Executar as atividades manuais e abrir, acompanhar. E aí você pode colocar. E coletar as evidências, as evidências da execução das atividades do CUTOVER.
+Todas as evidências, eu tenho um diretório separado, um de evidências dos testes e um de evidências só dessas execuções. E aí os malucos deviam estar salvando lá. E agora o que eu estou fazendo agora? Acabei de fazer agora cedo. Eu vou lá no espaço da release, porque eles ficam colando print lá. Aí eu tenho que ficar procurando. Ah, a evidência está da Fernanda. Copia e cola. Ah, a evidência não sei quem. Eu já devia salvar isso direto Num diretório, Direto lá no, entendeu?
+Não serve sinal. Não sei o que você acha aqui. Pode colocar,
+Pode tirar Essa segunda parte aí, coletar as evidências, E isso, apaga aí e deixa, Só a segunda parte Na execução aí. Porque isso aí é importante. Beleza. Aí chega a auditoria e fala, O cara fez? Cadê a evidência? Então, Já tem que estar lá. Entendeu?
+Entendi. Aí, beleza. Passamos aqui, até a finalização. Passamos, ferramentas e evidências. Então, aqui, atualização final. Aí, isso daqui a gente tirou, né? Coletar evidências. Então, isso daqui é somente.
+Isso daqui a gente mata.
+Eu tenho técnico, teste de liberação.
+Esse Gurnogol aqui, olha aí. Esse é o final da release. Tá. O gurnogol coloca aí final Da release, né? Final release. É o final. Acabou tudo? É. Vai ou não vai? Vai.
+Até hoje eu não vi nenhum rollback.
+Tomara que não venha. Eu já vi terminar com amarelo, mas nunca com... Se é vermelho, é o beck, né? É, não tem o que fazer. Mas amarelo já terminei. Eita. É. E seguramos a bronca, né?
+Dá um frio na barriga, né?
+Não, dá. Porque impactou o fechamento. Nossa senhora, aí chamou os caras lá, né? Tem que chamar.
+Não tem jeito.
+É, Chama os caras e fala, amanhã... Amanhã o fechamento vai ser meio complicado.
+Aí tem acompanhamento daqui da implementação, Com status report. Isso daqui que a gente solta é a gestão de release. Gestão de release, é. Qual que é a ideia? A gente faz um acompanhamento de suporte pós-go live De duas semanas com a release maior. Ah, tá. Deixa eu ver. Mais suporte pós-go live de duas semanas com... Uma daily, que a gente tem no término do dia, Geralmente 5 horas da tarde, de meia hora, Com os líderes e com...
+Aí já é o pessoal de manter, né? O pessoal de manter entra pra dizer como é que tá a operação.
+Do OMS, né?
+É. E aqui tá no Hypercare, a mesma coisa que os caras tão fazendo. Abre incidente, acompanha... Durante a implantação, a gente tem o que a gente chama de diário de bordo, Que é tudo de chamado, incidente, qualquer coisa que tem, A gente abre no diário, tá?
+Tá.
+Fiquei nessa, teve muita coisa que, assim, não... Não fiz porque ficou aquela História, né? O T4 tá fazendo, Tem o HyperCard, Do T4, tem isso, tem aquilo. Então, tem a sala deles, Tem o HyperCard. Então, fica, Tudo lá, né?
+Beleza. E aí, Fechamento aqui com lições aprendidas.
+Isso. Essas lições Aprendidas, a gente fazia Uma coleta de lições aprendidas, De todo o ano também, sabe? De cada release. Então, a gente geralmente mostra no status da release E na semana seguinte as lições aprendidas.
+Entendi.
+Aí aqui, de acordo com o técnico que vai retomando a SAP, Isso daqui é uma ata,
+Olha aí. Como é que é feita essa formalização aqui? Esse gol no gol técnico é uma call, uma reunião específica para isso. Ou a gente monta uma específica, ou entra na própria geral da release e fala. Está tudo certo tendo o gol, daí o pessoal dá ok na reunião.
+O gol no gol está de liberação.
+É uma call ou a geral, né, da release, que é a call geral também da release, é uma call separada. A final da release é uma call separada, é uma call específica para gol no gol. Ah, essa daqui? É uma call única, é.
+Só de gol no gol, individual. E aí esse público que eu falo que tem que saber quem que... A gestão da release convoca, porque aí tem que estar todo mundo que está impactado, As lideranças, as áreas, as VPs que estão impactadas, para dizer, cara, que nem eu falei, Deu amarelo, o pessoal da área fiscal do fechamento vai ter problema, você está ciente,
+Mobiliza a tua equipe amanhã, segunda-feira. Já temos uma contingência, mas Vai demorar. Talvez a gente consiga Acabar durante a madrugada do domingo Para segunda, se não der. Entendeu? O pessoal já tem que estar, Mobilizando a equipe, né? Sim. Olha, aqui é a Service Sinal. Vai acompanhando os incidentes pela Service Sinal, certo? Isso. É assim. Depois, isso. Abre tudo no Service Sinal depois que, A gente já não tinha Esse controle que foi feito no Gira.
+Que nem agora. A gente já abria direto no serviço de sinal. Durante a implantação, como a gente tem a SM informativa, A gente podia aplicar as requests e corrigir o bug, certo? Mas se aquilo não fosse corrigido ali na hora, não, não deu, A gente está vendo, não conseguimos corrigir, mas não impacta, A gente pode seguir com a operação assim. A gente abriu o incidente lá e ficava no diário de bordo, Lá já o código do incidente. Quem que é o responsável, quem que abriu.
+E como é que tá o andamento no suporte, Pós-golive das duas semanas pra gente acompanhar. Né? Se conseguiu mitigar Até acabar aquilo lá, né? Entendi. E o reporte é feito por e-mail? O reporte do, Suporte pós-golive É feito por e-mail E mais era feito também, Por aqueles canais do Zap, sabe? Que tá fora agora. A gente tinha dois canais no Zap, que um era comitê de release, né, os líderes estavam no comitê, então a gente passava ali no final do dia, seis horas, depois dessa daily, a gente passava o status do diário de bordo, dizendo, ó, esses são incidentes, como é que tá, e aí colocava com os líderes, ó, ponto de atenção, incidente e tal, e aí a gente copiava os líderes.
+Como não tá usando mais o Zap, eu usaria o canal interno, o canal de espaço aqui do Google, Da release, né, pra comunicar isso. O canal mais técnico, né, seria esse de comitê. Por isso que eu falo que tem que ter esse canal geral da release, Que seria assim, quando a gente dispara aí pra 500 e-mails e vai pra todo mundo, Deveria ter um canal que não fica só nos e-mails durante... A implantação, um canal releases, para dizer cara, releases SAP, um canal disso, para dizer cara, a gente vai estar comunicando o calendário anual, o site da release, tudo que é anual, que é rituais assim, né?
+E aí a gente quando fizer uma release específica, aí a gente tem um canal específico para a área técnica, para dizer cara, essa release, a área técnica. Acompanhamento pós-go-live, suporte pós-go-live, Hypercare, que nem eles fizeram. Aí é um canal específico.
+Legal.
+Depois a gente declara melhor. E ali,
+Nas leções aprendidas, A gente pode até pensar, Como tem o site, A gente tem um site da Elis, Podia virar um site único depois, amanhã, Do S4, ECC, mais manutenções, Programadas. Eu entendo que você não sai de sala e aí em cima disso a gente pode colocar lições Aprendidas, um dos tópicos lá das implantações, como peatas, a gente tem boletins que podem, Ser pré-implantação, pós-implantação, nesse pós-implantação já podia estar.
+Lições aprendidas e aí um compilado depois de lições aprendidas no ano, entendeu? Pode ser também. Aí o canal permanente, porque eu acho que eu falo, tem um espaço permanente, um site Permanente. E aí por último, depois que a gente tiver um tempinho, eu te mostro aqui a arte que eu fiz aqui finalmente. Ah, você quer compartilhar? Me passa depois o link dessa planilha que você tá... Tá vendo minha tela aí?
+Tô. Deixa eu ver se.
+Eu tenho ela pronta aqui.
+Olha, eu tô ainda brincando aqui, mas a ideia era fazer isso. Vamos ver se ele vai. Tá vendo aí, Metala? Tô vendo. A minha ideia era ter um... Na verdade, não é ter um site. A minha ideia era ter uma plataforma em que a gente tenha governança. Então, a gente tem os processos da release, que nem você montou. Isso aqui é um draft, né? Processo, os ambientes, que são aqueles ambientes que a gente controla lá de não produtivos. E aí, os apontamentos, tudo. As estratégias de teste, o ferramental, que é isso que você está mostrando,
+O SOMEM, o SIGNAV, e aqui os links depois, os rituais da release, As reuniões semanais, de baseline, de alinhamento, checklist, etc. Qualquer reunião, entregáveis, e aqui depois a ideia é ter que o cara consiga fazer, A atualização, o upload, se ele for carregar um tipo de entregável, Os riscos da release.
+E aqui está como os próximos passos. Mas qual que é a ideia? Por exemplo, na implantação, se você olhar aqui, tem o Go Live Control, ou seja, a implantação. Então eu teria os dashboards dos relatórios, dos testes. Aqui você vê que ele já importou a planilha para mim. 546 foi o último que eu registrei. O quanto foi finalizado, cancelado, em andamento. Então, esses seriam os testes. Os cenários de teste do baseline,
+Mesmo que esteja no Jira, Eu poderia cadastrar eles aqui E estar ligado com o Jira. E aí, do Jira, tirar um report, Ou tirar daqui. Aí a gente vê. Mas eu controlaria esses cenários, Para que a gente ficasse monitorando O que é baseline E o que a gente tem que atualizar de baseline.
+E aí, para a escala... Aqui é o de menos, a escala e contatos. Os caras têm todos os contatos, quem está participando. Para a gente não ficar fazendo planilha, planilha, Porque já cadastrou uma vez, o cara está lá, Mesmo contato, é só colocar ele na próxima, Release. E cadastros. Esses cadastros seriam os cadastros, Dos cenários. O status do cenário,
+Aqueles itens do cenário, Os blocos dos horários que eles colocaram. Aqui, O hubs aqui não tem, mas, por exemplo, Centros. A entrega aqui, se é baseline, se não é. É isso. Sites aqui, Tipo, onde que vai ser O site, Que ele está fazendo o teste. Isso é mais para, Macro-processos, os processos, Dos testes de liberação. Isso era mais para o go-no-go, entendeu? O facilitador, a conexão. Legal pra caramba, André.
+Aqui o ideal é que, assim, Tá vendo? No live control, Eu teria que ter Ele. Não sei se eu entrei. Deixa eu pegar um aqui. Se eu entrei ou não entrei. Eu terei um log, tá? O cara só vai Logar, que aqui, ó, eu saí. Ele só vai logar, aqui, ó, entrar, Se ele for participar. Eu faço uma Autenticação com o Google, tá? E aí eu poderia... Aqui eu tô pegando, O Gmail, mas pode ser do, Da Natura. Eu, Autentico e aí eu posso ter acesso.
+Com o perfil ao que eu quiser fazer. Então se eu for fazer um upload de cenário, colocar as evidências, eu colocaria aqui. E automaticamente isso eu carregaria no cenário do Gira. E aí o que acontece? Se a gente por trás tiver uma única licença que vai estar fazendo isso, A gente não precisaria ter N licenças do Gira para poder fazer upload dos cenários, das evidências lá. Não, legal. O que eu fiz por enquanto, eu rodei um script.
+Aqui do, Apps, tá vendo? Apps Script. Legal. Ele conectou pra mim nos e-mails. Quer ver? Aqui nesses dois e-mails aqui, ó. No releases.td e no Alexandre, Aqui também, no meu. Tá? E aí o que ele fez? Ele criou uma estrutura, De diretórios. Você vai Olhar aqui, ó. Com todas as evidências. Então ele criou, O e-mail Aqui pra mim, da evidência, Que ele leu lá no... Dos meus e-mails e a evidência, o print da tela.
+Ele fez isso para todos os cenários com um script. Está vendo? Ele pegou as notas fiscais, ele separou. Então, se é o FBLK21, ele separou. O que eu teria que fazer? Falei que a Mari agora, ela não subiu essas evidências no Gira. Eu teria que ir lá nesse cenário e subir no Gira Para ficar no, finalmente, aquilo que eu falei. Tudo. Dentro do Gira, desde os testes, Unitários até os testes De liberação. Todos lá dentro.
+E aí eu tenho uma plataforma única. Uma ferramenta única, Para ver tudo isso. Mas mais que isso, a plataforma é, Para você.
+Administrar, A release, não só nos momentos Que a gente tem o ritual, mas ao longo, De todo o período. Porque o cara pode fazer upload de qualquer Entregável na hora que ele quiser. Ele não precisa, Participar dos eventos. Entendeu? Então, a ideia era essa. Legal, moleque. Vamos ver, né? Futuramente a gente vê o que é possível Fazer aí. Ah, sim. Mas, pô, A ideia é super bacana.
+Faz todo sentido, cara.
+Vamos evoluindo. Doutor, deixa eu ir lá comer, Alguma coisinha e depois a gente fala mais.
+Olha, Obrigado, viu?
+Tamo junto. Um abraço.
