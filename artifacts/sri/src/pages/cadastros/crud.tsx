@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, Link } from "wouter";
 import { useListLookups, useCreateLookup, useUpdateLookup, useDeleteLookup, getListLookupsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,11 @@ export default function CadastrosCrudPage() {
   const { data: lookups, isLoading } = useListLookups({ category });
   const qc = useQueryClient();
   const { toast } = useToast();
+  const { has } = usePermissions();
+  const canCreate = has("cadastros", "criar");
+  const canEdit = has("cadastros", "atualizar");
+  const canDelete = has("cadastros", "excluir");
+  const showAcoes = canEdit || canDelete;
 
   const createLookup = useCreateLookup();
   const updateLookup = useUpdateLookup();
@@ -90,24 +96,26 @@ export default function CadastrosCrudPage() {
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Adicionar Novo</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Input 
-              placeholder="Digite o novo valor..." 
-              value={newValue} 
-              onChange={(e) => setNewValue(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-            />
-            <Button onClick={handleCreate} disabled={!newValue.trim() || createLookup.isPending}>
-              Adicionar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      {canCreate && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Adicionar Novo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-4">
+              <Input 
+                placeholder="Digite o novo valor..." 
+                value={newValue} 
+                onChange={(e) => setNewValue(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+              />
+              <Button onClick={handleCreate} disabled={!newValue.trim() || createLookup.isPending}>
+                Adicionar
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardContent className="p-0">
@@ -121,7 +129,7 @@ export default function CadastrosCrudPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Valor</TableHead>
-                  <TableHead className="text-right w-[150px]">Ações</TableHead>
+                  {showAcoes && <TableHead className="text-right w-[150px]">Ações</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -139,30 +147,36 @@ export default function CadastrosCrudPage() {
                         <span className="font-medium">{lookup.value}</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right">
-                      {editingId === lookup.id ? (
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="icon" onClick={() => handleUpdate(lookup.id)} className="text-primary">
-                            <Save className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => setEditingId(null)}>
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="flex justify-end gap-2">
-                          <Button variant="ghost" size="icon" onClick={() => {
-                            setEditingId(lookup.id);
-                            setEditValue(lookup.value);
-                          }}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(lookup.id)} className="text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </TableCell>
+                    {showAcoes && (
+                      <TableCell className="text-right">
+                        {editingId === lookup.id ? (
+                          <div className="flex justify-end gap-2">
+                            <Button variant="ghost" size="icon" onClick={() => handleUpdate(lookup.id)} className="text-primary">
+                              <Save className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => setEditingId(null)}>
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex justify-end gap-2">
+                            {canEdit && (
+                              <Button variant="ghost" size="icon" onClick={() => {
+                                setEditingId(lookup.id);
+                                setEditValue(lookup.value);
+                              }}>
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            )}
+                            {canDelete && (
+                              <Button variant="ghost" size="icon" onClick={() => handleDelete(lookup.id)} className="text-destructive">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                        )}
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>

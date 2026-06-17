@@ -12,6 +12,8 @@ import {
 import {
   requirePermission,
   requireUploader,
+  requireApproved,
+  hasPermission,
   getOrProvisionUser,
 } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
@@ -90,7 +92,7 @@ router.post(
 
 router.delete(
   "/evidencias/:id",
-  requireUploader,
+  requireApproved,
   async (req, res): Promise<void> => {
     const params = DeleteEvidenciaParams.safeParse(req.params);
     if (!params.success) {
@@ -108,14 +110,21 @@ router.delete(
     }
 
     const user = await getOrProvisionUser(req);
+    if (!user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
     const isOwner =
-      user?.email &&
+      user.email &&
       existing.uploadedByEmail &&
       user.email.toLowerCase() === existing.uploadedByEmail.toLowerCase();
-    const isAdmin = user?.profile === "ADMINISTRADOR";
-    if (!isOwner && !isAdmin) {
+    // Permissão RBAC explícita (admin sempre passa via hasPermission) OU o
+    // próprio autor da evidência pode removê-la.
+    const canExcluir = await hasPermission(user, "evidencias", "excluir");
+    if (!canExcluir && !isOwner) {
       res.status(403).json({
-        error: "Você só pode excluir evidências enviadas por você",
+        error:
+          "Você não tem permissão para excluir esta evidência.",
       });
       return;
     }

@@ -204,6 +204,40 @@ export function requirePermission(objetoChave: string, acao: string) {
 }
 
 /**
+ * Middleware factory that allows access when the user holds ANY of the given
+ * (object, action) grants. Useful for shared reference data (e.g. lookups)
+ * consumed by several screens, so a user who can read any consuming screen can
+ * load the reference lists. Administrators always pass.
+ */
+export function requireAnyPermission(pairs: [string, string][]) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    void (async () => {
+      const user = await getOrProvisionUser(req);
+      if (!user) {
+        res.status(401).json({ error: "Unauthorized" });
+        return;
+      }
+      if (user.status !== "APROVADO") {
+        res.status(403).json({ error: "Acesso ainda não aprovado" });
+        return;
+      }
+      if (user.profile === ADMIN_PROFILE_CHAVE) {
+        next();
+        return;
+      }
+      const checks = await Promise.all(
+        pairs.map(([objeto, acao]) => hasPermission(user, objeto, acao)),
+      );
+      if (!checks.some(Boolean)) {
+        res.status(403).json({ error: "Permissão negada" });
+        return;
+      }
+      next();
+    })().catch(next);
+  };
+}
+
+/**
  * Legacy upload eligibility, preserved so existing @natura.net accounts and
  * authorized terceiros keep their ability to upload evidence regardless of
  * profile permissions.

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useListContatos, useCreateContato, useDeleteContato, getListContatosQueryKey, useGetMe } from "@workspace/api-client-react";
+import { useListContatos, useCreateContato, useDeleteContato, getListContatosQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +13,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 export default function ContatosPage() {
   const [search, setSearch] = useState("");
-  const { data: user } = useGetMe();
-  const isAdmin = user?.profile === "ADMINISTRADOR";
+  const { has } = usePermissions();
+  const canCreate = has("contatos", "criar");
+  const canDelete = has("contatos", "excluir");
   const { toast } = useToast();
   const qc = useQueryClient();
 
@@ -55,7 +57,7 @@ export default function ContatosPage() {
           <h1 className="text-3xl font-bold tracking-tight text-primary">Contatos</h1>
           <p className="text-muted-foreground">Diretório de contatos úteis e escalonamento</p>
         </div>
-        {isAdmin && (
+        {canCreate && (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -114,7 +116,7 @@ export default function ContatosPage() {
                     <TableHead>Telefones</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Escalonamento</TableHead>
-                    {isAdmin && <TableHead className="text-right">Ações</TableHead>}
+                    {canDelete && <TableHead className="text-right">Ações</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -131,7 +133,7 @@ export default function ContatosPage() {
                       </TableCell>
                       <TableCell>{item.email}</TableCell>
                       <TableCell>{item.escalonamento}</TableCell>
-                      {isAdmin && (
+                      {canDelete && (
                         <TableCell className="text-right">
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="text-destructive">
                             <Trash2 className="h-4 w-4" />

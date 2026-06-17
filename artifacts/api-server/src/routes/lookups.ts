@@ -11,12 +11,22 @@ import {
   UpdateLookupResponse,
   DeleteLookupParams,
 } from "@workspace/api-zod";
-import { requireApproved, requirePermission } from "../middlewares/auth";
+import { requireAnyPermission, requirePermission } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
 
-router.get("/lookups", requireApproved, async (req, res): Promise<void> => {
+// Lookups são dados de domínio consumidos por várias telas (filtros de
+// dashboards, SELECTs de cenários e a tela de Cadastros). Liberamos a leitura
+// para quem puder consultar qualquer uma dessas áreas.
+router.get(
+  "/lookups",
+  requireAnyPermission([
+    ["cadastros", "consultar"],
+    ["cenarios", "consultar"],
+    ["dashboards", "consultar"],
+  ]),
+  async (req, res): Promise<void> => {
   const query = ListLookupsQueryParams.safeParse(req.query);
   if (!query.success) {
     res.status(400).json({ error: query.error.message });

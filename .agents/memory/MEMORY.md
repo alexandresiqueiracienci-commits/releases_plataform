@@ -1,3 +1,4 @@
 - [xlsx seeding](xlsx-seeding.md) — parsing .xlsx in Node ESM/scripts: no readFile, NFC/NFD filename traps, messy section rows; seed is transactional + idempotent.
 - [api-zod date serialization](api-zod-date-serialization.md) — Drizzle Date vs Zod ISO-string mismatch; pass rows through toJson() before .parse().
+- [RBAC e lookups](rbac-lookups-reference-data.md) — lookups são referência compartilhada (use requireAnyPermission, não só cadastros:consultar); upload de evidências mantém regra legada intencional.
 - [object storage evidence ACL](object-storage-evidence-acl.md) — signed-URL uploads: validate objectPath on register + bind private-object downloads to a record, never role-only.

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useListScenarios, useGetMe, useDeleteScenario, getListScenariosQueryKey } from "@workspace/api-client-react";
+import { useListScenarios, useDeleteScenario, getListScenariosQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +13,11 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function CenariosListPage() {
   const [search, setSearch] = useState("");
-  const { data: user } = useGetMe();
-  const isAdmin = user?.profile === "ADMINISTRADOR";
+  const { has } = usePermissions();
+  const canCreate = has("cenarios", "criar");
+  const canEdit = has("cenarios", "atualizar");
+  const canDelete = has("cenarios", "excluir");
+  const showAcoes = canEdit || canDelete;
   const { toast } = useToast();
   const qc = useQueryClient();
 
@@ -38,7 +42,7 @@ export default function CenariosListPage() {
           <h1 className="text-3xl font-bold tracking-tight text-primary">Cenários</h1>
           <p className="text-muted-foreground">Listagem e execução de testes</p>
         </div>
-        {isAdmin && (
+        {canCreate && (
           <Button asChild>
             <Link href="/cenarios/novo">
               <Plus className="mr-2 h-4 w-4" />
@@ -79,7 +83,7 @@ export default function CenariosListPage() {
                     <TableHead>Site</TableHead>
                     <TableHead>Prioridade</TableHead>
                     <TableHead>Status</TableHead>
-                    {isAdmin && <TableHead className="text-right">Ações</TableHead>}
+                    {showAcoes && <TableHead className="text-right">Ações</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -93,17 +97,21 @@ export default function CenariosListPage() {
                       <TableCell>{cenario.site}</TableCell>
                       <TableCell>{cenario.prioridade}</TableCell>
                       <TableCell>{cenario.statusCenario}</TableCell>
-                      {isAdmin && (
+                      {showAcoes && (
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
-                            <Button variant="ghost" size="icon" asChild>
-                              <Link href={`/cenarios/${cenario.id}/editar`}>
-                                <Edit className="h-4 w-4" />
-                              </Link>
-                            </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDelete(cenario.id)} className="text-destructive">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            {canEdit && (
+                              <Button variant="ghost" size="icon" asChild>
+                                <Link href={`/cenarios/${cenario.id}/editar`}>
+                                  <Edit className="h-4 w-4" />
+                                </Link>
+                              </Button>
+                            )}
+                            {canDelete && (
+                              <Button variant="ghost" size="icon" onClick={() => handleDelete(cenario.id)} className="text-destructive">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
                           </div>
                         </TableCell>
                       )}

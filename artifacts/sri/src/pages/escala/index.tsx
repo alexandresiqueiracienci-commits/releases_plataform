@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useListEscala, useCreateEscala, useUpdateEscala, useDeleteEscala, getListEscalaQueryKey, useGetMe } from "@workspace/api-client-react";
+import { useListEscala, useCreateEscala, useUpdateEscala, useDeleteEscala, getListEscalaQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +13,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 
 export default function EscalaPage() {
   const [search, setSearch] = useState("");
-  const { data: user } = useGetMe();
-  const isAdmin = user?.profile === "ADMINISTRADOR";
+  const { has } = usePermissions();
+  const canCreate = has("escala", "criar");
+  const canDelete = has("escala", "excluir");
   const { toast } = useToast();
   const qc = useQueryClient();
 
@@ -55,7 +57,7 @@ export default function EscalaPage() {
           <h1 className="text-3xl font-bold tracking-tight text-primary">Escala</h1>
           <p className="text-muted-foreground">Plantões e alocação da equipe</p>
         </div>
-        {isAdmin && (
+        {canCreate && (
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -110,7 +112,7 @@ export default function EscalaPage() {
                   <TableHead>Papel</TableHead>
                   <TableHead>Dia</TableHead>
                   <TableHead>Horário</TableHead>
-                  {isAdmin && <TableHead className="text-right">Ações</TableHead>}
+                  {canDelete && <TableHead className="text-right">Ações</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -121,7 +123,7 @@ export default function EscalaPage() {
                     <TableCell>{item.papel}</TableCell>
                     <TableCell>{item.dia}</TableCell>
                     <TableCell>{item.horaInicio} - {item.horaFim}</TableCell>
-                    {isAdmin && (
+                    {canDelete && (
                       <TableCell className="text-right">
                         <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="text-destructive">
                           <Trash2 className="h-4 w-4" />
