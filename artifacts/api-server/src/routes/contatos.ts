@@ -11,12 +11,15 @@ import {
   UpdateContatoResponse,
   DeleteContatoParams,
 } from "@workspace/api-zod";
-import { requireApproved, requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
 
-router.get("/contatos", requireApproved, async (req, res): Promise<void> => {
+router.get(
+  "/contatos",
+  requirePermission("contatos", "consultar"),
+  async (req, res): Promise<void> => {
   const query = ListContatosQueryParams.safeParse(req.query);
   if (!query.success) {
     res.status(400).json({ error: query.error.message });
@@ -45,7 +48,10 @@ router.get("/contatos", requireApproved, async (req, res): Promise<void> => {
   res.json(ListContatosResponse.parse(toJson(rows)));
 });
 
-router.post("/contatos", requireAdmin, async (req, res): Promise<void> => {
+router.post(
+  "/contatos",
+  requirePermission("contatos", "criar"),
+  async (req, res): Promise<void> => {
   const body = CreateContatoBody.safeParse(req.body);
   if (!body.success) {
     res.status(400).json({ error: body.error.message });
@@ -60,7 +66,10 @@ router.post("/contatos", requireAdmin, async (req, res): Promise<void> => {
   res.status(201).json(ListContatosResponseItem.parse(toJson(contato)));
 });
 
-router.patch("/contatos/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch(
+  "/contatos/:id",
+  requirePermission("contatos", "atualizar"),
+  async (req, res): Promise<void> => {
   const params = UpdateContatoParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -88,7 +97,7 @@ router.patch("/contatos/:id", requireAdmin, async (req, res): Promise<void> => {
 
 router.delete(
   "/contatos/:id",
-  requireAdmin,
+  requirePermission("contatos", "excluir"),
   async (req, res): Promise<void> => {
     const params = DeleteContatoParams.safeParse(req.params);
     if (!params.success) {

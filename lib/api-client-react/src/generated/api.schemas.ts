@@ -26,6 +26,8 @@ export interface User {
   status: string;
   /** True when the user is an authorized third party. */
   terceiro?: boolean;
+  /** Flat list of "objeto:acao" permissions granted to the user. */
+  permissions?: string[];
   /** @nullable */
   createdAt?: string | null;
 }
@@ -177,6 +179,73 @@ export interface ScenarioUpdate {
   idCenarioJira?: string;
   statusCheckPoint?: string;
   diretorio?: string;
+}
+
+export interface ScenarioStatusUpdate {
+  /** @minLength 1 */
+  statusCenario: string;
+}
+
+export interface Perfil {
+  id: number;
+  chave: string;
+  nome: string;
+  /** @nullable */
+  descricao?: string | null;
+  /** System profiles cannot be deleted. */
+  sistema: boolean;
+  /** @nullable */
+  createdAt?: string | null;
+}
+
+export interface PerfilInput {
+  /** Optional unique key; derived from nome when omitted. */
+  chave?: string;
+  /** @minLength 1 */
+  nome: string;
+  descricao?: string;
+}
+
+export interface PerfilUpdate {
+  nome?: string;
+  descricao?: string;
+}
+
+export interface Objeto {
+  id: number;
+  chave: string;
+  nome: string;
+  /** @nullable */
+  descricao?: string | null;
+  acoes: string[];
+  /** System objects cannot be deleted. */
+  sistema: boolean;
+  /** @nullable */
+  createdAt?: string | null;
+}
+
+export interface ObjetoInput {
+  /** @minLength 1 */
+  chave: string;
+  /** @minLength 1 */
+  nome: string;
+  descricao?: string;
+  acoes: string[];
+}
+
+export interface ObjetoUpdate {
+  nome?: string;
+  descricao?: string;
+  acoes?: string[];
+}
+
+export interface Permissao {
+  objetoId: number;
+  acao: string;
+}
+
+export interface PerfilPermissoesInput {
+  permissoes: Permissao[];
 }
 
 export interface Lookup {

@@ -7,7 +7,7 @@ import {
   RequestUploadUrlResponse,
 } from "@workspace/api-zod";
 import { ObjectStorageService, ObjectNotFoundError } from "../lib/objectStorage";
-import { requireApproved, requireUploader } from "../middlewares/auth";
+import { requirePermission, requireUploader } from "../middlewares/auth";
 
 const router: IRouter = Router();
 const objectStorageService = new ObjectStorageService();
@@ -57,7 +57,7 @@ router.post(
  */
 router.get(
   "/storage/objects/*path",
-  requireApproved,
+  requirePermission("evidencias", "consultar"),
   async (req: Request, res: Response) => {
     try {
       const raw = req.params.path;

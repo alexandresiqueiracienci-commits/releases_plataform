@@ -1,7 +1,15 @@
 import type { Request, Response, NextFunction } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
-import { eq } from "drizzle-orm";
-import { db, usersTable, type User } from "@workspace/db";
+import { eq, and } from "drizzle-orm";
+import {
+  db,
+  usersTable,
+  perfisTable,
+  objetosTable,
+  perfilPermissoesTable,
+  ADMIN_PROFILE_CHAVE,
+  type User,
+} from "@workspace/db";
 
 const ADMIN_EMAIL = "alexandresiqueira.cienci@natura.net";
 const NATURA_DOMAIN = "@natura.net";
@@ -67,6 +75,71 @@ export async function getOrProvisionUser(req: Request): Promise<User | null> {
   return created;
 }
 
+export function isAdminProfile(user: User): boolean {
+  return user.status === "APROVADO" && user.profile === ADMIN_PROFILE_CHAVE;
+}
+
+/**
+ * Returns the flat list of permissions ("objetoChave:acao") granted to a user
+ * by their profile. Administrators implicitly receive every action of every
+ * object. Not-approved users receive none.
+ */
+export async function getUserPermissions(user: User): Promise<string[]> {
+  if (user.status !== "APROVADO") return [];
+
+  if (user.profile === ADMIN_PROFILE_CHAVE) {
+    const objetos = await db.select().from(objetosTable);
+    return objetos.flatMap((o) => o.acoes.map((a) => `${o.chave}:${a}`));
+  }
+
+  const rows = await db
+    .select({
+      chave: objetosTable.chave,
+      acao: perfilPermissoesTable.acao,
+    })
+    .from(perfilPermissoesTable)
+    .innerJoin(perfisTable, eq(perfilPermissoesTable.perfilId, perfisTable.id))
+    .innerJoin(
+      objetosTable,
+      eq(perfilPermissoesTable.objetoId, objetosTable.id),
+    )
+    .where(eq(perfisTable.chave, user.profile));
+
+  return rows.map((r) => `${r.chave}:${r.acao}`);
+}
+
+/**
+ * Checks whether a user is allowed to perform a single action on an object.
+ * Administrators are always allowed; otherwise the grant must exist for the
+ * user's profile.
+ */
+export async function hasPermission(
+  user: User,
+  objetoChave: string,
+  acao: string,
+): Promise<boolean> {
+  if (user.status !== "APROVADO") return false;
+  if (user.profile === ADMIN_PROFILE_CHAVE) return true;
+
+  const rows = await db
+    .select({ id: perfilPermissoesTable.id })
+    .from(perfilPermissoesTable)
+    .innerJoin(perfisTable, eq(perfilPermissoesTable.perfilId, perfisTable.id))
+    .innerJoin(
+      objetosTable,
+      eq(perfilPermissoesTable.objetoId, objetosTable.id),
+    )
+    .where(
+      and(
+        eq(perfisTable.chave, user.profile),
+        eq(objetosTable.chave, objetoChave),
+        eq(perfilPermissoesTable.acao, acao),
+      ),
+    );
+
+  return rows.length > 0;
+}
+
 export function requireApproved(
   req: Request,
   res: Response,
@@ -97,7 +170,7 @@ export function requireAdmin(
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
-    if (user.status !== "APROVADO" || user.profile !== "ADMINISTRADOR") {
+    if (!isAdminProfile(user)) {
       res.status(403).json({ error: "Acesso restrito a administradores" });
       return;
     }
@@ -106,18 +179,49 @@ export function requireAdmin(
 }
 
 /**
- * Returns true if the user is allowed to upload test evidences:
- * @natura.net accounts, terceiros autorizados, or administradores.
+ * Middleware factory that enforces a single (object, action) permission
+ * server-side. The UI gating is advisory only — this is the real gate.
  */
-export function canUploadEvidencias(user: User): boolean {
+export function requirePermission(objetoChave: string, acao: string) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    void (async () => {
+      const user = await getOrProvisionUser(req);
+      if (!user) {
+        res.status(401).json({ error: "Unauthorized" });
+        return;
+      }
+      if (user.status !== "APROVADO") {
+        res.status(403).json({ error: "Acesso ainda não aprovado" });
+        return;
+      }
+      if (!(await hasPermission(user, objetoChave, acao))) {
+        res.status(403).json({ error: "Permissão negada" });
+        return;
+      }
+      next();
+    })().catch(next);
+  };
+}
+
+/**
+ * Legacy upload eligibility, preserved so existing @natura.net accounts and
+ * authorized terceiros keep their ability to upload evidence regardless of
+ * profile permissions.
+ */
+export function canUploadEvidenciasLegacy(user: User): boolean {
   if (user.status !== "APROVADO") return false;
   return (
     user.email.toLowerCase().endsWith(NATURA_DOMAIN) ||
     user.terceiro === true ||
-    user.profile === "ADMINISTRADOR"
+    user.profile === ADMIN_PROFILE_CHAVE
   );
 }
 
+/**
+ * Allows evidence upload when the user is eligible by the legacy rule OR has
+ * been granted the special "enviar_evidencia" permission on the evidencias
+ * object through a custom profile.
+ */
 export function requireUploader(
   req: Request,
   res: Response,
@@ -129,10 +233,17 @@ export function requireUploader(
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
-    if (!canUploadEvidencias(user)) {
+    if (user.status !== "APROVADO") {
+      res.status(403).json({ error: "Acesso ainda não aprovado" });
+      return;
+    }
+    const allowed =
+      canUploadEvidenciasLegacy(user) ||
+      (await hasPermission(user, "evidencias", "enviar_evidencia"));
+    if (!allowed) {
       res.status(403).json({
         error:
-          "Apenas contas @natura.net ou terceiros autorizados podem enviar evidencias",
+          "Você não tem permissão para enviar evidências. Solicite acesso ao administrador.",
       });
       return;
     }

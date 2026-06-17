@@ -11,13 +11,18 @@ import {
   UpdateScenarioBody,
   UpdateScenarioResponse,
   DeleteScenarioParams,
+  UpdateScenarioStatusParams,
+  UpdateScenarioStatusBody,
 } from "@workspace/api-zod";
-import { requireApproved, requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
 
-router.get("/scenarios", requireApproved, async (req, res): Promise<void> => {
+router.get(
+  "/scenarios",
+  requirePermission("cenarios", "consultar"),
+  async (req, res): Promise<void> => {
   const query = ListScenariosQueryParams.safeParse(req.query);
   if (!query.success) {
     res.status(400).json({ error: query.error.message });
@@ -52,7 +57,10 @@ router.get("/scenarios", requireApproved, async (req, res): Promise<void> => {
   res.json(ListScenariosResponse.parse(toJson(rows)));
 });
 
-router.post("/scenarios", requireAdmin, async (req, res): Promise<void> => {
+router.post(
+  "/scenarios",
+  requirePermission("cenarios", "criar"),
+  async (req, res): Promise<void> => {
   const body = CreateScenarioBody.safeParse(req.body);
   if (!body.success) {
     res.status(400).json({ error: body.error.message });
@@ -67,7 +75,10 @@ router.post("/scenarios", requireAdmin, async (req, res): Promise<void> => {
   res.status(201).json(GetScenarioResponse.parse(toJson(scenario)));
 });
 
-router.get("/scenarios/:id", requireApproved, async (req, res): Promise<void> => {
+router.get(
+  "/scenarios/:id",
+  requirePermission("cenarios", "consultar"),
+  async (req, res): Promise<void> => {
   const params = GetScenarioParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -87,7 +98,10 @@ router.get("/scenarios/:id", requireApproved, async (req, res): Promise<void> =>
   res.json(GetScenarioResponse.parse(toJson(scenario)));
 });
 
-router.patch("/scenarios/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch(
+  "/scenarios/:id",
+  requirePermission("cenarios", "atualizar"),
+  async (req, res): Promise<void> => {
   const params = UpdateScenarioParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -113,9 +127,41 @@ router.patch("/scenarios/:id", requireAdmin, async (req, res): Promise<void> => 
   res.json(UpdateScenarioResponse.parse(toJson(scenario)));
 });
 
+// Dedicated status-only update so a custom profile can change the status of the
+// scenario it is uploading evidence to without full scenario-edit access.
+router.patch(
+  "/scenarios/:id/status",
+  requirePermission("cenarios", "alterar_status"),
+  async (req, res): Promise<void> => {
+    const params = UpdateScenarioStatusParams.safeParse(req.params);
+    if (!params.success) {
+      res.status(400).json({ error: params.error.message });
+      return;
+    }
+    const body = UpdateScenarioStatusBody.safeParse(req.body);
+    if (!body.success) {
+      res.status(400).json({ error: body.error.message });
+      return;
+    }
+
+    const [scenario] = await db
+      .update(scenariosTable)
+      .set({ statusCenario: body.data.statusCenario })
+      .where(eq(scenariosTable.id, params.data.id))
+      .returning();
+
+    if (!scenario) {
+      res.status(404).json({ error: "Cenário não encontrado" });
+      return;
+    }
+
+    res.json(UpdateScenarioResponse.parse(toJson(scenario)));
+  },
+);
+
 router.delete(
   "/scenarios/:id",
-  requireAdmin,
+  requirePermission("cenarios", "excluir"),
   async (req, res): Promise<void> => {
     const params = DeleteScenarioParams.safeParse(req.params);
     if (!params.success) {

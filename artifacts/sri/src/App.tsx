@@ -23,8 +23,10 @@ import ContatosPage from "@/pages/contatos/index";
 const GovernancaPage = lazy(() => import("@/pages/governanca/index"));
 import UsuariosPage from "@/pages/usuarios/index";
 import PerfisPage from "@/pages/perfis/index";
+import ObjetosPage from "@/pages/objetos/index";
 const EvidenciasPage = lazy(() => import("@/pages/evidencias/index"));
 import NotFound from "@/pages/not-found";
+import { usePermissions } from "@/hooks/use-permissions";
 
 const clerkPubKey = publishableKeyFromHost(
   window.location.hostname,
@@ -112,18 +114,33 @@ function ClerkQueryClientCacheInvalidator() {
   return null;
 }
 
-function ProtectedRoute({ component: Component, adminOnly = false }: { component: React.ComponentType, adminOnly?: boolean }) {
+function ProtectedRoute({
+  component: Component,
+  adminOnly = false,
+  requireObjeto,
+  requireAcao,
+}: {
+  component: React.ComponentType;
+  adminOnly?: boolean;
+  requireObjeto?: string;
+  requireAcao?: string;
+}) {
   const { data: user, isLoading } = useGetMe();
+  const { isAdmin, has } = usePermissions();
 
   if (isLoading) return null; // AppShell handles global loading
-  
+
   if (user?.status === "PENDENTE") return <PendingPage />;
   if (user?.status === "REJEITADO") return <DeniedPage />;
-  
-  if (adminOnly && user?.profile !== "ADMINISTRADOR") {
-    return <Redirect to="/dashboards" />;
+
+  if (adminOnly && !isAdmin) {
+    return <Redirect to="/" />;
   }
-  
+
+  if (requireObjeto && requireAcao && !has(requireObjeto, requireAcao)) {
+    return <Redirect to="/" />;
+  }
+
   return <Component />;
 }
 
@@ -133,32 +150,32 @@ function AuthenticatedApp() {
       <Switch>
         <Route path="/" component={HomePage} />
         <Route path="/dashboards">
-          <ProtectedRoute component={DashboardsPage} />
+          <ProtectedRoute component={DashboardsPage} requireObjeto="dashboards" requireAcao="consultar" />
         </Route>
         <Route path="/cenarios">
-          <ProtectedRoute component={CenariosListPage} />
+          <ProtectedRoute component={CenariosListPage} requireObjeto="cenarios" requireAcao="consultar" />
         </Route>
         <Route path="/cenarios/novo">
-          <ProtectedRoute component={CenariosFormPage} adminOnly />
+          <ProtectedRoute component={CenariosFormPage} requireObjeto="cenarios" requireAcao="criar" />
         </Route>
         <Route path="/cenarios/:id/editar">
-          <ProtectedRoute component={CenariosFormPage} adminOnly />
+          <ProtectedRoute component={CenariosFormPage} requireObjeto="cenarios" requireAcao="atualizar" />
         </Route>
         <Route path="/cadastros">
-          <ProtectedRoute component={CadastrosIndexPage} adminOnly />
+          <ProtectedRoute component={CadastrosIndexPage} requireObjeto="cadastros" requireAcao="consultar" />
         </Route>
         <Route path="/cadastros/:category">
-          <ProtectedRoute component={CadastrosCrudPage} adminOnly />
+          <ProtectedRoute component={CadastrosCrudPage} requireObjeto="cadastros" requireAcao="consultar" />
         </Route>
         <Route path="/escala">
-          <ProtectedRoute component={EscalaPage} />
+          <ProtectedRoute component={EscalaPage} requireObjeto="escala" requireAcao="consultar" />
         </Route>
         <Route path="/contatos">
-          <ProtectedRoute component={ContatosPage} />
+          <ProtectedRoute component={ContatosPage} requireObjeto="contatos" requireAcao="consultar" />
         </Route>
         <Route path="/evidencias">
           <Suspense fallback={null}>
-            <ProtectedRoute component={EvidenciasPage} />
+            <ProtectedRoute component={EvidenciasPage} requireObjeto="evidencias" requireAcao="consultar" />
           </Suspense>
         </Route>
         <Route path="/governanca">
@@ -171,6 +188,9 @@ function AuthenticatedApp() {
         </Route>
         <Route path="/perfis">
           <ProtectedRoute component={PerfisPage} adminOnly />
+        </Route>
+        <Route path="/objetos">
+          <ProtectedRoute component={ObjetosPage} adminOnly />
         </Route>
         <Route component={NotFound} />
       </Switch>

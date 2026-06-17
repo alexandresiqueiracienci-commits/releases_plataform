@@ -5,15 +5,27 @@ import {
   useListEvidencias,
   useCreateEvidencia,
   useDeleteEvidencia,
+  useListLookups,
+  useUpdateScenarioStatus,
   getListEvidenciasQueryKey,
+  getListScenariosQueryKey,
   type Scenario,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -296,22 +308,72 @@ function EvidenciasSection({
   );
 }
 
+function StatusControl({ scenario }: { scenario: ScenarioRow }) {
+  const { toast } = useToast();
+  const qc = useQueryClient();
+  const { data: statusOptions } = useListLookups({ category: "status_cenario" });
+  const updateStatus = useUpdateScenarioStatus();
+
+  const handleChange = async (value: string) => {
+    try {
+      await updateStatus.mutateAsync({
+        id: scenario.id,
+        data: { statusCenario: value },
+      });
+      qc.invalidateQueries({ queryKey: getListScenariosQueryKey() });
+      toast({ title: "Sucesso", description: "Status do cenário atualizado." });
+    } catch {
+      toast({
+        title: "Erro",
+        description: "Falha ao atualizar o status.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="rounded-md border bg-muted/30 p-4 space-y-2">
+      <Label htmlFor="status-cenario">Alterar status do cenário</Label>
+      <Select
+        value={scenario.statusCenario ?? undefined}
+        onValueChange={handleChange}
+      >
+        <SelectTrigger id="status-cenario" className="w-full sm:w-[280px]">
+          <SelectValue placeholder="Selecione um status" />
+        </SelectTrigger>
+        <SelectContent>
+          {statusOptions?.map((opt) => (
+            <SelectItem key={opt.id} value={opt.value}>
+              {opt.value}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+}
+
 export default function EvidenciasPage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<ScenarioRow | null>(null);
 
   const { data: user } = useGetMe();
+  const { has } = usePermissions();
+  const canChangeStatus = has("cenarios", "alterar_status");
   const { data: cenarios, isLoading } = useListScenarios({
     search: search || undefined,
   });
 
   const email = user?.email ?? "";
   const isAdmin = user?.profile === "ADMINISTRADOR";
+  // Espelha a regra do backend (requireUploader): regra legada
+  // (@natura.net / terceiro / admin) OU permissão RBAC explícita.
   const canUpload =
     user?.status === "APROVADO" &&
     (email.toLowerCase().endsWith("@natura.net") ||
       user?.terceiro === true ||
-      isAdmin);
+      isAdmin ||
+      has("evidencias", "enviar_evidencia"));
 
   return (
     <div className="space-y-6">
@@ -456,6 +518,12 @@ export default function EvidenciasPage() {
                     </dl>
                   </div>
                 ))}
+
+                {canChangeStatus && (
+                  <div className="border-t pt-4">
+                    <StatusControl scenario={selected} />
+                  </div>
+                )}
 
                 <div className="border-t pt-4">
                   <EvidenciasSection

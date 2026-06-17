@@ -43,8 +43,17 @@ import type {
   Lookup,
   LookupInput,
   LookupUpdate,
+  Objeto,
+  ObjetoInput,
+  ObjetoUpdate,
+  Perfil,
+  PerfilInput,
+  PerfilPermissoesInput,
+  PerfilUpdate,
+  Permissao,
   Scenario,
   ScenarioInput,
+  ScenarioStatusUpdate,
   ScenarioUpdate,
   UploadUrlRequest,
   UploadUrlResponse,
@@ -819,6 +828,808 @@ export const useDeleteScenario = <TError = ErrorType<Error>,
         TContext
       > => {
       return useMutation(getDeleteScenarioMutationOptions(options));
+    }
+
+export const getUpdateScenarioStatusUrl = (id: number,) => {
+
+
+
+
+  return `/api/scenarios/${id}/status`
+}
+
+/**
+ * Requires the cenarios:alterar_status permission.
+ * @summary Update only the status of a scenario
+ */
+export const updateScenarioStatus = async (id: number,
+    scenarioStatusUpdate: ScenarioStatusUpdate, options?: RequestInit): Promise<Scenario> => {
+
+  return customFetch<Scenario>(getUpdateScenarioStatusUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      scenarioStatusUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateScenarioStatusMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateScenarioStatus>>, TError,{id: number;data: BodyType<ScenarioStatusUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateScenarioStatus>>, TError,{id: number;data: BodyType<ScenarioStatusUpdate>}, TContext> => {
+
+const mutationKey = ['updateScenarioStatus'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateScenarioStatus>>, {id: number;data: BodyType<ScenarioStatusUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateScenarioStatus(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateScenarioStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateScenarioStatus>>>
+    export type UpdateScenarioStatusMutationBody = BodyType<ScenarioStatusUpdate>
+    export type UpdateScenarioStatusMutationError = ErrorType<Error>
+
+    /**
+ * @summary Update only the status of a scenario
+ */
+export const useUpdateScenarioStatus = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateScenarioStatus>>, TError,{id: number;data: BodyType<ScenarioStatusUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateScenarioStatus>>,
+        TError,
+        {id: number;data: BodyType<ScenarioStatusUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateScenarioStatusMutationOptions(options));
+    }
+
+export const getListPerfisUrl = () => {
+
+
+
+
+  return `/api/perfis`
+}
+
+/**
+ * @summary List access profiles (admin only)
+ */
+export const listPerfis = async ( options?: RequestInit): Promise<Perfil[]> => {
+
+  return customFetch<Perfil[]>(getListPerfisUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListPerfisQueryKey = () => {
+    return [
+    `/api/perfis`
+    ] as const;
+    }
+
+
+export const getListPerfisQueryOptions = <TData = Awaited<ReturnType<typeof listPerfis>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listPerfis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListPerfisQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listPerfis>>> = ({ signal }) => listPerfis({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listPerfis>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListPerfisQueryResult = NonNullable<Awaited<ReturnType<typeof listPerfis>>>
+export type ListPerfisQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List access profiles (admin only)
+ */
+
+export function useListPerfis<TData = Awaited<ReturnType<typeof listPerfis>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listPerfis>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListPerfisQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreatePerfilUrl = () => {
+
+
+
+
+  return `/api/perfis`
+}
+
+/**
+ * @summary Create an access profile (admin only)
+ */
+export const createPerfil = async (perfilInput: PerfilInput, options?: RequestInit): Promise<Perfil> => {
+
+  return customFetch<Perfil>(getCreatePerfilUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      perfilInput,)
+  }
+);}
+
+
+
+
+export const getCreatePerfilMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPerfil>>, TError,{data: BodyType<PerfilInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPerfil>>, TError,{data: BodyType<PerfilInput>}, TContext> => {
+
+const mutationKey = ['createPerfil'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPerfil>>, {data: BodyType<PerfilInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createPerfil(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePerfilMutationResult = NonNullable<Awaited<ReturnType<typeof createPerfil>>>
+    export type CreatePerfilMutationBody = BodyType<PerfilInput>
+    export type CreatePerfilMutationError = ErrorType<Error>
+
+    /**
+ * @summary Create an access profile (admin only)
+ */
+export const useCreatePerfil = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPerfil>>, TError,{data: BodyType<PerfilInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPerfil>>,
+        TError,
+        {data: BodyType<PerfilInput>},
+        TContext
+      > => {
+      return useMutation(getCreatePerfilMutationOptions(options));
+    }
+
+export const getUpdatePerfilUrl = (id: number,) => {
+
+
+
+
+  return `/api/perfis/${id}`
+}
+
+/**
+ * @summary Update an access profile (admin only)
+ */
+export const updatePerfil = async (id: number,
+    perfilUpdate: PerfilUpdate, options?: RequestInit): Promise<Perfil> => {
+
+  return customFetch<Perfil>(getUpdatePerfilUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      perfilUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdatePerfilMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePerfil>>, TError,{id: number;data: BodyType<PerfilUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updatePerfil>>, TError,{id: number;data: BodyType<PerfilUpdate>}, TContext> => {
+
+const mutationKey = ['updatePerfil'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePerfil>>, {id: number;data: BodyType<PerfilUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updatePerfil(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatePerfilMutationResult = NonNullable<Awaited<ReturnType<typeof updatePerfil>>>
+    export type UpdatePerfilMutationBody = BodyType<PerfilUpdate>
+    export type UpdatePerfilMutationError = ErrorType<Error>
+
+    /**
+ * @summary Update an access profile (admin only)
+ */
+export const useUpdatePerfil = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePerfil>>, TError,{id: number;data: BodyType<PerfilUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updatePerfil>>,
+        TError,
+        {id: number;data: BodyType<PerfilUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdatePerfilMutationOptions(options));
+    }
+
+export const getDeletePerfilUrl = (id: number,) => {
+
+
+
+
+  return `/api/perfis/${id}`
+}
+
+/**
+ * @summary Delete a custom access profile (admin only)
+ */
+export const deletePerfil = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeletePerfilUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeletePerfilMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePerfil>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deletePerfil>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deletePerfil'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePerfil>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deletePerfil(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeletePerfilMutationResult = NonNullable<Awaited<ReturnType<typeof deletePerfil>>>
+
+    export type DeletePerfilMutationError = ErrorType<Error>
+
+    /**
+ * @summary Delete a custom access profile (admin only)
+ */
+export const useDeletePerfil = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePerfil>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deletePerfil>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeletePerfilMutationOptions(options));
+    }
+
+export const getGetPerfilPermissoesUrl = (id: number,) => {
+
+
+
+
+  return `/api/perfis/${id}/permissoes`
+}
+
+/**
+ * @summary Get the permission grants of a profile (admin only)
+ */
+export const getPerfilPermissoes = async (id: number, options?: RequestInit): Promise<Permissao[]> => {
+
+  return customFetch<Permissao[]>(getGetPerfilPermissoesUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPerfilPermissoesQueryKey = (id: number,) => {
+    return [
+    `/api/perfis/${id}/permissoes`
+    ] as const;
+    }
+
+
+export const getGetPerfilPermissoesQueryOptions = <TData = Awaited<ReturnType<typeof getPerfilPermissoes>>, TError = ErrorType<unknown>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPerfilPermissoes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPerfilPermissoesQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPerfilPermissoes>>> = ({ signal }) => getPerfilPermissoes(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPerfilPermissoes>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPerfilPermissoesQueryResult = NonNullable<Awaited<ReturnType<typeof getPerfilPermissoes>>>
+export type GetPerfilPermissoesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get the permission grants of a profile (admin only)
+ */
+
+export function useGetPerfilPermissoes<TData = Awaited<ReturnType<typeof getPerfilPermissoes>>, TError = ErrorType<unknown>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPerfilPermissoes>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPerfilPermissoesQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSetPerfilPermissoesUrl = (id: number,) => {
+
+
+
+
+  return `/api/perfis/${id}/permissoes`
+}
+
+/**
+ * @summary Replace the permission grants of a profile (admin only)
+ */
+export const setPerfilPermissoes = async (id: number,
+    perfilPermissoesInput: PerfilPermissoesInput, options?: RequestInit): Promise<Permissao[]> => {
+
+  return customFetch<Permissao[]>(getSetPerfilPermissoesUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      perfilPermissoesInput,)
+  }
+);}
+
+
+
+
+export const getSetPerfilPermissoesMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setPerfilPermissoes>>, TError,{id: number;data: BodyType<PerfilPermissoesInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof setPerfilPermissoes>>, TError,{id: number;data: BodyType<PerfilPermissoesInput>}, TContext> => {
+
+const mutationKey = ['setPerfilPermissoes'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof setPerfilPermissoes>>, {id: number;data: BodyType<PerfilPermissoesInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  setPerfilPermissoes(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SetPerfilPermissoesMutationResult = NonNullable<Awaited<ReturnType<typeof setPerfilPermissoes>>>
+    export type SetPerfilPermissoesMutationBody = BodyType<PerfilPermissoesInput>
+    export type SetPerfilPermissoesMutationError = ErrorType<Error>
+
+    /**
+ * @summary Replace the permission grants of a profile (admin only)
+ */
+export const useSetPerfilPermissoes = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof setPerfilPermissoes>>, TError,{id: number;data: BodyType<PerfilPermissoesInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof setPerfilPermissoes>>,
+        TError,
+        {id: number;data: BodyType<PerfilPermissoesInput>},
+        TContext
+      > => {
+      return useMutation(getSetPerfilPermissoesMutationOptions(options));
+    }
+
+export const getListObjetosUrl = () => {
+
+
+
+
+  return `/api/objetos`
+}
+
+/**
+ * @summary List system objects/resources (admin only)
+ */
+export const listObjetos = async ( options?: RequestInit): Promise<Objeto[]> => {
+
+  return customFetch<Objeto[]>(getListObjetosUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListObjetosQueryKey = () => {
+    return [
+    `/api/objetos`
+    ] as const;
+    }
+
+
+export const getListObjetosQueryOptions = <TData = Awaited<ReturnType<typeof listObjetos>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listObjetos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListObjetosQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listObjetos>>> = ({ signal }) => listObjetos({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listObjetos>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListObjetosQueryResult = NonNullable<Awaited<ReturnType<typeof listObjetos>>>
+export type ListObjetosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List system objects/resources (admin only)
+ */
+
+export function useListObjetos<TData = Awaited<ReturnType<typeof listObjetos>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listObjetos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListObjetosQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreateObjetoUrl = () => {
+
+
+
+
+  return `/api/objetos`
+}
+
+/**
+ * @summary Create a system object (admin only)
+ */
+export const createObjeto = async (objetoInput: ObjetoInput, options?: RequestInit): Promise<Objeto> => {
+
+  return customFetch<Objeto>(getCreateObjetoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      objetoInput,)
+  }
+);}
+
+
+
+
+export const getCreateObjetoMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createObjeto>>, TError,{data: BodyType<ObjetoInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createObjeto>>, TError,{data: BodyType<ObjetoInput>}, TContext> => {
+
+const mutationKey = ['createObjeto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createObjeto>>, {data: BodyType<ObjetoInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createObjeto(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateObjetoMutationResult = NonNullable<Awaited<ReturnType<typeof createObjeto>>>
+    export type CreateObjetoMutationBody = BodyType<ObjetoInput>
+    export type CreateObjetoMutationError = ErrorType<Error>
+
+    /**
+ * @summary Create a system object (admin only)
+ */
+export const useCreateObjeto = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createObjeto>>, TError,{data: BodyType<ObjetoInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createObjeto>>,
+        TError,
+        {data: BodyType<ObjetoInput>},
+        TContext
+      > => {
+      return useMutation(getCreateObjetoMutationOptions(options));
+    }
+
+export const getUpdateObjetoUrl = (id: number,) => {
+
+
+
+
+  return `/api/objetos/${id}`
+}
+
+/**
+ * @summary Update a system object (admin only)
+ */
+export const updateObjeto = async (id: number,
+    objetoUpdate: ObjetoUpdate, options?: RequestInit): Promise<Objeto> => {
+
+  return customFetch<Objeto>(getUpdateObjetoUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      objetoUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateObjetoMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateObjeto>>, TError,{id: number;data: BodyType<ObjetoUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateObjeto>>, TError,{id: number;data: BodyType<ObjetoUpdate>}, TContext> => {
+
+const mutationKey = ['updateObjeto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateObjeto>>, {id: number;data: BodyType<ObjetoUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateObjeto(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateObjetoMutationResult = NonNullable<Awaited<ReturnType<typeof updateObjeto>>>
+    export type UpdateObjetoMutationBody = BodyType<ObjetoUpdate>
+    export type UpdateObjetoMutationError = ErrorType<Error>
+
+    /**
+ * @summary Update a system object (admin only)
+ */
+export const useUpdateObjeto = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateObjeto>>, TError,{id: number;data: BodyType<ObjetoUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateObjeto>>,
+        TError,
+        {id: number;data: BodyType<ObjetoUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateObjetoMutationOptions(options));
+    }
+
+export const getDeleteObjetoUrl = (id: number,) => {
+
+
+
+
+  return `/api/objetos/${id}`
+}
+
+/**
+ * @summary Delete a custom object (admin only)
+ */
+export const deleteObjeto = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteObjetoUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteObjetoMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteObjeto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteObjeto>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteObjeto'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteObjeto>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteObjeto(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteObjetoMutationResult = NonNullable<Awaited<ReturnType<typeof deleteObjeto>>>
+
+    export type DeleteObjetoMutationError = ErrorType<Error>
+
+    /**
+ * @summary Delete a custom object (admin only)
+ */
+export const useDeleteObjeto = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteObjeto>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteObjeto>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteObjetoMutationOptions(options));
     }
 
 export const getListLookupsUrl = (params?: ListLookupsParams,) => {

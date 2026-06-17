@@ -4,3 +4,6 @@ export * from "./lookups";
 export * from "./escala";
 export * from "./contatos";
 export * from "./evidencias";
+export * from "./perfis";
+export * from "./objetos";
+export * from "./perfilPermissoes";

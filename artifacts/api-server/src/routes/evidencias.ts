@@ -10,7 +10,7 @@ import {
   DeleteEvidenciaParams,
 } from "@workspace/api-zod";
 import {
-  requireApproved,
+  requirePermission,
   requireUploader,
   getOrProvisionUser,
 } from "../middlewares/auth";
@@ -20,7 +20,7 @@ const router: IRouter = Router();
 
 router.get(
   "/scenarios/:id/evidencias",
-  requireApproved,
+  requirePermission("evidencias", "consultar"),
   async (req, res): Promise<void> => {
     const params = ListEvidenciasParams.safeParse(req.params);
     if (!params.success) {

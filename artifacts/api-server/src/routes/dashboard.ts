@@ -7,7 +7,7 @@ import {
   GetDashboardMatrixQueryParams,
   GetDashboardMatrixResponse,
 } from "@workspace/api-zod";
-import { requireApproved } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 
 const router: IRouter = Router();
 
@@ -41,7 +41,7 @@ async function loadScenarios(prioridade?: string): Promise<Scenario[]> {
 
 router.get(
   "/dashboard/summary",
-  requireApproved,
+  requirePermission("dashboards", "consultar"),
   async (req, res): Promise<void> => {
     const query = GetDashboardSummaryQueryParams.safeParse(req.query);
     if (!query.success) {
@@ -65,7 +65,7 @@ router.get(
 
 router.get(
   "/dashboard/matrix",
-  requireApproved,
+  requirePermission("dashboards", "consultar"),
   async (req, res): Promise<void> => {
     const query = GetDashboardMatrixQueryParams.safeParse(req.query);
     if (!query.success) {

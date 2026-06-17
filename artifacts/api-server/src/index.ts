@@ -1,5 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
+import { db, seedRbacDefaults } from "@workspace/db";
 
 const rawPort = process.env["PORT"];
 
@@ -14,6 +15,16 @@ const port = Number(rawPort);
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
+
+// Ensure default RBAC profiles/objects exist before serving requests.
+// Idempotent: preserves any custom profiles, objects and grants.
+seedRbacDefaults(db)
+  .then(() => {
+    logger.info("RBAC defaults ensured");
+  })
+  .catch((err: unknown) => {
+    logger.error({ err }, "Failed to seed RBAC defaults");
+  });
 
 app.listen(port, (err) => {
   if (err) {

@@ -14,6 +14,10 @@ tags:
     description: Current user and access control
   - name: users
     description: User administration and approvals
+  - name: perfis
+    description: Access profiles (RBAC) administration
+  - name: objetos
+    description: System objects/resources for RBAC permissions
   - name: scenarios
     description: Release test scenarios
   - name: lookups
@@ -260,6 +264,275 @@ paths:
       responses:
         "204":
           description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /scenarios/{id}/status:
+    patch:
+      operationId: updateScenarioStatus
+      tags: [scenarios]
+      summary: Update only the status of a scenario
+      description: Requires the cenarios:alterar_status permission.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScenarioStatusUpdate"
+      responses:
+        "200":
+          description: Updated scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scenario"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /perfis:
+    get:
+      operationId: listPerfis
+      tags: [perfis]
+      summary: List access profiles (admin only)
+      responses:
+        "200":
+          description: List of profiles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Perfil"
+    post:
+      operationId: createPerfil
+      tags: [perfis]
+      summary: Create an access profile (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PerfilInput"
+      responses:
+        "201":
+          description: Created profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perfil"
+        "409":
+          description: Profile key already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /perfis/{id}:
+    patch:
+      operationId: updatePerfil
+      tags: [perfis]
+      summary: Update an access profile (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PerfilUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Perfil"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deletePerfil
+      tags: [perfis]
+      summary: Delete a custom access profile (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "400":
+          description: System profile cannot be deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /perfis/{id}/permissoes:
+    get:
+      operationId: getPerfilPermissoes
+      tags: [perfis]
+      summary: Get the permission grants of a profile (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Permission grants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Permissao"
+    put:
+      operationId: setPerfilPermissoes
+      tags: [perfis]
+      summary: Replace the permission grants of a profile (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PerfilPermissoesInput"
+      responses:
+        "200":
+          description: Updated permission grants
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Permissao"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /objetos:
+    get:
+      operationId: listObjetos
+      tags: [objetos]
+      summary: List system objects/resources (admin only)
+      responses:
+        "200":
+          description: List of objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Objeto"
+    post:
+      operationId: createObjeto
+      tags: [objetos]
+      summary: Create a system object (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjetoInput"
+      responses:
+        "201":
+          description: Created object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Objeto"
+        "409":
+          description: Object key already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /objetos/{id}:
+    patch:
+      operationId: updateObjeto
+      tags: [objetos]
+      summary: Update a system object (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ObjetoUpdate"
+      responses:
+        "200":
+          description: Updated object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Objeto"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteObjeto
+      tags: [objetos]
+      summary: Delete a custom object (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "400":
+          description: System object cannot be deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         "404":
           description: Not found
           content:
@@ -733,6 +1006,11 @@ components:
         terceiro:
           type: boolean
           description: True when the user is an authorized third party.
+        permissions:
+          type: array
+          description: Flat list of "objeto:acao" permissions granted to the user.
+          items:
+            type: string
         createdAt:
           type: ["string", "null"]
     UserUpdate:
@@ -956,6 +1234,117 @@ components:
           type: string
         diretorio:
           type: string
+
+    ScenarioStatusUpdate:
+      type: object
+      required: [statusCenario]
+      properties:
+        statusCenario:
+          type: string
+          minLength: 1
+
+    Perfil:
+      type: object
+      required: [id, chave, nome, sistema]
+      properties:
+        id:
+          type: integer
+        chave:
+          type: string
+        nome:
+          type: string
+        descricao:
+          type: ["string", "null"]
+        sistema:
+          type: boolean
+          description: System profiles cannot be deleted.
+        createdAt:
+          type: ["string", "null"]
+    PerfilInput:
+      type: object
+      required: [nome]
+      properties:
+        chave:
+          type: string
+          description: Optional unique key; derived from nome when omitted.
+        nome:
+          type: string
+          minLength: 1
+        descricao:
+          type: string
+    PerfilUpdate:
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+
+    Objeto:
+      type: object
+      required: [id, chave, nome, acoes, sistema]
+      properties:
+        id:
+          type: integer
+        chave:
+          type: string
+        nome:
+          type: string
+        descricao:
+          type: ["string", "null"]
+        acoes:
+          type: array
+          items:
+            type: string
+        sistema:
+          type: boolean
+          description: System objects cannot be deleted.
+        createdAt:
+          type: ["string", "null"]
+    ObjetoInput:
+      type: object
+      required: [chave, nome, acoes]
+      properties:
+        chave:
+          type: string
+          minLength: 1
+        nome:
+          type: string
+          minLength: 1
+        descricao:
+          type: string
+        acoes:
+          type: array
+          items:
+            type: string
+    ObjetoUpdate:
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+        acoes:
+          type: array
+          items:
+            type: string
+
+    Permissao:
+      type: object
+      required: [objetoId, acao]
+      properties:
+        objetoId:
+          type: integer
+        acao:
+          type: string
+    PerfilPermissoesInput:
+      type: object
+      required: [permissoes]
+      properties:
+        permissoes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Permissao"
 
     Lookup:
       type: object

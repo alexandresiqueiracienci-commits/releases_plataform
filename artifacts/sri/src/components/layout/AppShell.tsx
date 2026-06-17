@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { useClerk, useUser } from "@clerk/react";
 import { useGetMe } from "@workspace/api-client-react";
+import { usePermissions } from "@/hooks/use-permissions";
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +29,7 @@ import {
   FileText,
   ClipboardCheck,
   UserCog,
+  Boxes,
   LogOut 
 } from "lucide-react";
 
@@ -40,12 +42,12 @@ export function AppShell({ children }: AppShellProps) {
   const { signOut } = useClerk();
   const { user: clerkUser } = useUser();
   const { data: dbUser, isLoading: isLoadingUser } = useGetMe();
+  const { isAdmin, has } = usePermissions();
 
   const handleLogout = () => {
     signOut({ redirectUrl: import.meta.env.BASE_URL || "/" });
   };
 
-  const isAdmin = dbUser?.profile === "ADMINISTRADOR";
   const isApproved = dbUser?.status === "APROVADO";
 
   if (isLoadingUser) {
@@ -79,19 +81,17 @@ export function AppShell({ children }: AppShellProps) {
   }
 
   const navItems = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: BarChart2, label: "Dashboards", href: "/dashboards" },
-    { icon: ListTodo, label: "Cenários", href: "/cenarios" },
-    { icon: CalendarClock, label: "Escala", href: "/escala" },
-    { icon: Contact, label: "Contatos", href: "/contatos" },
-    { icon: ClipboardCheck, label: "Evidências", href: "/evidencias" },
-  ];
-
-  if (isAdmin) {
-    navItems.push({ icon: Database, label: "Cadastros", href: "/cadastros" });
-    navItems.push({ icon: Users, label: "Usuários", href: "/usuarios" });
-    navItems.push({ icon: UserCog, label: "Perfis", href: "/perfis" });
-  }
+    { icon: Home, label: "Home", href: "/", show: true },
+    { icon: BarChart2, label: "Dashboards", href: "/dashboards", show: has("dashboards", "consultar") },
+    { icon: ListTodo, label: "Cenários", href: "/cenarios", show: has("cenarios", "consultar") },
+    { icon: CalendarClock, label: "Escala", href: "/escala", show: has("escala", "consultar") },
+    { icon: Contact, label: "Contatos", href: "/contatos", show: has("contatos", "consultar") },
+    { icon: ClipboardCheck, label: "Evidências", href: "/evidencias", show: has("evidencias", "consultar") },
+    { icon: Database, label: "Cadastros", href: "/cadastros", show: has("cadastros", "consultar") },
+    { icon: Users, label: "Usuários", href: "/usuarios", show: isAdmin },
+    { icon: UserCog, label: "Perfis", href: "/perfis", show: isAdmin },
+    { icon: Boxes, label: "Objetos", href: "/objetos", show: isAdmin },
+  ].filter((item) => item.show);
 
   const docItems = [
     { icon: FileText, label: "Governança Releases", href: "/governanca" },

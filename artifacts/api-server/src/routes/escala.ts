@@ -11,12 +11,15 @@ import {
   UpdateEscalaResponse,
   DeleteEscalaParams,
 } from "@workspace/api-zod";
-import { requireApproved, requireAdmin } from "../middlewares/auth";
+import { requirePermission } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
 
-router.get("/escala", requireApproved, async (req, res): Promise<void> => {
+router.get(
+  "/escala",
+  requirePermission("escala", "consultar"),
+  async (req, res): Promise<void> => {
   const query = ListEscalaQueryParams.safeParse(req.query);
   if (!query.success) {
     res.status(400).json({ error: query.error.message });
@@ -41,7 +44,10 @@ router.get("/escala", requireApproved, async (req, res): Promise<void> => {
   res.json(ListEscalaResponse.parse(toJson(rows)));
 });
 
-router.post("/escala", requireAdmin, async (req, res): Promise<void> => {
+router.post(
+  "/escala",
+  requirePermission("escala", "criar"),
+  async (req, res): Promise<void> => {
   const body = CreateEscalaBody.safeParse(req.body);
   if (!body.success) {
     res.status(400).json({ error: body.error.message });
@@ -53,7 +59,10 @@ router.post("/escala", requireAdmin, async (req, res): Promise<void> => {
   res.status(201).json(ListEscalaResponseItem.parse(toJson(entry)));
 });
 
-router.patch("/escala/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch(
+  "/escala/:id",
+  requirePermission("escala", "atualizar"),
+  async (req, res): Promise<void> => {
   const params = UpdateEscalaParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -79,7 +88,10 @@ router.patch("/escala/:id", requireAdmin, async (req, res): Promise<void> => {
   res.json(UpdateEscalaResponse.parse(toJson(entry)));
 });
 
-router.delete("/escala/:id", requireAdmin, async (req, res): Promise<void> => {
+router.delete(
+  "/escala/:id",
+  requirePermission("escala", "excluir"),
+  async (req, res): Promise<void> => {
   const params = DeleteEscalaParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });

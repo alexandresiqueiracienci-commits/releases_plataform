@@ -11,7 +11,7 @@ import {
   UpdateLookupResponse,
   DeleteLookupParams,
 } from "@workspace/api-zod";
-import { requireApproved, requireAdmin } from "../middlewares/auth";
+import { requireApproved, requirePermission } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
@@ -36,7 +36,10 @@ router.get("/lookups", requireApproved, async (req, res): Promise<void> => {
   res.json(ListLookupsResponse.parse(toJson(rows)));
 });
 
-router.post("/lookups", requireAdmin, async (req, res): Promise<void> => {
+router.post(
+  "/lookups",
+  requirePermission("cadastros", "criar"),
+  async (req, res): Promise<void> => {
   const body = CreateLookupBody.safeParse(req.body);
   if (!body.success) {
     res.status(400).json({ error: body.error.message });
@@ -48,7 +51,10 @@ router.post("/lookups", requireAdmin, async (req, res): Promise<void> => {
   res.status(201).json(ListLookupsResponseItem.parse(toJson(lookup)));
 });
 
-router.patch("/lookups/:id", requireAdmin, async (req, res): Promise<void> => {
+router.patch(
+  "/lookups/:id",
+  requirePermission("cadastros", "atualizar"),
+  async (req, res): Promise<void> => {
   const params = UpdateLookupParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -74,7 +80,10 @@ router.patch("/lookups/:id", requireAdmin, async (req, res): Promise<void> => {
   res.json(UpdateLookupResponse.parse(toJson(lookup)));
 });
 
-router.delete("/lookups/:id", requireAdmin, async (req, res): Promise<void> => {
+router.delete(
+  "/lookups/:id",
+  requirePermission("cadastros", "excluir"),
+  async (req, res): Promise<void> => {
   const params = DeleteLookupParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });

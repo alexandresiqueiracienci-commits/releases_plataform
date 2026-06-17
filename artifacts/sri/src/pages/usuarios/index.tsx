@@ -3,6 +3,7 @@ import {
   useListUsers,
   useUpdateUser,
   useCreateUser,
+  useListPerfis,
   getListUsersQueryKey,
 } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,6 +51,7 @@ export default function UsuariosPage() {
 
   const queryParams = filterStatus !== "all" ? { status: filterStatus } : {};
   const { data: users, isLoading } = useListUsers(queryParams);
+  const { data: perfis } = useListPerfis();
   const updateUser = useUpdateUser();
   const createUser = useCreateUser();
 
@@ -225,12 +227,11 @@ export default function UsuariosPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="USUARIO">
-                            USUÁRIO (Consulta)
-                          </SelectItem>
-                          <SelectItem value="ADMINISTRADOR">
-                            ADMINISTRADOR
-                          </SelectItem>
+                          {perfis?.map((p) => (
+                            <SelectItem key={p.id} value={p.chave}>
+                              {p.nome}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </TableCell>

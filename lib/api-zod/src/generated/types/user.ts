@@ -19,6 +19,8 @@ export interface User {
   status: string;
   /** True when the user is an authorized third party. */
   terceiro?: boolean;
+  /** Flat list of "objeto:acao" permissions granted to the user. */
+  permissions?: string[];
   /** @nullable */
   createdAt?: string | null;
 }

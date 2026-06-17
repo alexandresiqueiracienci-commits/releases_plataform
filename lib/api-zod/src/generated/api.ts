@@ -29,6 +29,7 @@ export const GetMeResponse = zod.object({
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
   "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
+  "permissions": zod.array(zod.string()).optional().describe('Flat list of \"objeto:acao\" permissions granted to the user.'),
   "createdAt": zod.string().nullish()
 })
 
@@ -48,6 +49,7 @@ export const ListUsersResponseItem = zod.object({
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
   "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
+  "permissions": zod.array(zod.string()).optional().describe('Flat list of \"objeto:acao\" permissions granted to the user.'),
   "createdAt": zod.string().nullish()
 })
 export const ListUsersResponse = zod.array(ListUsersResponseItem)
@@ -86,6 +88,7 @@ export const UpdateUserResponse = zod.object({
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
   "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
+  "permissions": zod.array(zod.string()).optional().describe('Flat list of \"objeto:acao\" permissions granted to the user.'),
   "createdAt": zod.string().nullish()
 })
 
@@ -309,6 +312,213 @@ export const UpdateScenarioResponse = zod.object({
  * @summary Delete a scenario (admin only)
  */
 export const DeleteScenarioParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * Requires the cenarios:alterar_status permission.
+ * @summary Update only the status of a scenario
+ */
+export const UpdateScenarioStatusParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+export const UpdateScenarioStatusBody = zod.object({
+  "statusCenario": zod.string().min(1)
+})
+
+export const UpdateScenarioStatusResponse = zod.object({
+  "id": zod.number(),
+  "idTeste": zod.string(),
+  "chaveamento": zod.string().nullish(),
+  "sequencia": zod.string().nullish(),
+  "blocoExecucao": zod.string().nullish(),
+  "fisicoSistemico": zod.string().nullish(),
+  "prioridade": zod.string().nullish(),
+  "cenario": zod.string().nullish(),
+  "dependenciaCenarioExterno": zod.string().nullish(),
+  "quemExecuta": zod.string().nullish(),
+  "baselineCustomizado": zod.string().nullish(),
+  "facilitador": zod.string().nullish(),
+  "keyUser": zod.string().nullish(),
+  "superUser": zod.string().nullish(),
+  "endUser": zod.string().nullish(),
+  "macroProcesso": zod.string().nullish(),
+  "sequenciaPassoAPasso": zod.string().nullish(),
+  "evidenciasObrigatorias": zod.string().nullish(),
+  "quemDefineMassa": zod.string().nullish(),
+  "massaDados": zod.string().nullish(),
+  "celula": zod.string().nullish(),
+  "agrupamento": zod.string().nullish(),
+  "tipoCenario": zod.string().nullish(),
+  "liberacao": zod.string().nullish(),
+  "observacoes": zod.string().nullish(),
+  "sistema": zod.string().nullish(),
+  "site": zod.string().nullish(),
+  "statusCenario": zod.string().nullish(),
+  "idDefeitoJira": zod.string().nullish(),
+  "idCenarioJira": zod.string().nullish(),
+  "statusCheckPoint": zod.string().nullish(),
+  "diretorio": zod.string().nullish(),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary List access profiles (admin only)
+ */
+export const ListPerfisResponseItem = zod.object({
+  "id": zod.number(),
+  "chave": zod.string(),
+  "nome": zod.string(),
+  "descricao": zod.string().nullish(),
+  "sistema": zod.boolean().describe('System profiles cannot be deleted.'),
+  "createdAt": zod.string().nullish()
+})
+export const ListPerfisResponse = zod.array(ListPerfisResponseItem)
+
+
+/**
+ * @summary Create an access profile (admin only)
+ */
+
+
+
+export const CreatePerfilBody = zod.object({
+  "chave": zod.string().optional().describe('Optional unique key; derived from nome when omitted.'),
+  "nome": zod.string().min(1),
+  "descricao": zod.string().optional()
+})
+
+
+/**
+ * @summary Update an access profile (admin only)
+ */
+export const UpdatePerfilParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdatePerfilBody = zod.object({
+  "nome": zod.string().optional(),
+  "descricao": zod.string().optional()
+})
+
+export const UpdatePerfilResponse = zod.object({
+  "id": zod.number(),
+  "chave": zod.string(),
+  "nome": zod.string(),
+  "descricao": zod.string().nullish(),
+  "sistema": zod.boolean().describe('System profiles cannot be deleted.'),
+  "createdAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a custom access profile (admin only)
+ */
+export const DeletePerfilParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Get the permission grants of a profile (admin only)
+ */
+export const GetPerfilPermissoesParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetPerfilPermissoesResponseItem = zod.object({
+  "objetoId": zod.number(),
+  "acao": zod.string()
+})
+export const GetPerfilPermissoesResponse = zod.array(GetPerfilPermissoesResponseItem)
+
+
+/**
+ * @summary Replace the permission grants of a profile (admin only)
+ */
+export const SetPerfilPermissoesParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SetPerfilPermissoesBody = zod.object({
+  "permissoes": zod.array(zod.object({
+  "objetoId": zod.number(),
+  "acao": zod.string()
+}))
+})
+
+export const SetPerfilPermissoesResponseItem = zod.object({
+  "objetoId": zod.number(),
+  "acao": zod.string()
+})
+export const SetPerfilPermissoesResponse = zod.array(SetPerfilPermissoesResponseItem)
+
+
+/**
+ * @summary List system objects/resources (admin only)
+ */
+export const ListObjetosResponseItem = zod.object({
+  "id": zod.number(),
+  "chave": zod.string(),
+  "nome": zod.string(),
+  "descricao": zod.string().nullish(),
+  "acoes": zod.array(zod.string()),
+  "sistema": zod.boolean().describe('System objects cannot be deleted.'),
+  "createdAt": zod.string().nullish()
+})
+export const ListObjetosResponse = zod.array(ListObjetosResponseItem)
+
+
+/**
+ * @summary Create a system object (admin only)
+ */
+
+
+
+
+export const CreateObjetoBody = zod.object({
+  "chave": zod.string().min(1),
+  "nome": zod.string().min(1),
+  "descricao": zod.string().optional(),
+  "acoes": zod.array(zod.string())
+})
+
+
+/**
+ * @summary Update a system object (admin only)
+ */
+export const UpdateObjetoParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateObjetoBody = zod.object({
+  "nome": zod.string().optional(),
+  "descricao": zod.string().optional(),
+  "acoes": zod.array(zod.string()).optional()
+})
+
+export const UpdateObjetoResponse = zod.object({
+  "id": zod.number(),
+  "chave": zod.string(),
+  "nome": zod.string(),
+  "descricao": zod.string().nullish(),
+  "acoes": zod.array(zod.string()),
+  "sistema": zod.boolean().describe('System objects cannot be deleted.'),
+  "createdAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a custom object (admin only)
+ */
+export const DeleteObjetoParams = zod.object({
   "id": zod.coerce.number()
 })
 
