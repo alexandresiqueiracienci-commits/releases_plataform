@@ -7,6 +7,8 @@ import lookupsRouter from "./lookups";
 import escalaRouter from "./escala";
 import contatosRouter from "./contatos";
 import dashboardRouter from "./dashboard";
+import evidenciasRouter from "./evidencias";
+import storageRouter from "./storage";
 
 const router: IRouter = Router();
 
@@ -18,5 +20,7 @@ router.use(lookupsRouter);
 router.use(escalaRouter);
 router.use(contatosRouter);
 router.use(dashboardRouter);
+router.use(evidenciasRouter);
+router.use(storageRouter);
 
 export default router;

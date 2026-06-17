@@ -104,3 +104,38 @@ export function requireAdmin(
     next();
   })().catch(next);
 }
+
+/**
+ * Returns true if the user is allowed to upload test evidences:
+ * @natura.net accounts, terceiros autorizados, or administradores.
+ */
+export function canUploadEvidencias(user: User): boolean {
+  if (user.status !== "APROVADO") return false;
+  return (
+    user.email.toLowerCase().endsWith(NATURA_DOMAIN) ||
+    user.terceiro === true ||
+    user.profile === "ADMINISTRADOR"
+  );
+}
+
+export function requireUploader(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void {
+  void (async () => {
+    const user = await getOrProvisionUser(req);
+    if (!user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+    if (!canUploadEvidencias(user)) {
+      res.status(403).json({
+        error:
+          "Apenas contas @natura.net ou terceiros autorizados podem enviar evidencias",
+      });
+      return;
+    }
+    next();
+  })().catch(next);
+}

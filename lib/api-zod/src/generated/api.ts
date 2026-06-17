@@ -28,6 +28,7 @@ export const GetMeResponse = zod.object({
   "name": zod.string().nullish(),
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
+  "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
   "createdAt": zod.string().nullish()
 })
 
@@ -46,9 +47,23 @@ export const ListUsersResponseItem = zod.object({
   "name": zod.string().nullish(),
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
+  "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
   "createdAt": zod.string().nullish()
 })
 export const ListUsersResponse = zod.array(ListUsersResponseItem)
+
+
+/**
+ * @summary Register an authorized third party (admin only)
+ */
+export const createUserBodyEmailMin = 3;
+
+
+
+export const CreateUserBody = zod.object({
+  "email": zod.string().min(createUserBodyEmailMin),
+  "name": zod.string().optional()
+})
 
 
 /**
@@ -70,6 +85,7 @@ export const UpdateUserResponse = zod.object({
   "name": zod.string().nullish(),
   "profile": zod.string().describe('ADMINISTRADOR or USUARIO'),
   "status": zod.string().describe('PENDENTE, APROVADO or REJEITADO'),
+  "terceiro": zod.boolean().optional().describe('True when the user is an authorized third party.'),
   "createdAt": zod.string().nullish()
 })
 
@@ -556,6 +572,94 @@ export const GetDashboardMatrixResponse = zod.object({
   "columnTotals": zod.array(zod.number()),
   "grandTotal": zod.number(),
   "statusPercentages": zod.array(zod.number())
+})
+
+
+/**
+ * @summary List evidence files for a scenario
+ */
+export const ListEvidenciasParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ListEvidenciasResponseItem = zod.object({
+  "id": zod.number(),
+  "scenarioId": zod.number(),
+  "objectPath": zod.string(),
+  "fileName": zod.string(),
+  "contentType": zod.string().nullish(),
+  "size": zod.number().nullish(),
+  "uploadedByEmail": zod.string().nullish(),
+  "createdAt": zod.string().nullish()
+})
+export const ListEvidenciasResponse = zod.array(ListEvidenciasResponseItem)
+
+
+/**
+ * @summary Register an uploaded evidence file (uploaders only)
+ */
+export const CreateEvidenciaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+
+export const CreateEvidenciaBody = zod.object({
+  "objectPath": zod.string().min(1),
+  "fileName": zod.string().min(1),
+  "contentType": zod.string().optional(),
+  "size": zod.number().optional()
+})
+
+
+/**
+ * @summary Delete an evidence file (uploaders only)
+ */
+export const DeleteEvidenciaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * Returns a presigned GCS URL for direct upload. The client sends JSON
+metadata here, then uploads the file directly to the returned URL.
+
+ * @summary Request a presigned URL for file upload
+ */
+
+
+
+
+
+export const RequestUploadUrlBody = zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+})
+
+
+
+
+
+
+export const RequestUploadUrlResponse = zod.object({
+  "uploadURL": zod.string().url(),
+  "objectPath": zod.string(),
+  "metadata": zod.object({
+  "name": zod.string().min(1),
+  "size": zod.number().min(1),
+  "contentType": zod.string().min(1)
+}).optional()
+})
+
+
+/**
+ * @summary Serve an evidence file from PRIVATE_OBJECT_DIR
+ */
+export const GetStorageObjectParams = zod.object({
+  "objectPath": zod.coerce.string().describe('Object path within the private object dir.')
 })
 
 

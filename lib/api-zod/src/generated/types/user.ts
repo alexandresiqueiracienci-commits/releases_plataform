@@ -17,6 +17,8 @@ export interface User {
   profile: string;
   /** PENDENTE, APROVADO or REJEITADO */
   status: string;
+  /** True when the user is an authorized third party. */
+  terceiro?: boolean;
   /** @nullable */
   createdAt?: string | null;
 }

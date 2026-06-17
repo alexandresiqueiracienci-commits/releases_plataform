@@ -24,6 +24,8 @@ export interface User {
   profile: string;
   /** PENDENTE, APROVADO or REJEITADO */
   status: string;
+  /** True when the user is an authorized third party. */
+  terceiro?: boolean;
   /** @nullable */
   createdAt?: string | null;
 }
@@ -31,6 +33,12 @@ export interface User {
 export interface UserUpdate {
   profile?: string;
   status?: string;
+}
+
+export interface CreateUserInput {
+  /** @minLength 3 */
+  email: string;
+  name?: string;
 }
 
 export interface Scenario {
@@ -300,6 +308,45 @@ export interface DashboardMatrix {
   columnTotals: number[];
   grandTotal: number;
   statusPercentages: number[];
+}
+
+export interface Evidencia {
+  id: number;
+  scenarioId: number;
+  objectPath: string;
+  fileName: string;
+  /** @nullable */
+  contentType?: string | null;
+  /** @nullable */
+  size?: number | null;
+  /** @nullable */
+  uploadedByEmail?: string | null;
+  /** @nullable */
+  createdAt?: string | null;
+}
+
+export interface EvidenciaInput {
+  /** @minLength 1 */
+  objectPath: string;
+  /** @minLength 1 */
+  fileName: string;
+  contentType?: string;
+  size?: number;
+}
+
+export interface UploadUrlRequest {
+  /** @minLength 1 */
+  name: string;
+  /** @minimum 1 */
+  size: number;
+  /** @minLength 1 */
+  contentType: string;
+}
+
+export interface UploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+  metadata?: UploadUrlRequest;
 }
 
 export type ListUsersParams = {

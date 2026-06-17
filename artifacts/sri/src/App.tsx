@@ -22,6 +22,8 @@ import EscalaPage from "@/pages/escala/index";
 import ContatosPage from "@/pages/contatos/index";
 const GovernancaPage = lazy(() => import("@/pages/governanca/index"));
 import UsuariosPage from "@/pages/usuarios/index";
+import PerfisPage from "@/pages/perfis/index";
+const EvidenciasPage = lazy(() => import("@/pages/evidencias/index"));
 import NotFound from "@/pages/not-found";
 
 const clerkPubKey = publishableKeyFromHost(
@@ -154,6 +156,11 @@ function AuthenticatedApp() {
         <Route path="/contatos">
           <ProtectedRoute component={ContatosPage} />
         </Route>
+        <Route path="/evidencias">
+          <Suspense fallback={null}>
+            <ProtectedRoute component={EvidenciasPage} />
+          </Suspense>
+        </Route>
         <Route path="/governanca">
           <Suspense fallback={null}>
             <ProtectedRoute component={GovernancaPage} />
@@ -161,6 +168,9 @@ function AuthenticatedApp() {
         </Route>
         <Route path="/usuarios">
           <ProtectedRoute component={UsuariosPage} adminOnly />
+        </Route>
+        <Route path="/perfis">
+          <ProtectedRoute component={PerfisPage} adminOnly />
         </Route>
         <Route component={NotFound} />
       </Switch>

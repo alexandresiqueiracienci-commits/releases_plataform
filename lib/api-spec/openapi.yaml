@@ -24,6 +24,10 @@ tags:
     description: Contact directory
   - name: dashboard
     description: Consolidated dashboards
+  - name: evidencias
+    description: Release test evidence files per scenario
+  - name: Storage
+    description: Object storage upload and serving endpoints.
 paths:
   /healthz:
     get:
@@ -79,6 +83,29 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Register an authorized third party (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserInput"
+      responses:
+        "201":
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "409":
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /users/{id}:
     patch:
       operationId: updateUser
@@ -538,6 +565,136 @@ paths:
               schema:
                 $ref: "#/components/schemas/DashboardMatrix"
 
+  /scenarios/{id}/evidencias:
+    get:
+      operationId: listEvidencias
+      tags: [evidencias]
+      summary: List evidence files for a scenario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of evidences
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Evidencia"
+    post:
+      operationId: createEvidencia
+      tags: [evidencias]
+      summary: Register an uploaded evidence file (uploaders only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EvidenciaInput"
+      responses:
+        "201":
+          description: Created evidence
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Evidencia"
+        "404":
+          description: Scenario not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /evidencias/{id}:
+    delete:
+      operationId: deleteEvidencia
+      tags: [evidencias]
+      summary: Delete an evidence file (uploaders only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      description: |
+        Returns a presigned GCS URL for direct upload. The client sends JSON
+        metadata here, then uploads the file directly to the returned URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+        "400":
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Failed to generate upload URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /storage/objects/{objectPath}:
+    get:
+      tags: [Storage]
+      operationId: getStorageObject
+      summary: Serve an evidence file from PRIVATE_OBJECT_DIR
+      parameters:
+        - name: objectPath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Object path within the private object dir.
+      responses:
+        "200":
+          description: Object content streamed with correct Content-Type.
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Object not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     HealthStatus:
@@ -573,6 +730,9 @@ components:
         status:
           type: string
           description: PENDENTE, APROVADO or REJEITADO
+        terceiro:
+          type: boolean
+          description: True when the user is an authorized third party.
         createdAt:
           type: ["string", "null"]
     UserUpdate:
@@ -581,6 +741,15 @@ components:
         profile:
           type: string
         status:
+          type: string
+    CreateUserInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          minLength: 3
+        name:
           type: string
 
     Scenario:
@@ -1007,3 +1176,63 @@ components:
           type: array
           items:
             type: number
+
+    Evidencia:
+      type: object
+      required: [id, scenarioId, objectPath, fileName]
+      properties:
+        id:
+          type: integer
+        scenarioId:
+          type: integer
+        objectPath:
+          type: string
+        fileName:
+          type: string
+        contentType:
+          type: ["string", "null"]
+        size:
+          type: ["integer", "null"]
+        uploadedByEmail:
+          type: ["string", "null"]
+        createdAt:
+          type: ["string", "null"]
+    EvidenciaInput:
+      type: object
+      required: [objectPath, fileName]
+      properties:
+        objectPath:
+          type: string
+          minLength: 1
+        fileName:
+          type: string
+          minLength: 1
+        contentType:
+          type: string
+        size:
+          type: integer
+
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        size:
+          type: integer
+          minimum: 1
+        contentType:
+          type: string
+          minLength: 1
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+        objectPath:
+          type: string
+        metadata:
+          $ref: "#/components/schemas/UploadUrlRequest"

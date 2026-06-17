@@ -4,6 +4,8 @@ import { db, usersTable } from "@workspace/db";
 import {
   ListUsersQueryParams,
   ListUsersResponse,
+  ListUsersResponseItem,
+  CreateUserBody,
   UpdateUserParams,
   UpdateUserBody,
   UpdateUserResponse,
@@ -26,6 +28,39 @@ router.get("/users", requireAdmin, async (req, res): Promise<void> => {
     : rows;
 
   res.json(ListUsersResponse.parse(toJson(filtered)));
+});
+
+router.post("/users", requireAdmin, async (req, res): Promise<void> => {
+  const body = CreateUserBody.safeParse(req.body);
+  if (!body.success) {
+    res.status(400).json({ error: body.error.message });
+    return;
+  }
+
+  const email = body.data.email.trim().toLowerCase();
+  const name = body.data.name?.trim() || null;
+
+  const [existing] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+  if (existing) {
+    res.status(409).json({ error: "E-mail já cadastrado" });
+    return;
+  }
+
+  const [user] = await db
+    .insert(usersTable)
+    .values({
+      email,
+      name,
+      profile: "USUARIO",
+      status: "APROVADO",
+      terceiro: true,
+    })
+    .returning();
+
+  res.status(201).json(ListUsersResponseItem.parse(toJson(user)));
 });
 
 router.patch("/users/:id", requireAdmin, async (req, res): Promise<void> => {

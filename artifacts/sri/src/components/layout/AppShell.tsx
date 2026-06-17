@@ -26,6 +26,8 @@ import {
   Contact, 
   Users, 
   FileText,
+  ClipboardCheck,
+  UserCog,
   LogOut 
 } from "lucide-react";
 
@@ -82,11 +84,13 @@ export function AppShell({ children }: AppShellProps) {
     { icon: ListTodo, label: "Cenários", href: "/cenarios" },
     { icon: CalendarClock, label: "Escala", href: "/escala" },
     { icon: Contact, label: "Contatos", href: "/contatos" },
+    { icon: ClipboardCheck, label: "Evidências", href: "/evidencias" },
   ];
 
   if (isAdmin) {
     navItems.push({ icon: Database, label: "Cadastros", href: "/cadastros" });
     navItems.push({ icon: Users, label: "Usuários", href: "/usuarios" });
+    navItems.push({ icon: UserCog, label: "Perfis", href: "/perfis" });
   }
 
   const docItems = [
