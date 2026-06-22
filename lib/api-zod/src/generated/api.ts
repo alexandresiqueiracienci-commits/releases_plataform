@@ -825,6 +825,117 @@ export const CreateEvidenciaBody = zod.object({
 
 
 /**
+ * Sets the scenario status to "Evidências Enviadas". Allowed for the same
+users that can upload evidence (requireUploader).
+
+ * @summary Mark all evidence uploads as completed for a scenario (uploaders only)
+ */
+export const ConcluirEvidenciasParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ConcluirEvidenciasResponse = zod.object({
+  "id": zod.number(),
+  "idTeste": zod.string(),
+  "chaveamento": zod.string().nullish(),
+  "sequencia": zod.string().nullish(),
+  "blocoExecucao": zod.string().nullish(),
+  "fisicoSistemico": zod.string().nullish(),
+  "prioridade": zod.string().nullish(),
+  "cenario": zod.string().nullish(),
+  "dependenciaCenarioExterno": zod.string().nullish(),
+  "quemExecuta": zod.string().nullish(),
+  "baselineCustomizado": zod.string().nullish(),
+  "facilitador": zod.string().nullish(),
+  "keyUser": zod.string().nullish(),
+  "superUser": zod.string().nullish(),
+  "endUser": zod.string().nullish(),
+  "macroProcesso": zod.string().nullish(),
+  "sequenciaPassoAPasso": zod.string().nullish(),
+  "evidenciasObrigatorias": zod.string().nullish(),
+  "quemDefineMassa": zod.string().nullish(),
+  "massaDados": zod.string().nullish(),
+  "celula": zod.string().nullish(),
+  "agrupamento": zod.string().nullish(),
+  "tipoCenario": zod.string().nullish(),
+  "liberacao": zod.string().nullish(),
+  "observacoes": zod.string().nullish(),
+  "sistema": zod.string().nullish(),
+  "site": zod.string().nullish(),
+  "statusCenario": zod.string().nullish(),
+  "idDefeitoJira": zod.string().nullish(),
+  "idCenarioJira": zod.string().nullish(),
+  "statusCheckPoint": zod.string().nullish(),
+  "diretorio": zod.string().nullish(),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+
+
+/**
+ * Returns per-scenario evidence delivery rows plus consolidated counts
+grouped by macro process, site, system and priority. Requires the
+evidencias:consultar permission.
+
+ * @summary Consolidated monitoring of evidence deliveries
+ */
+export const GetEvidenciasMonitorQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "prioridade": zod.coerce.string().optional(),
+  "site": zod.coerce.string().optional(),
+  "sistema": zod.coerce.string().optional(),
+  "macroProcesso": zod.coerce.string().optional()
+})
+
+export const GetEvidenciasMonitorResponse = zod.object({
+  "summary": zod.object({
+  "total": zod.number(),
+  "entregues": zod.number(),
+  "pendentes": zod.number(),
+  "comArquivos": zod.number(),
+  "totalArquivos": zod.number()
+}),
+  "byMacroProcesso": zod.array(zod.object({
+  "label": zod.string(),
+  "total": zod.number(),
+  "entregues": zod.number(),
+  "pendentes": zod.number()
+})),
+  "bySite": zod.array(zod.object({
+  "label": zod.string(),
+  "total": zod.number(),
+  "entregues": zod.number(),
+  "pendentes": zod.number()
+})),
+  "bySistema": zod.array(zod.object({
+  "label": zod.string(),
+  "total": zod.number(),
+  "entregues": zod.number(),
+  "pendentes": zod.number()
+})),
+  "byPrioridade": zod.array(zod.object({
+  "label": zod.string(),
+  "total": zod.number(),
+  "entregues": zod.number(),
+  "pendentes": zod.number()
+})),
+  "rows": zod.array(zod.object({
+  "scenarioId": zod.number(),
+  "idTeste": zod.string().nullish(),
+  "cenario": zod.string().nullish(),
+  "macroProcesso": zod.string().nullish(),
+  "site": zod.string().nullish(),
+  "sistema": zod.string().nullish(),
+  "prioridade": zod.string().nullish(),
+  "statusCenario": zod.string().nullish(),
+  "entregue": zod.boolean(),
+  "totalEvidencias": zod.number(),
+  "ultimoUpload": zod.string().nullish()
+}))
+})
+
+
+/**
  * @summary Delete an evidence file (uploaders only)
  */
 export const DeleteEvidenciaParams = zod.object({

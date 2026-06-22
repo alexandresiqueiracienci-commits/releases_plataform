@@ -1,6 +1,10 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { db, seedRbacDefaults } from "@workspace/db";
+import {
+  db,
+  seedRbacDefaults,
+  ensureStatusEvidenciasEnviadas,
+} from "@workspace/db";
 
 const rawPort = process.env["PORT"];
 
@@ -21,9 +25,13 @@ if (Number.isNaN(port) || port <= 0) {
 seedRbacDefaults(db)
   .then(() => {
     logger.info("RBAC defaults ensured");
+    return ensureStatusEvidenciasEnviadas(db);
+  })
+  .then(() => {
+    logger.info("status_cenario defaults ensured");
   })
   .catch((err: unknown) => {
-    logger.error({ err }, "Failed to seed RBAC defaults");
+    logger.error({ err }, "Failed to seed defaults");
   });
 
 app.listen(port, (err) => {

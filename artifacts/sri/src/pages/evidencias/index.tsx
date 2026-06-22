@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useListScenarios,
   useGetMe,
   useListEvidencias,
   useCreateEvidencia,
   useDeleteEvidencia,
+  useConcluirEvidencias,
   useListLookups,
   useUpdateScenarioStatus,
   getListEvidenciasQueryKey,
@@ -50,7 +51,10 @@ import {
   Trash2,
   FileText,
   Lock,
+  CheckCircle2,
+  Send,
 } from "lucide-react";
+import { STATUS_EVIDENCIAS_ENVIADAS } from "@/lib/constants";
 
 type ScenarioRow = Scenario;
 
@@ -130,11 +134,15 @@ function EvidenciasSection({
   canUpload,
   currentEmail,
   isAdmin,
+  alreadyDelivered,
+  onConcluido,
 }: {
   scenarioId: number;
   canUpload: boolean;
   currentEmail?: string;
   isAdmin: boolean;
+  alreadyDelivered: boolean;
+  onConcluido: () => void;
 }) {
   const { toast } = useToast();
   const qc = useQueryClient();
@@ -144,6 +152,25 @@ function EvidenciasSection({
   const { data: evidencias, isLoading } = useListEvidencias(scenarioId);
   const createEvidencia = useCreateEvidencia();
   const deleteEvidencia = useDeleteEvidencia();
+  const concluirEvidencias = useConcluirEvidencias();
+
+  const handleConcluir = async () => {
+    try {
+      await concluirEvidencias.mutateAsync({ id: scenarioId });
+      qc.invalidateQueries({ queryKey: getListScenariosQueryKey() });
+      onConcluido();
+      toast({
+        title: "Sucesso",
+        description: "Status atualizado para Evidências Enviadas.",
+      });
+    } catch {
+      toast({
+        title: "Erro",
+        description: "Falha ao concluir os uploads das evidências.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const refresh = () =>
     qc.invalidateQueries({
@@ -304,6 +331,33 @@ function EvidenciasSection({
           Nenhuma evidência enviada para este cenário.
         </p>
       )}
+
+      {canUpload && evidencias && evidencias.length > 0 && (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2">
+          {alreadyDelivered ? (
+            <span className="text-xs text-emerald-700 flex items-center gap-1">
+              <CheckCircle2 className="h-4 w-4" />
+              Evidências marcadas como enviadas.
+            </span>
+          ) : (
+            <span className="text-xs text-muted-foreground">
+              Após anexar todas as evidências, conclua para marcar o cenário como
+              "Evidências Enviadas".
+            </span>
+          )}
+          <Button
+            size="sm"
+            variant={alreadyDelivered ? "outline" : "default"}
+            onClick={handleConcluir}
+            disabled={concluirEvidencias.isPending}
+          >
+            <CheckCircle2 className="mr-2 h-4 w-4" />
+            {concluirEvidencias.isPending
+              ? "Concluindo..."
+              : "Concluídos Todos Uploads das Evidências"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -356,6 +410,27 @@ function StatusControl({ scenario }: { scenario: ScenarioRow }) {
 export default function EvidenciasPage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<ScenarioRow | null>(null);
+  const [scrollToUpload, setScrollToUpload] = useState(false);
+  const uploadSectionRef = useRef<HTMLDivElement>(null);
+
+  const openScenario = (cenario: ScenarioRow, focusUpload: boolean) => {
+    setScrollToUpload(focusUpload);
+    setSelected(cenario);
+  };
+
+  useEffect(() => {
+    if (selected && scrollToUpload) {
+      const t = setTimeout(() => {
+        uploadSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        setScrollToUpload(false);
+      }, 150);
+      return () => clearTimeout(t);
+    }
+    return undefined;
+  }, [selected, scrollToUpload]);
 
   const { data: user } = useGetMe();
   const { has } = usePermissions();
@@ -434,7 +509,7 @@ export default function EvidenciasPage() {
                     <TableRow
                       key={cenario.id}
                       className="cursor-pointer"
-                      onClick={() => setSelected(cenario)}
+                      onClick={() => openScenario(cenario, false)}
                     >
                       <TableCell className="font-medium">
                         {cenario.idTeste}
@@ -449,17 +524,31 @@ export default function EvidenciasPage() {
                       <TableCell>{cenario.site}</TableCell>
                       <TableCell>{cenario.statusCenario}</TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelected(cenario);
-                          }}
-                        >
-                          <ClipboardCheck className="mr-2 h-4 w-4" />
-                          Abrir
-                        </Button>
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openScenario(cenario, false);
+                            }}
+                          >
+                            <ClipboardCheck className="mr-2 h-4 w-4" />
+                            Abrir
+                          </Button>
+                          {canUpload && (
+                            <Button
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openScenario(cenario, true);
+                              }}
+                            >
+                              <Send className="mr-2 h-4 w-4" />
+                              Enviar Evidência
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -525,12 +614,26 @@ export default function EvidenciasPage() {
                   </div>
                 )}
 
-                <div className="border-t pt-4">
+                <div className="border-t pt-4" ref={uploadSectionRef}>
                   <EvidenciasSection
                     scenarioId={selected.id}
                     canUpload={!!canUpload}
                     currentEmail={email}
                     isAdmin={isAdmin}
+                    alreadyDelivered={
+                      (selected.statusCenario ?? "").trim().toLowerCase() ===
+                      STATUS_EVIDENCIAS_ENVIADAS.toLowerCase()
+                    }
+                    onConcluido={() =>
+                      setSelected((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              statusCenario: STATUS_EVIDENCIAS_ENVIADAS,
+                            }
+                          : prev,
+                      )
+                    }
                   />
                 </div>
               </div>

@@ -32,8 +32,10 @@ import type {
   EscalaUpdate,
   Evidencia,
   EvidenciaInput,
+  EvidenciasMonitor,
   GetDashboardMatrixParams,
   GetDashboardSummaryParams,
+  GetEvidenciasMonitorParams,
   HealthStatus,
   ListContatosParams,
   ListEscalaParams,
@@ -2839,6 +2841,167 @@ export const useCreateEvidencia = <TError = ErrorType<Error>,
       > => {
       return useMutation(getCreateEvidenciaMutationOptions(options));
     }
+
+export const getConcluirEvidenciasUrl = (id: number,) => {
+
+
+
+
+  return `/api/scenarios/${id}/evidencias/concluir`
+}
+
+/**
+ * Sets the scenario status to "Evidências Enviadas". Allowed for the same
+users that can upload evidence (requireUploader).
+
+ * @summary Mark all evidence uploads as completed for a scenario (uploaders only)
+ */
+export const concluirEvidencias = async (id: number, options?: RequestInit): Promise<Scenario> => {
+
+  return customFetch<Scenario>(getConcluirEvidenciasUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getConcluirEvidenciasMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof concluirEvidencias>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof concluirEvidencias>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['concluirEvidencias'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof concluirEvidencias>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  concluirEvidencias(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ConcluirEvidenciasMutationResult = NonNullable<Awaited<ReturnType<typeof concluirEvidencias>>>
+
+    export type ConcluirEvidenciasMutationError = ErrorType<Error>
+
+    /**
+ * @summary Mark all evidence uploads as completed for a scenario (uploaders only)
+ */
+export const useConcluirEvidencias = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof concluirEvidencias>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof concluirEvidencias>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getConcluirEvidenciasMutationOptions(options));
+    }
+
+export const getGetEvidenciasMonitorUrl = (params?: GetEvidenciasMonitorParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/evidencias/monitor?${stringifiedParams}` : `/api/evidencias/monitor`
+}
+
+/**
+ * Returns per-scenario evidence delivery rows plus consolidated counts
+grouped by macro process, site, system and priority. Requires the
+evidencias:consultar permission.
+
+ * @summary Consolidated monitoring of evidence deliveries
+ */
+export const getEvidenciasMonitor = async (params?: GetEvidenciasMonitorParams, options?: RequestInit): Promise<EvidenciasMonitor> => {
+
+  return customFetch<EvidenciasMonitor>(getGetEvidenciasMonitorUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetEvidenciasMonitorQueryKey = (params?: GetEvidenciasMonitorParams,) => {
+    return [
+    `/api/evidencias/monitor`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetEvidenciasMonitorQueryOptions = <TData = Awaited<ReturnType<typeof getEvidenciasMonitor>>, TError = ErrorType<unknown>>(params?: GetEvidenciasMonitorParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEvidenciasMonitor>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEvidenciasMonitorQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEvidenciasMonitor>>> = ({ signal }) => getEvidenciasMonitor(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEvidenciasMonitor>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetEvidenciasMonitorQueryResult = NonNullable<Awaited<ReturnType<typeof getEvidenciasMonitor>>>
+export type GetEvidenciasMonitorQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Consolidated monitoring of evidence deliveries
+ */
+
+export function useGetEvidenciasMonitor<TData = Awaited<ReturnType<typeof getEvidenciasMonitor>>, TError = ErrorType<unknown>>(
+ params?: GetEvidenciasMonitorParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEvidenciasMonitor>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetEvidenciasMonitorQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getDeleteEvidenciaUrl = (id: number,) => {
 

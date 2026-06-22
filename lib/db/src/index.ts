@@ -16,3 +16,5 @@ export const db = drizzle(pool, { schema });
 export * from "./schema";
 export * from "./rbac";
 export * from "./rbacSeed";
+export * from "./constants";
+export * from "./lookupsSeed";

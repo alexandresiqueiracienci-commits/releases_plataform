@@ -25,6 +25,9 @@ import UsuariosPage from "@/pages/usuarios/index";
 import PerfisPage from "@/pages/perfis/index";
 import ObjetosPage from "@/pages/objetos/index";
 const EvidenciasPage = lazy(() => import("@/pages/evidencias/index"));
+const EvidenciasMonitorPage = lazy(
+  () => import("@/pages/evidencias/monitor"),
+);
 import NotFound from "@/pages/not-found";
 import { usePermissions } from "@/hooks/use-permissions";
 
@@ -172,6 +175,11 @@ function AuthenticatedApp() {
         </Route>
         <Route path="/contatos">
           <ProtectedRoute component={ContatosPage} requireObjeto="contatos" requireAcao="consultar" />
+        </Route>
+        <Route path="/evidencias/monitor">
+          <Suspense fallback={null}>
+            <ProtectedRoute component={EvidenciasMonitorPage} requireObjeto="evidencias" requireAcao="consultar" />
+          </Suspense>
         </Route>
         <Route path="/evidencias">
           <Suspense fallback={null}>

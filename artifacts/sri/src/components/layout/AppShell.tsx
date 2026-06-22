@@ -28,6 +28,7 @@ import {
   Users, 
   FileText,
   ClipboardCheck,
+  LineChart,
   UserCog,
   Boxes,
   LogOut 
@@ -87,6 +88,7 @@ export function AppShell({ children }: AppShellProps) {
     { icon: CalendarClock, label: "Escala", href: "/escala", show: has("escala", "consultar") },
     { icon: Contact, label: "Contatos", href: "/contatos", show: has("contatos", "consultar") },
     { icon: ClipboardCheck, label: "Evidências", href: "/evidencias", show: has("evidencias", "consultar") },
+    { icon: LineChart, label: "Monitor de Evidências", href: "/evidencias/monitor", show: has("evidencias", "consultar") },
     { icon: Database, label: "Cadastros", href: "/cadastros", show: has("cadastros", "consultar") },
     { icon: Users, label: "Usuários", href: "/usuarios", show: isAdmin },
     { icon: UserCog, label: "Perfis", href: "/perfis", show: isAdmin },

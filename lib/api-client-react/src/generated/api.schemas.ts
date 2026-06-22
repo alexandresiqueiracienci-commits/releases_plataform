@@ -403,6 +403,52 @@ export interface EvidenciaInput {
   size?: number;
 }
 
+export interface EvidenciaGroupDelivery {
+  label: string;
+  total: number;
+  entregues: number;
+  pendentes: number;
+}
+
+export interface EvidenciaMonitorRow {
+  scenarioId: number;
+  /** @nullable */
+  idTeste?: string | null;
+  /** @nullable */
+  cenario?: string | null;
+  /** @nullable */
+  macroProcesso?: string | null;
+  /** @nullable */
+  site?: string | null;
+  /** @nullable */
+  sistema?: string | null;
+  /** @nullable */
+  prioridade?: string | null;
+  /** @nullable */
+  statusCenario?: string | null;
+  entregue: boolean;
+  totalEvidencias: number;
+  /** @nullable */
+  ultimoUpload?: string | null;
+}
+
+export interface EvidenciasMonitorSummary {
+  total: number;
+  entregues: number;
+  pendentes: number;
+  comArquivos: number;
+  totalArquivos: number;
+}
+
+export interface EvidenciasMonitor {
+  summary: EvidenciasMonitorSummary;
+  byMacroProcesso: EvidenciaGroupDelivery[];
+  bySite: EvidenciaGroupDelivery[];
+  bySistema: EvidenciaGroupDelivery[];
+  byPrioridade: EvidenciaGroupDelivery[];
+  rows: EvidenciaMonitorRow[];
+}
+
 export interface UploadUrlRequest {
   /** @minLength 1 */
   name: string;
@@ -448,5 +494,13 @@ prioridade?: string;
 
 export type GetDashboardMatrixParams = {
 prioridade?: string;
+};
+
+export type GetEvidenciasMonitorParams = {
+search?: string;
+prioridade?: string;
+site?: string;
+sistema?: string;
+macroProcesso?: string;
 };
 

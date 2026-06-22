@@ -887,6 +887,77 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /scenarios/{id}/evidencias/concluir:
+    post:
+      operationId: concluirEvidencias
+      tags: [evidencias]
+      summary: Mark all evidence uploads as completed for a scenario (uploaders only)
+      description: |
+        Sets the scenario status to "Evidências Enviadas". Allowed for the same
+        users that can upload evidence (requireUploader).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Updated scenario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scenario"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /evidencias/monitor:
+    get:
+      operationId: getEvidenciasMonitor
+      tags: [evidencias]
+      summary: Consolidated monitoring of evidence deliveries
+      description: |
+        Returns per-scenario evidence delivery rows plus consolidated counts
+        grouped by macro process, site, system and priority. Requires the
+        evidencias:consultar permission.
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: prioridade
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: site
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: sistema
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: macroProcesso
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Evidence delivery monitoring
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EvidenciasMonitor"
+
   /evidencias/{id}:
     delete:
       operationId: deleteEvidencia
@@ -1600,6 +1671,86 @@ components:
           type: string
         size:
           type: integer
+
+    EvidenciaGroupDelivery:
+      type: object
+      required: [label, total, entregues, pendentes]
+      properties:
+        label:
+          type: string
+        total:
+          type: integer
+        entregues:
+          type: integer
+        pendentes:
+          type: integer
+    EvidenciaMonitorRow:
+      type: object
+      required: [scenarioId, entregue, totalEvidencias]
+      properties:
+        scenarioId:
+          type: integer
+        idTeste:
+          type: ["string", "null"]
+        cenario:
+          type: ["string", "null"]
+        macroProcesso:
+          type: ["string", "null"]
+        site:
+          type: ["string", "null"]
+        sistema:
+          type: ["string", "null"]
+        prioridade:
+          type: ["string", "null"]
+        statusCenario:
+          type: ["string", "null"]
+        entregue:
+          type: boolean
+        totalEvidencias:
+          type: integer
+        ultimoUpload:
+          type: ["string", "null"]
+    EvidenciasMonitorSummary:
+      type: object
+      required: [total, entregues, pendentes, comArquivos, totalArquivos]
+      properties:
+        total:
+          type: integer
+        entregues:
+          type: integer
+        pendentes:
+          type: integer
+        comArquivos:
+          type: integer
+        totalArquivos:
+          type: integer
+    EvidenciasMonitor:
+      type: object
+      required:
+        [summary, byMacroProcesso, bySite, bySistema, byPrioridade, rows]
+      properties:
+        summary:
+          $ref: "#/components/schemas/EvidenciasMonitorSummary"
+        byMacroProcesso:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenciaGroupDelivery"
+        bySite:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenciaGroupDelivery"
+        bySistema:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenciaGroupDelivery"
+        byPrioridade:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenciaGroupDelivery"
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/EvidenciaMonitorRow"
 
     UploadUrlRequest:
       type: object

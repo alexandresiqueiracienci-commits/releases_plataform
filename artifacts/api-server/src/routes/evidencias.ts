@@ -1,6 +1,12 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
-import { db, evidenciasTable, scenariosTable } from "@workspace/db";
+import { eq, and, or, ilike, count, max } from "drizzle-orm";
+import {
+  db,
+  evidenciasTable,
+  scenariosTable,
+  STATUS_EVIDENCIAS_ENVIADAS,
+  type Scenario,
+} from "@workspace/db";
 import {
   ListEvidenciasParams,
   ListEvidenciasResponse,
@@ -8,6 +14,9 @@ import {
   CreateEvidenciaParams,
   CreateEvidenciaBody,
   DeleteEvidenciaParams,
+  ConcluirEvidenciasParams,
+  GetEvidenciasMonitorQueryParams,
+  GetEvidenciasMonitorResponse,
 } from "@workspace/api-zod";
 import {
   requirePermission,
@@ -134,6 +143,162 @@ router.delete(
       .where(eq(evidenciasTable.id, params.data.id));
 
     res.sendStatus(204);
+  },
+);
+
+// Marca todos os uploads das evidências como concluídos: muda o status do
+// cenário para "Evidências Enviadas". Permitido para os mesmos usuários que
+// podem enviar evidências (requireUploader).
+router.post(
+  "/scenarios/:id/evidencias/concluir",
+  requireUploader,
+  async (req, res): Promise<void> => {
+    const params = ConcluirEvidenciasParams.safeParse(req.params);
+    if (!params.success) {
+      res.status(400).json({ error: params.error.message });
+      return;
+    }
+
+    const [scenario] = await db
+      .update(scenariosTable)
+      .set({ statusCenario: STATUS_EVIDENCIAS_ENVIADAS })
+      .where(eq(scenariosTable.id, params.data.id))
+      .returning();
+    if (!scenario) {
+      res.status(404).json({ error: "Cenário não encontrado" });
+      return;
+    }
+
+    res.json(toJson(scenario));
+  },
+);
+
+const NAO_INFORMADO = "Não informado";
+function normLabel(value: string | null): string {
+  const trimmed = (value ?? "").trim();
+  return trimmed.length ? trimmed : NAO_INFORMADO;
+}
+
+function groupDeliveries(
+  rows: { scenario: Scenario; entregue: boolean }[],
+  pick: (s: Scenario) => string | null,
+): { label: string; total: number; entregues: number; pendentes: number }[] {
+  const map = new Map<string, { total: number; entregues: number }>();
+  for (const { scenario, entregue } of rows) {
+    const key = normLabel(pick(scenario));
+    const acc = map.get(key) ?? { total: 0, entregues: 0 };
+    acc.total += 1;
+    if (entregue) acc.entregues += 1;
+    map.set(key, acc);
+  }
+  return Array.from(map.entries())
+    .map(([label, { total, entregues }]) => ({
+      label,
+      total,
+      entregues,
+      pendentes: total - entregues,
+    }))
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label));
+}
+
+// Monitoramento consolidado das entregas de evidências por cenário, com
+// agrupamentos por macro processo, site, sistema e prioridade.
+router.get(
+  "/evidencias/monitor",
+  requirePermission("evidencias", "consultar"),
+  async (req, res): Promise<void> => {
+    const query = GetEvidenciasMonitorQueryParams.safeParse(req.query);
+    if (!query.success) {
+      res.status(400).json({ error: query.error.message });
+      return;
+    }
+    const { search, prioridade, site, sistema, macroProcesso } = query.data;
+
+    const conditions = [];
+    if (search) {
+      conditions.push(
+        or(
+          ilike(scenariosTable.idTeste, `%${search}%`),
+          ilike(scenariosTable.cenario, `%${search}%`),
+        ),
+      );
+    }
+    if (prioridade)
+      conditions.push(eq(scenariosTable.prioridade, prioridade));
+    if (site) conditions.push(eq(scenariosTable.site, site));
+    if (sistema) conditions.push(eq(scenariosTable.sistema, sistema));
+    if (macroProcesso)
+      conditions.push(eq(scenariosTable.macroProcesso, macroProcesso));
+
+    const scenarios = await db
+      .select()
+      .from(scenariosTable)
+      .where(conditions.length ? and(...conditions) : undefined);
+
+    const counts = await db
+      .select({
+        scenarioId: evidenciasTable.scenarioId,
+        total: count(),
+        ultimo: max(evidenciasTable.createdAt),
+      })
+      .from(evidenciasTable)
+      .groupBy(evidenciasTable.scenarioId);
+
+    const countByScenario = new Map(
+      counts.map((c) => [
+        c.scenarioId,
+        { total: Number(c.total), ultimo: c.ultimo as Date | null },
+      ]),
+    );
+
+    const enriched = scenarios.map((scenario) => {
+      const ev = countByScenario.get(scenario.id);
+      const totalEvidencias = ev?.total ?? 0;
+      const entregue =
+        (scenario.statusCenario ?? "").trim().toLowerCase() ===
+        STATUS_EVIDENCIAS_ENVIADAS.toLowerCase();
+      return { scenario, entregue, totalEvidencias, ultimo: ev?.ultimo ?? null };
+    });
+
+    const entregues = enriched.filter((e) => e.entregue).length;
+    const comArquivos = enriched.filter((e) => e.totalEvidencias > 0).length;
+    const totalArquivos = enriched.reduce(
+      (sum, e) => sum + e.totalEvidencias,
+      0,
+    );
+
+    const rows = enriched
+      .map((e) => ({
+        scenarioId: e.scenario.id,
+        idTeste: e.scenario.idTeste,
+        cenario: e.scenario.cenario,
+        macroProcesso: e.scenario.macroProcesso,
+        site: e.scenario.site,
+        sistema: e.scenario.sistema,
+        prioridade: e.scenario.prioridade,
+        statusCenario: e.scenario.statusCenario,
+        entregue: e.entregue,
+        totalEvidencias: e.totalEvidencias,
+        ultimoUpload: e.ultimo ? e.ultimo.toISOString() : null,
+      }))
+      .sort((a, b) => (a.idTeste ?? "").localeCompare(b.idTeste ?? ""));
+
+    res.json(
+      GetEvidenciasMonitorResponse.parse({
+        summary: {
+          total: enriched.length,
+          entregues,
+          pendentes: enriched.length - entregues,
+          comArquivos,
+          totalArquivos,
+        },
+        byMacroProcesso: groupDeliveries(enriched, (s) => s.macroProcesso),
+        bySite: groupDeliveries(enriched, (s) => s.site),
+        bySistema: groupDeliveries(enriched, (s) => s.sistema),
+        byPrioridade: groupDeliveries(enriched, (s) => s.prioridade),
+        rows,
+      }),
+    );
   },
 );
 
