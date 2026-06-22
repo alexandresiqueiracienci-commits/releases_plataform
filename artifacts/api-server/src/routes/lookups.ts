@@ -25,6 +25,7 @@ router.get(
     ["cadastros", "consultar"],
     ["cenarios", "consultar"],
     ["dashboards", "consultar"],
+    ["evidencias", "consultar"],
   ]),
   async (req, res): Promise<void> => {
   const query = ListLookupsQueryParams.safeParse(req.query);

@@ -101,7 +101,12 @@ export const ListScenariosQueryParams = zod.object({
   "prioridade": zod.coerce.string().optional(),
   "site": zod.coerce.string().optional(),
   "sistema": zod.coerce.string().optional(),
-  "statusCenario": zod.coerce.string().optional()
+  "statusCenario": zod.coerce.string().optional(),
+  "macroProcesso": zod.coerce.string().optional(),
+  "quemExecuta": zod.coerce.string().optional(),
+  "facilitador": zod.coerce.string().optional(),
+  "keyUser": zod.coerce.string().optional(),
+  "superUser": zod.coerce.string().optional()
 })
 
 export const ListScenariosResponseItem = zod.object({
@@ -884,7 +889,12 @@ export const GetEvidenciasMonitorQueryParams = zod.object({
   "prioridade": zod.coerce.string().optional(),
   "site": zod.coerce.string().optional(),
   "sistema": zod.coerce.string().optional(),
-  "macroProcesso": zod.coerce.string().optional()
+  "macroProcesso": zod.coerce.string().optional(),
+  "quemExecuta": zod.coerce.string().optional(),
+  "facilitador": zod.coerce.string().optional(),
+  "keyUser": zod.coerce.string().optional(),
+  "superUser": zod.coerce.string().optional(),
+  "statusCenario": zod.coerce.string().optional()
 })
 
 export const GetEvidenciasMonitorResponse = zod.object({

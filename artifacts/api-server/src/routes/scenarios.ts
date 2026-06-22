@@ -28,7 +28,18 @@ router.get(
     res.status(400).json({ error: query.error.message });
     return;
   }
-  const { search, prioridade, site, sistema, statusCenario } = query.data;
+  const {
+    search,
+    prioridade,
+    site,
+    sistema,
+    statusCenario,
+    macroProcesso,
+    quemExecuta,
+    facilitador,
+    keyUser,
+    superUser,
+  } = query.data;
 
   const conditions: SQL[] = [];
   if (prioridade) conditions.push(eq(scenariosTable.prioridade, prioridade));
@@ -36,6 +47,13 @@ router.get(
   if (sistema) conditions.push(eq(scenariosTable.sistema, sistema));
   if (statusCenario)
     conditions.push(eq(scenariosTable.statusCenario, statusCenario));
+  if (macroProcesso)
+    conditions.push(eq(scenariosTable.macroProcesso, macroProcesso));
+  if (quemExecuta) conditions.push(eq(scenariosTable.quemExecuta, quemExecuta));
+  if (facilitador) conditions.push(eq(scenariosTable.facilitador, facilitador));
+  if (keyUser) conditions.push(ilike(scenariosTable.keyUser, `%${keyUser}%`));
+  if (superUser)
+    conditions.push(ilike(scenariosTable.superUser, `%${superUser}%`));
   if (search) {
     const like = `%${search}%`;
     const searchCond = or(

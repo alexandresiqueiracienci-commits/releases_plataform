@@ -10,12 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  EvidenciasFilters,
+  type EvidenciasFilterValues,
+} from "@/components/evidencias/EvidenciasFilters";
 import {
   Table,
   TableBody,
@@ -85,10 +82,9 @@ function GroupChart({
 }
 
 export default function EvidenciasMonitorPage() {
-  const [prioridade, setPrioridade] = useState<string>("all");
+  const [filters, setFilters] = useState<EvidenciasFilterValues>({});
 
-  const queryParams = prioridade !== "all" ? { prioridade } : {};
-  const { data, isLoading, isError } = useGetEvidenciasMonitor(queryParams);
+  const { data, isLoading, isError } = useGetEvidenciasMonitor(filters);
 
   const summary = data?.summary;
   const pctEntregues =
@@ -98,30 +94,20 @@ export default function EvidenciasMonitorPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">
-            Monitor de Evidências
-          </h1>
-          <p className="text-muted-foreground">
-            Acompanhamento consolidado da entrega das evidências dos testes
-          </p>
-        </div>
-        <div className="w-full sm:w-64">
-          <Select value={prioridade} onValueChange={setPrioridade}>
-            <SelectTrigger>
-              <SelectValue placeholder="Filtrar por Prioridade" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas as Prioridades</SelectItem>
-              <SelectItem value="P0">P0</SelectItem>
-              <SelectItem value="P1">P1</SelectItem>
-              <SelectItem value="P2">P2</SelectItem>
-              <SelectItem value="P3">P3</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-primary">
+          Monitor de Evidências
+        </h1>
+        <p className="text-muted-foreground">
+          Acompanhamento consolidado da entrega das evidências dos testes
+        </p>
       </div>
+
+      <Card>
+        <CardContent className="pt-6">
+          <EvidenciasFilters value={filters} onChange={setFilters} />
+        </CardContent>
+      </Card>
 
       {isLoading ? (
         <div className="space-y-6">

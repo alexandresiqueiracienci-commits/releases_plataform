@@ -474,6 +474,11 @@ prioridade?: string;
 site?: string;
 sistema?: string;
 statusCenario?: string;
+macroProcesso?: string;
+quemExecuta?: string;
+facilitador?: string;
+keyUser?: string;
+superUser?: string;
 };
 
 export type ListLookupsParams = {
@@ -502,5 +507,10 @@ prioridade?: string;
 site?: string;
 sistema?: string;
 macroProcesso?: string;
+quemExecuta?: string;
+facilitador?: string;
+keyUser?: string;
+superUser?: string;
+statusCenario?: string;
 };
 

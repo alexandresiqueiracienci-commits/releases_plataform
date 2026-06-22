@@ -172,6 +172,31 @@ paths:
           required: false
           schema:
             type: string
+        - name: macroProcesso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: quemExecuta
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: facilitador
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: keyUser
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: superUser
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: List of scenarios
@@ -946,6 +971,31 @@ paths:
           schema:
             type: string
         - name: macroProcesso
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: quemExecuta
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: facilitador
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: keyUser
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: superUser
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: statusCenario
           in: query
           required: false
           schema:

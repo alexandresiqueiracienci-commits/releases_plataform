@@ -212,7 +212,18 @@ router.get(
       res.status(400).json({ error: query.error.message });
       return;
     }
-    const { search, prioridade, site, sistema, macroProcesso } = query.data;
+    const {
+      search,
+      prioridade,
+      site,
+      sistema,
+      macroProcesso,
+      quemExecuta,
+      facilitador,
+      keyUser,
+      superUser,
+      statusCenario,
+    } = query.data;
 
     const conditions = [];
     if (search) {
@@ -229,6 +240,16 @@ router.get(
     if (sistema) conditions.push(eq(scenariosTable.sistema, sistema));
     if (macroProcesso)
       conditions.push(eq(scenariosTable.macroProcesso, macroProcesso));
+    if (quemExecuta)
+      conditions.push(eq(scenariosTable.quemExecuta, quemExecuta));
+    if (facilitador)
+      conditions.push(eq(scenariosTable.facilitador, facilitador));
+    if (keyUser)
+      conditions.push(ilike(scenariosTable.keyUser, `%${keyUser}%`));
+    if (superUser)
+      conditions.push(ilike(scenariosTable.superUser, `%${superUser}%`));
+    if (statusCenario)
+      conditions.push(eq(scenariosTable.statusCenario, statusCenario));
 
     const scenarios = await db
       .select()

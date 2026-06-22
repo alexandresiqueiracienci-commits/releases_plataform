@@ -16,9 +16,12 @@ por várias telas: filtro de Prioridade dos Dashboards, SELECTs do formulário d
 Cenários e a tela de Cadastros. Gating exclusivo por `cadastros:consultar`
 quebra Dashboards/Cenários para usuários comuns (o perfil USUARIO padrão não tem
 `cadastros:consultar`).
+As telas de Evidências (lista e Monitor) também consomem lookups nos filtros
+(site, sistema, macro_processo, prioridade, quem_executa, facilitador,
+status_cenario), então `evidencias:consultar` também precisa estar no gate.
 **Como aplicar:** proteja leitura de referência com `requireAnyPermission`
-listando todas as áreas consumidoras (cadastros/cenarios/dashboards `consultar`).
-Escritas de lookup continuam gated por `cadastros:criar|atualizar|excluir`.
+listando todas as áreas consumidoras (cadastros/cenarios/dashboards/evidencias
+`consultar`). Escritas de lookup continuam gated por `cadastros:criar|atualizar|excluir`.
 
 ## Evidências: regra legada de upload é intencional
 `requireUploader` permite upload se (legado: `@natura.net` / `terceiro` / admin)

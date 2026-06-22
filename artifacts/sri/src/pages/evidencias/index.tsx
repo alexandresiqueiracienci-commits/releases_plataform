@@ -55,6 +55,10 @@ import {
   Send,
 } from "lucide-react";
 import { STATUS_EVIDENCIAS_ENVIADAS } from "@/lib/constants";
+import {
+  EvidenciasFilters,
+  type EvidenciasFilterValues,
+} from "@/components/evidencias/EvidenciasFilters";
 
 type ScenarioRow = Scenario;
 
@@ -409,6 +413,7 @@ function StatusControl({ scenario }: { scenario: ScenarioRow }) {
 
 export default function EvidenciasPage() {
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<EvidenciasFilterValues>({});
   const [selected, setSelected] = useState<ScenarioRow | null>(null);
   const [scrollToUpload, setScrollToUpload] = useState(false);
   const uploadSectionRef = useRef<HTMLDivElement>(null);
@@ -437,6 +442,7 @@ export default function EvidenciasPage() {
   const canChangeStatus = has("cenarios", "alterar_status");
   const { data: cenarios, isLoading } = useListScenarios({
     search: search || undefined,
+    ...filters,
   });
 
   const email = user?.email ?? "";
@@ -472,7 +478,7 @@ export default function EvidenciasPage() {
       )}
 
       <Card>
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 space-y-3">
           <div className="relative max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -483,6 +489,7 @@ export default function EvidenciasPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <EvidenciasFilters value={filters} onChange={setFilters} />
         </CardHeader>
         <CardContent>
           {isLoading ? (
