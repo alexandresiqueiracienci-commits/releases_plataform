@@ -1,18 +1,30 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useListContatos, useCreateContato, useDeleteContato, getListContatosQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePermissions } from "@/hooks/use-permissions";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Plus, Trash2 } from "lucide-react";
+import { Search, Plus, Trash2, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
+const ALL = "all";
+
 export default function ContatosPage() {
   const [search, setSearch] = useState("");
+  const [empresa, setEmpresa] = useState<string>(ALL);
+  const [papel, setPapel] = useState<string>(ALL);
   const { has } = usePermissions();
   const canCreate = has("contatos", "criar");
   const canDelete = has("contatos", "excluir");
@@ -20,6 +32,34 @@ export default function ContatosPage() {
   const qc = useQueryClient();
 
   const { data: contatos, isLoading } = useListContatos({ search: search || undefined });
+
+  const empresaOptions = useMemo(
+    () =>
+      Array.from(
+        new Set((contatos ?? []).map((c) => c.empresa).filter((v): v is string => !!v)),
+      ).sort((a, b) => a.localeCompare(b, "pt-BR")),
+    [contatos],
+  );
+
+  const papelOptions = useMemo(
+    () =>
+      Array.from(
+        new Set((contatos ?? []).map((c) => c.papel).filter((v): v is string => !!v)),
+      ).sort((a, b) => a.localeCompare(b, "pt-BR")),
+    [contatos],
+  );
+
+  const contatosFiltrados = useMemo(
+    () =>
+      (contatos ?? []).filter(
+        (c) =>
+          (empresa === ALL || c.empresa === empresa) &&
+          (papel === ALL || c.papel === papel),
+      ),
+    [contatos, empresa, papel],
+  );
+
+  const hasFiltrosAtivos = empresa !== ALL || papel !== ALL;
   const createContato = useCreateContato();
   const deleteContato = useDeleteContato();
 
@@ -88,7 +128,7 @@ export default function ContatosPage() {
       </div>
 
       <Card>
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 space-y-3">
           <div className="relative max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -98,6 +138,55 @@ export default function ContatosPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Empresa</Label>
+              <Select value={empresa} onValueChange={setEmpresa}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Todas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ALL}>Todas</SelectItem>
+                  {empresaOptions.map((opt) => (
+                    <SelectItem key={opt} value={opt}>
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Papel</Label>
+              <Select value={papel} onValueChange={setPapel}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Todos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ALL}>Todos</SelectItem>
+                  {papelOptions.map((opt) => (
+                    <SelectItem key={opt} value={opt}>
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          {hasFiltrosAtivos && (
+            <div className="flex justify-end">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setEmpresa(ALL);
+                  setPapel(ALL);
+                }}
+              >
+                <X className="mr-2 h-4 w-4" />
+                Limpar filtros
+              </Button>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -105,7 +194,7 @@ export default function ContatosPage() {
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-10 w-full" />
             </div>
-          ) : contatos && contatos.length > 0 ? (
+          ) : contatosFiltrados.length > 0 ? (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -120,7 +209,7 @@ export default function ContatosPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {contatos.map((item) => (
+                  {contatosFiltrados.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell className="font-medium">{item.nome}</TableCell>
                       <TableCell>{item.empresa}</TableCell>
