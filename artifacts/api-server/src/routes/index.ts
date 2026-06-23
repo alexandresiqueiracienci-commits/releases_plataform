@@ -11,6 +11,9 @@ import contatosRouter from "./contatos";
 import dashboardRouter from "./dashboard";
 import evidenciasRouter from "./evidencias";
 import storageRouter from "./storage";
+import releasesRouter from "./releases";
+import areasRouter from "./areas";
+import demandasRouter from "./demandas";
 
 const router: IRouter = Router();
 
@@ -26,5 +29,8 @@ router.use(contatosRouter);
 router.use(dashboardRouter);
 router.use(evidenciasRouter);
 router.use(storageRouter);
+router.use(releasesRouter);
+router.use(areasRouter);
+router.use(demandasRouter);
 
 export default router;

@@ -18,3 +18,4 @@ export * from "./rbac";
 export * from "./rbacSeed";
 export * from "./constants";
 export * from "./lookupsSeed";
+export * from "./areasSeed";

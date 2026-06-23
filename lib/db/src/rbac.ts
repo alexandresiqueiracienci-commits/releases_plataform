@@ -100,6 +100,24 @@ export const DEFAULT_OBJETOS: {
     descricao: "Objetos/telas do sistema.",
     acoes: ["consultar", "criar", "atualizar", "excluir"],
   },
+  {
+    chave: "releases",
+    nome: "Releases",
+    descricao: "Cadastro de releases de implantação.",
+    acoes: ["consultar", "criar", "atualizar", "excluir"],
+  },
+  {
+    chave: "demandas",
+    nome: "Demandas",
+    descricao: "Inscrição e gestão de demandas das releases.",
+    acoes: ["consultar", "criar", "atualizar", "excluir"],
+  },
+  {
+    chave: "areas",
+    nome: "Áreas Impactadas",
+    descricao: "Catálogo de áreas impactadas pelas demandas.",
+    acoes: ["consultar", "criar", "atualizar", "excluir"],
+  },
 ];
 
 // Permissões padrão do perfil Usuário: consulta às áreas operacionais.
@@ -111,4 +129,7 @@ export const USUARIO_DEFAULT_PERMS: { objeto: string; acao: RbacAcao }[] = [
   { objeto: "escala", acao: "consultar" },
   { objeto: "contatos", acao: "consultar" },
   { objeto: "evidencias", acao: "consultar" },
+  { objeto: "releases", acao: "consultar" },
+  { objeto: "demandas", acao: "consultar" },
+  { objeto: "areas", acao: "consultar" },
 ];

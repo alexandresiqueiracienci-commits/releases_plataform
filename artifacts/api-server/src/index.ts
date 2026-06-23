@@ -4,6 +4,7 @@ import {
   db,
   seedRbacDefaults,
   ensureStatusEvidenciasEnviadas,
+  ensureAreasImpactadasDefaults,
 } from "@workspace/db";
 
 const rawPort = process.env["PORT"];
@@ -29,6 +30,10 @@ seedRbacDefaults(db)
   })
   .then(() => {
     logger.info("status_cenario defaults ensured");
+    return ensureAreasImpactadasDefaults(db);
+  })
+  .then(() => {
+    logger.info("áreas impactadas defaults ensured");
   })
   .catch((err: unknown) => {
     logger.error({ err }, "Failed to seed defaults");

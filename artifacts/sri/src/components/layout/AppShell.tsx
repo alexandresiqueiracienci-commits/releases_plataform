@@ -31,6 +31,10 @@ import {
   LineChart,
   UserCog,
   Boxes,
+  Rocket,
+  ClipboardList,
+  Package,
+  Layers,
   LogOut 
 } from "lucide-react";
 
@@ -101,6 +105,13 @@ export function AppShell({ children }: AppShellProps) {
     { icon: BarChart2, label: "Dashboards", href: "/dashboards", show: has("dashboards", "consultar") },
   ].filter((item) => item.show);
 
+  const inscricaoItems = [
+    { icon: Rocket, label: "Releases", href: "/releases", show: has("releases", "consultar") },
+    { icon: ClipboardList, label: "Inscrição nas Releases", href: "/inscricoes", show: has("demandas", "consultar") },
+    { icon: Package, label: "Demandas", href: "/demandas", show: has("demandas", "consultar") },
+    { icon: Layers, label: "Áreas Impactadas", href: "/areas", show: has("areas", "consultar") },
+  ].filter((item) => item.show);
+
   const docItems = [
     { icon: FileText, label: "Governança Releases", href: "/governanca" },
   ];
@@ -108,6 +119,7 @@ export function AppShell({ children }: AppShellProps) {
   const navGroups = [
     { label: "Cadastros", items: cadastrosItems },
     { label: "Implantação Release", items: releaseItems },
+    { label: "Inscrição Releases", items: inscricaoItems },
   ].filter((group) => group.items.length > 0);
 
   const isItemActive = (href: string) =>

@@ -743,6 +743,337 @@ export const DeleteContatoParams = zod.object({
 
 
 /**
+ * @summary List platform users for selection dropdowns
+ */
+export const ListUserOptionsResponseItem = zod.object({
+  "id": zod.number(),
+  "email": zod.string(),
+  "name": zod.string().nullish()
+})
+export const ListUserOptionsResponse = zod.array(ListUserOptionsResponseItem)
+
+
+/**
+ * @summary List releases
+ */
+export const ListReleasesQueryParams = zod.object({
+  "search": zod.coerce.string().optional()
+})
+
+export const ListReleasesResponseItem = zod.object({
+  "id": zod.number(),
+  "sigla": zod.string(),
+  "liderNome": zod.string(),
+  "login": zod.string(),
+  "tipo": zod.string().describe('MAIOR or MENOR'),
+  "goLiveInicio": zod.string().nullish(),
+  "goLiveTermino": zod.string().nullish(),
+  "sistemas": zod.array(zod.string()),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+export const ListReleasesResponse = zod.array(ListReleasesResponseItem)
+
+
+/**
+ * @summary Create a release
+ */
+
+
+
+
+
+export const CreateReleaseBody = zod.object({
+  "sigla": zod.string().min(1),
+  "liderNome": zod.string().min(1),
+  "login": zod.string().min(1),
+  "tipo": zod.string(),
+  "goLiveInicio": zod.string().nullish(),
+  "goLiveTermino": zod.string().nullish(),
+  "sistemas": zod.array(zod.string()).optional()
+})
+
+
+/**
+ * @summary Update a release
+ */
+export const UpdateReleaseParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateReleaseBody = zod.object({
+  "sigla": zod.string().optional(),
+  "liderNome": zod.string().optional(),
+  "login": zod.string().optional(),
+  "tipo": zod.string().optional(),
+  "goLiveInicio": zod.string().nullish(),
+  "goLiveTermino": zod.string().nullish(),
+  "sistemas": zod.array(zod.string()).optional()
+})
+
+export const UpdateReleaseResponse = zod.object({
+  "id": zod.number(),
+  "sigla": zod.string(),
+  "liderNome": zod.string(),
+  "login": zod.string(),
+  "tipo": zod.string().describe('MAIOR or MENOR'),
+  "goLiveInicio": zod.string().nullish(),
+  "goLiveTermino": zod.string().nullish(),
+  "sistemas": zod.array(zod.string()),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a release
+ */
+export const DeleteReleaseParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary List impacted areas
+ */
+export const ListAreasQueryParams = zod.object({
+  "search": zod.coerce.string().optional()
+})
+
+export const ListAreasResponseItem = zod.object({
+  "id": zod.number(),
+  "nome": zod.string(),
+  "createdAt": zod.string().nullish()
+})
+export const ListAreasResponse = zod.array(ListAreasResponseItem)
+
+
+/**
+ * @summary Create an impacted area
+ */
+
+
+
+export const CreateAreaBody = zod.object({
+  "nome": zod.string().min(1)
+})
+
+
+/**
+ * @summary Update an impacted area
+ */
+export const UpdateAreaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateAreaBody = zod.object({
+  "nome": zod.string().optional()
+})
+
+export const UpdateAreaResponse = zod.object({
+  "id": zod.number(),
+  "nome": zod.string(),
+  "createdAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete an impacted area
+ */
+export const DeleteAreaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary List demandas
+ */
+export const ListDemandasQueryParams = zod.object({
+  "search": zod.coerce.string().optional(),
+  "releaseId": zod.coerce.number().optional()
+})
+
+export const ListDemandasResponseItem = zod.object({
+  "id": zod.number(),
+  "releaseId": zod.number(),
+  "releaseSigla": zod.string().nullish(),
+  "nome": zod.string(),
+  "codigoServiceNow": zod.string().nullish(),
+  "wps": zod.number().nullish(),
+  "liderDemanda": zod.string().nullish(),
+  "pep": zod.string().nullish(),
+  "projetoSspId": zod.string().nullish(),
+  "origem": zod.string().nullish(),
+  "resumoExecutivo": zod.string().nullish(),
+  "liderGerenteProjetos": zod.string().nullish(),
+  "liderancaArea": zod.string().nullish(),
+  "tamanho": zod.string().nullish(),
+  "urlKickoff": zod.string().nullish(),
+  "urlBusinessCase": zod.string().nullish(),
+  "urlCronograma": zod.string().nullish(),
+  "processosNegocio": zod.string().nullish(),
+  "sistemasDePara": zod.string().nullish(),
+  "dataAprovacaoL2": zod.string().nullish(),
+  "cienteModeloCustos": zod.boolean().nullish(),
+  "pepOpexDetalhes": zod.string().nullish(),
+  "areaIds": zod.array(zod.number()).optional(),
+  "areas": zod.array(zod.object({
+  "id": zod.number(),
+  "nome": zod.string(),
+  "createdAt": zod.string().nullish()
+})).optional(),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+export const ListDemandasResponse = zod.array(ListDemandasResponseItem)
+
+
+/**
+ * @summary Create a demanda (release inscription)
+ */
+
+
+
+export const CreateDemandaBody = zod.object({
+  "releaseId": zod.number(),
+  "nome": zod.string().min(1),
+  "codigoServiceNow": zod.string().optional(),
+  "wps": zod.number().optional(),
+  "liderDemanda": zod.string().optional(),
+  "pep": zod.string().optional(),
+  "projetoSspId": zod.string().optional(),
+  "origem": zod.string().optional(),
+  "resumoExecutivo": zod.string().optional(),
+  "liderGerenteProjetos": zod.string().optional(),
+  "liderancaArea": zod.string().optional(),
+  "tamanho": zod.string().optional(),
+  "urlKickoff": zod.string().optional(),
+  "urlBusinessCase": zod.string().optional(),
+  "urlCronograma": zod.string().optional(),
+  "processosNegocio": zod.string().optional(),
+  "sistemasDePara": zod.string().optional(),
+  "dataAprovacaoL2": zod.string().nullish(),
+  "cienteModeloCustos": zod.boolean().optional(),
+  "pepOpexDetalhes": zod.string().optional(),
+  "areaIds": zod.array(zod.number()).optional()
+})
+
+
+/**
+ * @summary Get a single demanda
+ */
+export const GetDemandaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetDemandaResponse = zod.object({
+  "id": zod.number(),
+  "releaseId": zod.number(),
+  "releaseSigla": zod.string().nullish(),
+  "nome": zod.string(),
+  "codigoServiceNow": zod.string().nullish(),
+  "wps": zod.number().nullish(),
+  "liderDemanda": zod.string().nullish(),
+  "pep": zod.string().nullish(),
+  "projetoSspId": zod.string().nullish(),
+  "origem": zod.string().nullish(),
+  "resumoExecutivo": zod.string().nullish(),
+  "liderGerenteProjetos": zod.string().nullish(),
+  "liderancaArea": zod.string().nullish(),
+  "tamanho": zod.string().nullish(),
+  "urlKickoff": zod.string().nullish(),
+  "urlBusinessCase": zod.string().nullish(),
+  "urlCronograma": zod.string().nullish(),
+  "processosNegocio": zod.string().nullish(),
+  "sistemasDePara": zod.string().nullish(),
+  "dataAprovacaoL2": zod.string().nullish(),
+  "cienteModeloCustos": zod.boolean().nullish(),
+  "pepOpexDetalhes": zod.string().nullish(),
+  "areaIds": zod.array(zod.number()).optional(),
+  "areas": zod.array(zod.object({
+  "id": zod.number(),
+  "nome": zod.string(),
+  "createdAt": zod.string().nullish()
+})).optional(),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Update a demanda
+ */
+export const UpdateDemandaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateDemandaBody = zod.object({
+  "releaseId": zod.number().optional(),
+  "nome": zod.string().optional(),
+  "codigoServiceNow": zod.string().optional(),
+  "wps": zod.number().optional(),
+  "liderDemanda": zod.string().optional(),
+  "pep": zod.string().optional(),
+  "projetoSspId": zod.string().optional(),
+  "origem": zod.string().optional(),
+  "resumoExecutivo": zod.string().optional(),
+  "liderGerenteProjetos": zod.string().optional(),
+  "liderancaArea": zod.string().optional(),
+  "tamanho": zod.string().optional(),
+  "urlKickoff": zod.string().optional(),
+  "urlBusinessCase": zod.string().optional(),
+  "urlCronograma": zod.string().optional(),
+  "processosNegocio": zod.string().optional(),
+  "sistemasDePara": zod.string().optional(),
+  "dataAprovacaoL2": zod.string().nullish(),
+  "cienteModeloCustos": zod.boolean().optional(),
+  "pepOpexDetalhes": zod.string().optional(),
+  "areaIds": zod.array(zod.number()).optional()
+})
+
+export const UpdateDemandaResponse = zod.object({
+  "id": zod.number(),
+  "releaseId": zod.number(),
+  "releaseSigla": zod.string().nullish(),
+  "nome": zod.string(),
+  "codigoServiceNow": zod.string().nullish(),
+  "wps": zod.number().nullish(),
+  "liderDemanda": zod.string().nullish(),
+  "pep": zod.string().nullish(),
+  "projetoSspId": zod.string().nullish(),
+  "origem": zod.string().nullish(),
+  "resumoExecutivo": zod.string().nullish(),
+  "liderGerenteProjetos": zod.string().nullish(),
+  "liderancaArea": zod.string().nullish(),
+  "tamanho": zod.string().nullish(),
+  "urlKickoff": zod.string().nullish(),
+  "urlBusinessCase": zod.string().nullish(),
+  "urlCronograma": zod.string().nullish(),
+  "processosNegocio": zod.string().nullish(),
+  "sistemasDePara": zod.string().nullish(),
+  "dataAprovacaoL2": zod.string().nullish(),
+  "cienteModeloCustos": zod.boolean().nullish(),
+  "pepOpexDetalhes": zod.string().nullish(),
+  "areaIds": zod.array(zod.number()).optional(),
+  "areas": zod.array(zod.object({
+  "id": zod.number(),
+  "nome": zod.string(),
+  "createdAt": zod.string().nullish()
+})).optional(),
+  "createdAt": zod.string().nullish(),
+  "updatedAt": zod.string().nullish()
+})
+
+
+/**
+ * @summary Delete a demanda
+ */
+export const DeleteDemandaParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
  * @summary Consolidated dashboard counts
  */
 export const GetDashboardSummaryQueryParams = zod.object({

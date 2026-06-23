@@ -10,10 +10,29 @@ import {
   UpdateUserBody,
   UpdateUserResponse,
 } from "@workspace/api-zod";
-import { requireAdmin } from "../middlewares/auth";
+import { ListUserOptionsResponse } from "@workspace/api-zod";
+import { requireAdmin, requireApproved } from "../middlewares/auth";
 import { toJson } from "../lib/serialize";
 
 const router: IRouter = Router();
+
+router.get(
+  "/users/options",
+  requireApproved,
+  async (_req, res): Promise<void> => {
+    const rows = await db
+      .select({
+        id: usersTable.id,
+        email: usersTable.email,
+        name: usersTable.name,
+      })
+      .from(usersTable)
+      .where(eq(usersTable.status, "APROVADO"))
+      .orderBy(usersTable.name);
+
+    res.json(ListUserOptionsResponse.parse(toJson(rows)));
+  },
+);
 
 router.get("/users", requireAdmin, async (req, res): Promise<void> => {
   const query = ListUsersQueryParams.safeParse(req.query);

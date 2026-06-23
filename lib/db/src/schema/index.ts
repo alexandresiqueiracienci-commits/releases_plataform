@@ -7,3 +7,7 @@ export * from "./evidencias";
 export * from "./perfis";
 export * from "./objetos";
 export * from "./perfilPermissoes";
+export * from "./releases";
+export * from "./areasImpactadas";
+export * from "./demandas";
+export * from "./demandaAreas";

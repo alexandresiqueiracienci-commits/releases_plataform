@@ -6,6 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './areaImpactada';
+export * from './areaImpactadaInput';
+export * from './areaImpactadaUpdate';
 export * from './contato';
 export * from './contatoInput';
 export * from './contatoUpdate';
@@ -13,6 +16,9 @@ export * from './countItem';
 export * from './createUserInput';
 export * from './dashboardMatrix';
 export * from './dashboardSummary';
+export * from './demanda';
+export * from './demandaInput';
+export * from './demandaUpdate';
 export * from './error';
 export * from './escala';
 export * from './escalaInput';
@@ -27,9 +33,12 @@ export * from './getDashboardMatrixParams';
 export * from './getDashboardSummaryParams';
 export * from './getEvidenciasMonitorParams';
 export * from './healthStatus';
+export * from './listAreasParams';
 export * from './listContatosParams';
+export * from './listDemandasParams';
 export * from './listEscalaParams';
 export * from './listLookupsParams';
+export * from './listReleasesParams';
 export * from './listScenariosParams';
 export * from './listUsersParams';
 export * from './lookup';
@@ -44,6 +53,9 @@ export * from './perfilInput';
 export * from './perfilPermissoesInput';
 export * from './perfilUpdate';
 export * from './permissao';
+export * from './release';
+export * from './releaseInput';
+export * from './releaseUpdate';
 export * from './scenario';
 export * from './scenarioInput';
 export * from './scenarioStatusUpdate';
@@ -51,4 +63,5 @@ export * from './scenarioUpdate';
 export * from './uploadUrlRequest';
 export * from './uploadUrlResponse';
 export * from './user';
+export * from './userOption';
 export * from './userUpdate';

@@ -352,6 +352,175 @@ export interface ContatoUpdate {
   escalonamento?: string;
 }
 
+export interface UserOption {
+  id: number;
+  email: string;
+  /** @nullable */
+  name?: string | null;
+}
+
+export interface Release {
+  id: number;
+  sigla: string;
+  liderNome: string;
+  login: string;
+  /** MAIOR or MENOR */
+  tipo: string;
+  /** @nullable */
+  goLiveInicio?: string | null;
+  /** @nullable */
+  goLiveTermino?: string | null;
+  sistemas: string[];
+  /** @nullable */
+  createdAt?: string | null;
+  /** @nullable */
+  updatedAt?: string | null;
+}
+
+export interface ReleaseInput {
+  /** @minLength 1 */
+  sigla: string;
+  /** @minLength 1 */
+  liderNome: string;
+  /** @minLength 1 */
+  login: string;
+  tipo: string;
+  /** @nullable */
+  goLiveInicio?: string | null;
+  /** @nullable */
+  goLiveTermino?: string | null;
+  sistemas?: string[];
+}
+
+export interface ReleaseUpdate {
+  sigla?: string;
+  liderNome?: string;
+  login?: string;
+  tipo?: string;
+  /** @nullable */
+  goLiveInicio?: string | null;
+  /** @nullable */
+  goLiveTermino?: string | null;
+  sistemas?: string[];
+}
+
+export interface AreaImpactada {
+  id: number;
+  nome: string;
+  /** @nullable */
+  createdAt?: string | null;
+}
+
+export interface AreaImpactadaInput {
+  /** @minLength 1 */
+  nome: string;
+}
+
+export interface AreaImpactadaUpdate {
+  nome?: string;
+}
+
+export interface Demanda {
+  id: number;
+  releaseId: number;
+  /** @nullable */
+  releaseSigla?: string | null;
+  nome: string;
+  /** @nullable */
+  codigoServiceNow?: string | null;
+  /** @nullable */
+  wps?: number | null;
+  /** @nullable */
+  liderDemanda?: string | null;
+  /** @nullable */
+  pep?: string | null;
+  /** @nullable */
+  projetoSspId?: string | null;
+  /** @nullable */
+  origem?: string | null;
+  /** @nullable */
+  resumoExecutivo?: string | null;
+  /** @nullable */
+  liderGerenteProjetos?: string | null;
+  /** @nullable */
+  liderancaArea?: string | null;
+  /** @nullable */
+  tamanho?: string | null;
+  /** @nullable */
+  urlKickoff?: string | null;
+  /** @nullable */
+  urlBusinessCase?: string | null;
+  /** @nullable */
+  urlCronograma?: string | null;
+  /** @nullable */
+  processosNegocio?: string | null;
+  /** @nullable */
+  sistemasDePara?: string | null;
+  /** @nullable */
+  dataAprovacaoL2?: string | null;
+  /** @nullable */
+  cienteModeloCustos?: boolean | null;
+  /** @nullable */
+  pepOpexDetalhes?: string | null;
+  areaIds?: number[];
+  areas?: AreaImpactada[];
+  /** @nullable */
+  createdAt?: string | null;
+  /** @nullable */
+  updatedAt?: string | null;
+}
+
+export interface DemandaInput {
+  releaseId: number;
+  /** @minLength 1 */
+  nome: string;
+  codigoServiceNow?: string;
+  wps?: number;
+  liderDemanda?: string;
+  pep?: string;
+  projetoSspId?: string;
+  origem?: string;
+  resumoExecutivo?: string;
+  liderGerenteProjetos?: string;
+  liderancaArea?: string;
+  tamanho?: string;
+  urlKickoff?: string;
+  urlBusinessCase?: string;
+  urlCronograma?: string;
+  processosNegocio?: string;
+  sistemasDePara?: string;
+  /** @nullable */
+  dataAprovacaoL2?: string | null;
+  cienteModeloCustos?: boolean;
+  pepOpexDetalhes?: string;
+  areaIds?: number[];
+}
+
+export interface DemandaUpdate {
+  releaseId?: number;
+  nome?: string;
+  codigoServiceNow?: string;
+  wps?: number;
+  liderDemanda?: string;
+  pep?: string;
+  projetoSspId?: string;
+  origem?: string;
+  resumoExecutivo?: string;
+  liderGerenteProjetos?: string;
+  liderancaArea?: string;
+  tamanho?: string;
+  urlKickoff?: string;
+  urlBusinessCase?: string;
+  urlCronograma?: string;
+  processosNegocio?: string;
+  sistemasDePara?: string;
+  /** @nullable */
+  dataAprovacaoL2?: string | null;
+  cienteModeloCustos?: boolean;
+  pepOpexDetalhes?: string;
+  areaIds?: number[];
+}
+
 export interface CountItem {
   label: string;
   count: number;
@@ -491,6 +660,19 @@ search?: string;
 
 export type ListContatosParams = {
 search?: string;
+};
+
+export type ListReleasesParams = {
+search?: string;
+};
+
+export type ListAreasParams = {
+search?: string;
+};
+
+export type ListDemandasParams = {
+search?: string;
+releaseId?: number;
 };
 
 export type GetDashboardSummaryParams = {

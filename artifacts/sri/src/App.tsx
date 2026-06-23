@@ -20,6 +20,11 @@ import CadastrosIndexPage from "@/pages/cadastros/index";
 import CadastrosCrudPage from "@/pages/cadastros/crud";
 import EscalaPage from "@/pages/escala/index";
 import ContatosPage from "@/pages/contatos/index";
+import ReleasesPage from "@/pages/releases/index";
+import AreasPage from "@/pages/areas/index";
+import InscricoesListPage from "@/pages/inscricoes/list";
+import InscricaoFormPage from "@/pages/inscricoes/form";
+import DemandasPage from "@/pages/demandas/index";
 const GovernancaPage = lazy(() => import("@/pages/governanca/index"));
 import UsuariosPage from "@/pages/usuarios/index";
 import PerfisPage from "@/pages/perfis/index";
@@ -175,6 +180,24 @@ function AuthenticatedApp() {
         </Route>
         <Route path="/contatos">
           <ProtectedRoute component={ContatosPage} requireObjeto="contatos" requireAcao="consultar" />
+        </Route>
+        <Route path="/releases">
+          <ProtectedRoute component={ReleasesPage} requireObjeto="releases" requireAcao="consultar" />
+        </Route>
+        <Route path="/areas">
+          <ProtectedRoute component={AreasPage} requireObjeto="areas" requireAcao="consultar" />
+        </Route>
+        <Route path="/inscricoes/novo">
+          <ProtectedRoute component={InscricaoFormPage} requireObjeto="demandas" requireAcao="criar" />
+        </Route>
+        <Route path="/inscricoes/:id/editar">
+          <ProtectedRoute component={InscricaoFormPage} requireObjeto="demandas" requireAcao="atualizar" />
+        </Route>
+        <Route path="/inscricoes">
+          <ProtectedRoute component={InscricoesListPage} requireObjeto="demandas" requireAcao="consultar" />
+        </Route>
+        <Route path="/demandas">
+          <ProtectedRoute component={DemandasPage} requireObjeto="demandas" requireAcao="consultar" />
         </Route>
         <Route path="/evidencias/monitor">
           <Suspense fallback={null}>

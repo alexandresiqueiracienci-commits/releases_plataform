@@ -826,6 +826,310 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /users/options:
+    get:
+      operationId: listUserOptions
+      tags: [users]
+      summary: List platform users for selection dropdowns
+      responses:
+        "200":
+          description: List of user options
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserOption"
+
+  /releases:
+    get:
+      operationId: listReleases
+      tags: [releases]
+      summary: List releases
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of releases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Release"
+    post:
+      operationId: createRelease
+      tags: [releases]
+      summary: Create a release
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReleaseInput"
+      responses:
+        "201":
+          description: Created release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Release"
+  /releases/{id}:
+    patch:
+      operationId: updateRelease
+      tags: [releases]
+      summary: Update a release
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReleaseUpdate"
+      responses:
+        "200":
+          description: Updated release
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Release"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteRelease
+      tags: [releases]
+      summary: Delete a release
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /areas:
+    get:
+      operationId: listAreas
+      tags: [areas]
+      summary: List impacted areas
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of areas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AreaImpactada"
+    post:
+      operationId: createArea
+      tags: [areas]
+      summary: Create an impacted area
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaImpactadaInput"
+      responses:
+        "201":
+          description: Created area
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AreaImpactada"
+  /areas/{id}:
+    patch:
+      operationId: updateArea
+      tags: [areas]
+      summary: Update an impacted area
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AreaImpactadaUpdate"
+      responses:
+        "200":
+          description: Updated area
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AreaImpactada"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteArea
+      tags: [areas]
+      summary: Delete an impacted area
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /demandas:
+    get:
+      operationId: listDemandas
+      tags: [demandas]
+      summary: List demandas
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: releaseId
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of demandas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Demanda"
+    post:
+      operationId: createDemanda
+      tags: [demandas]
+      summary: Create a demanda (release inscription)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemandaInput"
+      responses:
+        "201":
+          description: Created demanda
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demanda"
+  /demandas/{id}:
+    get:
+      operationId: getDemanda
+      tags: [demandas]
+      summary: Get a single demanda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Demanda
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demanda"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateDemanda
+      tags: [demandas]
+      summary: Update a demanda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemandaUpdate"
+      responses:
+        "200":
+          description: Updated demanda
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Demanda"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteDemanda
+      tags: [demandas]
+      summary: Delete a demanda
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /dashboard/summary:
     get:
       operationId: getDashboardSummary
@@ -1621,6 +1925,267 @@ components:
           type: string
         escalonamento:
           type: string
+
+    UserOption:
+      type: object
+      required: [id, email]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+
+    Release:
+      type: object
+      required: [id, sigla, liderNome, login, tipo, sistemas]
+      properties:
+        id:
+          type: integer
+        sigla:
+          type: string
+        liderNome:
+          type: string
+        login:
+          type: string
+        tipo:
+          type: string
+          description: MAIOR or MENOR
+        goLiveInicio:
+          type: ["string", "null"]
+        goLiveTermino:
+          type: ["string", "null"]
+        sistemas:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+    ReleaseInput:
+      type: object
+      required: [sigla, liderNome, login, tipo]
+      properties:
+        sigla:
+          type: string
+          minLength: 1
+        liderNome:
+          type: string
+          minLength: 1
+        login:
+          type: string
+          minLength: 1
+        tipo:
+          type: string
+        goLiveInicio:
+          type: ["string", "null"]
+        goLiveTermino:
+          type: ["string", "null"]
+        sistemas:
+          type: array
+          items:
+            type: string
+    ReleaseUpdate:
+      type: object
+      properties:
+        sigla:
+          type: string
+        liderNome:
+          type: string
+        login:
+          type: string
+        tipo:
+          type: string
+        goLiveInicio:
+          type: ["string", "null"]
+        goLiveTermino:
+          type: ["string", "null"]
+        sistemas:
+          type: array
+          items:
+            type: string
+
+    AreaImpactada:
+      type: object
+      required: [id, nome]
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        createdAt:
+          type: ["string", "null"]
+    AreaImpactadaInput:
+      type: object
+      required: [nome]
+      properties:
+        nome:
+          type: string
+          minLength: 1
+    AreaImpactadaUpdate:
+      type: object
+      properties:
+        nome:
+          type: string
+
+    Demanda:
+      type: object
+      required: [id, releaseId, nome]
+      properties:
+        id:
+          type: integer
+        releaseId:
+          type: integer
+        releaseSigla:
+          type: ["string", "null"]
+        nome:
+          type: string
+        codigoServiceNow:
+          type: ["string", "null"]
+        wps:
+          type: ["integer", "null"]
+        liderDemanda:
+          type: ["string", "null"]
+        pep:
+          type: ["string", "null"]
+        projetoSspId:
+          type: ["string", "null"]
+        origem:
+          type: ["string", "null"]
+        resumoExecutivo:
+          type: ["string", "null"]
+        liderGerenteProjetos:
+          type: ["string", "null"]
+        liderancaArea:
+          type: ["string", "null"]
+        tamanho:
+          type: ["string", "null"]
+        urlKickoff:
+          type: ["string", "null"]
+        urlBusinessCase:
+          type: ["string", "null"]
+        urlCronograma:
+          type: ["string", "null"]
+        processosNegocio:
+          type: ["string", "null"]
+        sistemasDePara:
+          type: ["string", "null"]
+        dataAprovacaoL2:
+          type: ["string", "null"]
+        cienteModeloCustos:
+          type: ["boolean", "null"]
+        pepOpexDetalhes:
+          type: ["string", "null"]
+        areaIds:
+          type: array
+          items:
+            type: integer
+        areas:
+          type: array
+          items:
+            $ref: "#/components/schemas/AreaImpactada"
+        createdAt:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+    DemandaInput:
+      type: object
+      required: [releaseId, nome]
+      properties:
+        releaseId:
+          type: integer
+        nome:
+          type: string
+          minLength: 1
+        codigoServiceNow:
+          type: string
+        wps:
+          type: integer
+        liderDemanda:
+          type: string
+        pep:
+          type: string
+        projetoSspId:
+          type: string
+        origem:
+          type: string
+        resumoExecutivo:
+          type: string
+        liderGerenteProjetos:
+          type: string
+        liderancaArea:
+          type: string
+        tamanho:
+          type: string
+        urlKickoff:
+          type: string
+        urlBusinessCase:
+          type: string
+        urlCronograma:
+          type: string
+        processosNegocio:
+          type: string
+        sistemasDePara:
+          type: string
+        dataAprovacaoL2:
+          type: ["string", "null"]
+        cienteModeloCustos:
+          type: boolean
+        pepOpexDetalhes:
+          type: string
+        areaIds:
+          type: array
+          items:
+            type: integer
+    DemandaUpdate:
+      type: object
+      properties:
+        releaseId:
+          type: integer
+        nome:
+          type: string
+        codigoServiceNow:
+          type: string
+        wps:
+          type: integer
+        liderDemanda:
+          type: string
+        pep:
+          type: string
+        projetoSspId:
+          type: string
+        origem:
+          type: string
+        resumoExecutivo:
+          type: string
+        liderGerenteProjetos:
+          type: string
+        liderancaArea:
+          type: string
+        tamanho:
+          type: string
+        urlKickoff:
+          type: string
+        urlBusinessCase:
+          type: string
+        urlCronograma:
+          type: string
+        processosNegocio:
+          type: string
+        sistemasDePara:
+          type: string
+        dataAprovacaoL2:
+          type: ["string", "null"]
+        cienteModeloCustos:
+          type: boolean
+        pepOpexDetalhes:
+          type: string
+        areaIds:
+          type: array
+          items:
+            type: integer
 
     CountItem:
       type: object
