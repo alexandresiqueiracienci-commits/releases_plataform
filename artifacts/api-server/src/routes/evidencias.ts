@@ -147,8 +147,9 @@ router.delete(
 );
 
 // Marca todos os uploads das evidências como concluídos: muda o status do
-// cenário para "Evidências Enviadas". Permitido para os mesmos usuários que
-// podem enviar evidências (requireUploader).
+// cenário para "Evidências Enviadas". Como isto altera o status do cenário,
+// exige tanto a elegibilidade de upload (requireUploader) quanto a permissão
+// RBAC "cenarios:alterar_status".
 router.post(
   "/scenarios/:id/evidencias/concluir",
   requireUploader,
@@ -156,6 +157,19 @@ router.post(
     const params = ConcluirEvidenciasParams.safeParse(req.params);
     if (!params.success) {
       res.status(400).json({ error: params.error.message });
+      return;
+    }
+
+    const user = await getOrProvisionUser(req);
+    if (!user) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
+    if (!(await hasPermission(user, "cenarios", "alterar_status"))) {
+      res.status(403).json({
+        error:
+          "Você não tem permissão para alterar o status do cenário.",
+      });
       return;
     }
 

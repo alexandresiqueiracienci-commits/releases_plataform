@@ -136,6 +136,7 @@ function formatBytes(bytes?: number | null): string {
 function EvidenciasSection({
   scenarioId,
   canUpload,
+  canChangeStatus,
   currentEmail,
   isAdmin,
   alreadyDelivered,
@@ -143,6 +144,7 @@ function EvidenciasSection({
 }: {
   scenarioId: number;
   canUpload: boolean;
+  canChangeStatus: boolean;
   currentEmail?: string;
   isAdmin: boolean;
   alreadyDelivered: boolean;
@@ -336,7 +338,7 @@ function EvidenciasSection({
         </p>
       )}
 
-      {canUpload && evidencias && evidencias.length > 0 && (
+      {canUpload && canChangeStatus && evidencias && evidencias.length > 0 && (
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-2">
           {alreadyDelivered ? (
             <span className="text-xs text-emerald-700 flex items-center gap-1">
@@ -625,6 +627,7 @@ export default function EvidenciasPage() {
                   <EvidenciasSection
                     scenarioId={selected.id}
                     canUpload={!!canUpload}
+                    canChangeStatus={canChangeStatus}
                     currentEmail={email}
                     isAdmin={isAdmin}
                     alreadyDelivered={
