@@ -81,23 +81,34 @@ export function AppShell({ children }: AppShellProps) {
     );
   }
 
-  const navItems = [
+  const homeItems = [
     { icon: Home, label: "Home", href: "/", show: true },
-    { icon: BarChart2, label: "Dashboards", href: "/dashboards", show: has("dashboards", "consultar") },
-    { icon: ListTodo, label: "Cenários", href: "/cenarios", show: has("cenarios", "consultar") },
-    { icon: CalendarClock, label: "Escala", href: "/escala", show: has("escala", "consultar") },
-    { icon: Contact, label: "Contatos", href: "/contatos", show: has("contatos", "consultar") },
-    { icon: ClipboardCheck, label: "Evidências", href: "/evidencias", show: has("evidencias", "consultar") },
-    { icon: LineChart, label: "Monitor de Evidências", href: "/evidencias/monitor", show: has("evidencias", "consultar") },
-    { icon: Database, label: "Cadastros", href: "/cadastros", show: has("cadastros", "consultar") },
+  ].filter((item) => item.show);
+
+  const cadastrosItems = [
+    { icon: Database, label: "Cadastros Básicos", href: "/cadastros", show: has("cadastros", "consultar") },
     { icon: Users, label: "Usuários", href: "/usuarios", show: isAdmin },
     { icon: UserCog, label: "Perfis", href: "/perfis", show: isAdmin },
+    { icon: ListTodo, label: "Cenários", href: "/cenarios", show: has("cenarios", "consultar") },
     { icon: Boxes, label: "Objetos", href: "/objetos", show: isAdmin },
+  ].filter((item) => item.show);
+
+  const releaseItems = [
+    { icon: ClipboardCheck, label: "Evidências", href: "/evidencias", show: has("evidencias", "consultar") },
+    { icon: LineChart, label: "Monitor de Evidências", href: "/evidencias/monitor", show: has("evidencias", "consultar") },
+    { icon: CalendarClock, label: "Escala", href: "/escala", show: has("escala", "consultar") },
+    { icon: Contact, label: "Contatos", href: "/contatos", show: has("contatos", "consultar") },
+    { icon: BarChart2, label: "Dashboards", href: "/dashboards", show: has("dashboards", "consultar") },
   ].filter((item) => item.show);
 
   const docItems = [
     { icon: FileText, label: "Governança Releases", href: "/governanca" },
   ];
+
+  const navGroups = [
+    { label: "Cadastros", items: cadastrosItems },
+    { label: "Implantação Release", items: releaseItems },
+  ].filter((group) => group.items.length > 0);
 
   const isItemActive = (href: string) =>
     location === href || (href !== "/" && location.startsWith(href));
@@ -113,7 +124,7 @@ export function AppShell({ children }: AppShellProps) {
           </SidebarHeader>
           <SidebarContent className="p-2">
             <SidebarMenu>
-              {navItems.map((item) => (
+              {homeItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton 
                     isActive={isItemActive(item.href)}
@@ -126,6 +137,27 @@ export function AppShell({ children }: AppShellProps) {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+            {navGroups.map((group) => (
+              <SidebarGroup key={group.label}>
+                <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {group.items.map((item) => (
+                      <SidebarMenuItem key={item.href}>
+                        <SidebarMenuButton
+                          isActive={isItemActive(item.href)}
+                          onClick={() => setLocation(item.href)}
+                          tooltip={item.label}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            ))}
             <SidebarGroup>
               <SidebarGroupLabel>Gestão Releases SAP (S4+ECC) &amp; Manutenções Programadas</SidebarGroupLabel>
               <SidebarGroupContent>
