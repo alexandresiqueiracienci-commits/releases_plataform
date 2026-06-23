@@ -10,9 +10,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  EvidenciasFilters,
+  type EvidenciasFilterValues,
+} from "@/components/evidencias/EvidenciasFilters";
 
 export default function CenariosListPage() {
   const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState<EvidenciasFilterValues>({});
   const { has } = usePermissions();
   const canCreate = has("cenarios", "criar");
   const canEdit = has("cenarios", "atualizar");
@@ -21,7 +26,10 @@ export default function CenariosListPage() {
   const { toast } = useToast();
   const qc = useQueryClient();
 
-  const { data: cenarios, isLoading } = useListScenarios({ search: search || undefined });
+  const { data: cenarios, isLoading } = useListScenarios({
+    search: search || undefined,
+    ...filters,
+  });
   const deleteCenario = useDeleteScenario();
 
   const handleDelete = async (id: number) => {
@@ -53,7 +61,7 @@ export default function CenariosListPage() {
       </div>
 
       <Card>
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 space-y-3">
           <div className="relative max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -64,6 +72,7 @@ export default function CenariosListPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <EvidenciasFilters value={filters} onChange={setFilters} />
         </CardHeader>
         <CardContent>
           {isLoading ? (
