@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
-import { db, objetosTable } from "@workspace/db";
+import { and, eq, notInArray } from "drizzle-orm";
+import { db, objetosTable, perfilPermissoesTable } from "@workspace/db";
 import {
   ListObjetosResponse,
   ListObjetosResponseItem,
@@ -84,14 +84,41 @@ router.patch("/objetos/:id", requireAdmin, async (req, res): Promise<void> => {
   if (body.data.nome !== undefined) updates.nome = body.data.nome.trim();
   if (body.data.descricao !== undefined)
     updates.descricao = body.data.descricao.trim() || null;
-  if (body.data.acoes !== undefined)
-    updates.acoes = Array.from(new Set(body.data.acoes));
+  let novasAcoes: string[] | undefined;
+  if (body.data.acoes !== undefined) {
+    novasAcoes = Array.from(new Set(body.data.acoes));
+    updates.acoes = novasAcoes;
+  }
 
-  const [objeto] = await db
-    .update(objetosTable)
-    .set(updates)
-    .where(eq(objetosTable.id, params.data.id))
-    .returning();
+  const objeto = await db.transaction(async (tx) => {
+    const [row] = await tx
+      .update(objetosTable)
+      .set(updates)
+      .where(eq(objetosTable.id, params.data.id))
+      .returning();
+
+    if (!row) return undefined;
+
+    // Remove grants órfãos: permissões para ações que não existem mais no objeto.
+    if (novasAcoes !== undefined) {
+      if (novasAcoes.length > 0) {
+        await tx
+          .delete(perfilPermissoesTable)
+          .where(
+            and(
+              eq(perfilPermissoesTable.objetoId, row.id),
+              notInArray(perfilPermissoesTable.acao, novasAcoes),
+            ),
+          );
+      } else {
+        await tx
+          .delete(perfilPermissoesTable)
+          .where(eq(perfilPermissoesTable.objetoId, row.id));
+      }
+    }
+
+    return row;
+  });
 
   if (!objeto) {
     res.status(404).json({ error: "Objeto não encontrado" });

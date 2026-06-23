@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import {
   db,
   usersTable,
@@ -134,6 +134,9 @@ export async function hasPermission(
         eq(perfisTable.chave, user.profile),
         eq(objetosTable.chave, objetoChave),
         eq(perfilPermissoesTable.acao, acao),
+        // A ação concedida só é válida se ainda fizer parte das ações
+        // definidas para o objeto; evita grants órfãos após remoção de ação.
+        sql`${perfilPermissoesTable.acao} = ANY(${objetosTable.acoes})`,
       ),
     );
 
